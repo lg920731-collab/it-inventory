@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <title>IT-Inventory | Computer List Viewer</title>
@@ -19,59 +19,181 @@
       --xsmall-font: 11px;
     }
 
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: system-ui, sans-serif;
-      background: var(--bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 15px;
+      background: radial-gradient(circle at top, rgba(129,140,248,0.14), transparent),
+                  var(--bg);
       color: var(--text);
+      min-height: 100vh;
     }
 
-    .page { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .page { max-width: 1200px; margin: 0 auto; padding: 20px 16px 32px; }
 
+    /* Top bar */
     .topbar {
-      background: white;
+      background: #ffffff;
       padding: 14px 18px;
-      border-radius: 14px;
+      border-radius: 18px;
       box-shadow: var(--shadow-soft-sm);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-subtle);
     }
 
-    .brand { font-weight: 600; font-size: 16px; }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: radial-gradient(circle at 30% 0, #bfdbfe, #2563eb);
+      box-shadow: 0 0 10px rgba(37,99,235,0.35);
+    }
+
+    .brand-main {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #111827;
+    }
+
+    .brand-sub {
+      font-size: var(--xsmall-font);
+      color: var(--text-soft);
+    }
+
+    .top-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: var(--xsmall-font);
+      color: var(--text-soft);
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-label { color: var(--text-soft); }
+    .pill-strong { color: #111827; font-weight: 500; }
+
+    /* Card */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      padding: 14px;
+      box-shadow: var(--shadow-soft-sm);
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      margin: 0 0 4px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .card-subtitle {
+      font-size: var(--small-font);
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    /* Filters */
     .filters {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 8px;
+      align-items: center;
+      margin-top: 4px;
     }
 
-    input, select {
-      padding: 6px 9px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    .filters-label {
+      font-size: var(--xsmall-font);
+      color: var(--text-soft);
+      margin-right: 2px;
+    }
+
+    .filters input,
+    .filters select {
       font-size: var(--small-font);
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: var(--text);
+      min-width: 150px;
+      transition: all 0.15s ease;
     }
 
-    button {
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: none;
-      background: var(--accent);
-      color: white;
+    .filters input::placeholder { color: #9ca3af; }
+
+    .filters input:focus,
+    .filters select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.14);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .btn {
       cursor: pointer;
-      font-size: var(--small-font);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: var(--xsmall-font);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      background: #e5e7eb;
+      color: #111827;
     }
 
-    button:hover { background: var(--accent-hover); }
+    .btn:hover {
+      background: #d1d5db;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(148,163,253,0.35);
+    }
 
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Table */
     .table-wrap {
-      background: white;
-      border-radius: 12px;
-      box-shadow: var(--shadow-soft-sm);
+      margin-top: 4px;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
       overflow-x: auto;
+      background: #ffffff;
+      box-shadow: var(--shadow-soft-sm);
     }
 
     table {
@@ -80,203 +202,379 @@
       font-size: var(--small-font);
     }
 
+    thead { background: #f9fafb; }
+
     th, td {
+      padding: 8px 9px;
       border-bottom: 1px solid #e5e7eb;
-      padding: 8px 10px;
       text-align: left;
+      white-space: nowrap;
     }
 
     th {
-      text-transform: uppercase;
       font-size: var(--xsmall-font);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
       color: var(--text-soft);
+      position: sticky;
+      top: 0;
+      z-index: 5;
       cursor: pointer;
+      user-select: none;
+      background: #f9fafb;
     }
 
-    tr:hover { background: #f1f5ff; }
+    th[data-sort]:hover {
+      color: var(--accent);
+      background: #eef2ff;
+    }
+
+    tbody tr {
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    tbody tr:nth-child(even) { background: #ffffff; }
+    tbody tr:nth-child(odd)  { background: #fdfdfd; }
+
+    tbody tr:hover {
+      background: #eff6ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(148,163,253,0.25);
+    }
+
+    td {
+      color: #111827;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-using,
+    .status-notuse,
+    .status-broken {
+      font-size: var(--xsmall-font);
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
 
     .status-using {
       color: #166534;
       background: #bbf7d0;
-      border-radius: 999px;
-      padding: 2px 8px;
+      border: 1px solid #4ade80;
     }
 
     .status-notuse {
       color: #1d4ed8;
       background: #dbeafe;
-      border-radius: 999px;
-      padding: 2px 8px;
+      border: 1px solid #60a5fa;
     }
 
     .status-broken {
       color: #92400e;
       background: #fed7aa;
-      border-radius: 999px;
-      padding: 2px 8px;
+      border: 1px solid #fb923c;
+    }
+
+    .note {
+      font-size: var(--xsmall-font);
+      color: var(--text-soft);
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .page {
+        max-width: 100%;
+        padding: 0;
+      }
+      .topbar {
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0 0 8px 0;
+      }
+      .card {
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0 0 8px 0;
+      }
+      .filters,
+      #reloadBtn,
+      #printBtn {
+        display: none !important;
+      }
+      .table-wrap {
+        box-shadow: none;
+        border-radius: 0;
+        border: 1px solid #000;
+      }
+      th, td {
+        border-color: #000 !important;
+        color: #000 !important;
+      }
+      .status-using,
+      .status-notuse,
+      .status-broken {
+        border-color: #000 !important;
+        color: #000 !important;
+        background: #ffffff !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
     }
   </style>
 </head>
 <body>
 <div class="page">
+  <!-- Header -->
   <div class="topbar">
-    <div class="brand">IT INVENTORY VIEWER</div>
-    <div id="lastSync" style="font-size:12px;color:#6b7280;">Last update: —</div>
+    <div class="brand-wrap">
+      <div class="brand-logo"></div>
+      <div>
+        <div class="brand-main">IT INVENTORY VIEWER</div>
+        <div class="brand-sub">公司電腦資產清單（資料來源：Excel / CSV）</div>
+      </div>
+    </div>
+    <div class="top-meta">
+      <div class="pill">
+        <span class="pill-label">Last update</span>
+        <span class="pill-strong" id="lastSync">—</span>
+      </div>
+      <div class="pill">
+        <span class="pill-label">Managed by</span>
+        <span class="pill-strong">IT / Excel</span>
+      </div>
+    </div>
   </div>
 
-  <div class="filters">
-    <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
-    <select id="statusFilter">
-      <option value="">All status</option>
-      <option value="using">Using</option>
-      <option value="not use">Not use</option>
-      <option value="broken">Broken</option>
-    </select>
-    <input type="text" id="deptFilter" placeholder="Department">
-    <button id="reloadBtn">Reload CSV</button>
+  <!-- Filters -->
+  <div class="card">
+    <h2>查詢條件</h2>
+    <div class="card-subtitle">
+      此頁面僅供查詢顯示，更新請於 Excel 編輯後匯出 <strong>inventory.csv</strong> 覆蓋。
+    </div>
+    <div class="filters">
+      <span class="filters-label">Filter:</span>
+      <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
+      <select id="statusFilter">
+        <option value="">All status</option>
+        <option value="using">Using</option>
+        <option value="not use">Not use</option>
+        <option value="broken">Broken</option>
+      </select>
+      <input type="text" id="deptFilter" placeholder="Department">
+      <button class="btn" id="reloadBtn">🔄 Reload CSV</button>
+      <button class="btn btn-primary" id="printBtn">🖨 列印清單</button>
+    </div>
   </div>
 
-  <div class="table-wrap">
-    <table id="pcTable">
-      <thead>
-      <tr>
-        <th data-sort="asset_id">Asset ID</th>
-        <th data-sort="hostname">Hostname</th>
-        <th data-sort="computer">Computer</th>
-        <th data-sort="department">Department</th>
-        <th data-sort="location">Location</th>
-        <th data-sort="status">Status</th>
-        <th data-sort="spec">Spec</th>
-        <th data-sort="os">OS</th>
-        <th data-sort="owner">Owner</th>
-        <th data-sort="note">Note</th>
-      </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+  <!-- Table -->
+  <div class="card">
+    <h2>電腦設備清單</h2>
+    <div class="card-subtitle" id="countInfo">共 0 筆資料</div>
+    <div class="table-wrap">
+      <table id="pcTable">
+        <thead>
+        <tr>
+          <th data-sort="asset_id">Asset ID</th>
+          <th data-sort="hostname">Hostname</th>
+          <th data-sort="computer">Computer</th>
+          <th data-sort="department">Department</th>
+          <th data-sort="location">Location</th>
+          <th data-sort="status">Status</th>
+          <th data-sort="spec">Spec</th>
+          <th data-sort="os">OS</th>
+          <th data-sort="owner">Owner</th>
+          <th data-sort="note">Note</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 <script>
-let computers = [];
-let currentSortKey = "asset_id";
-let currentSortAsc = true;
+  let computers = [];
+  let currentSortKey = "asset_id";
+  let currentSortAsc = true;
 
-const tbody = document.querySelector("#pcTable tbody");
-const searchInput = document.getElementById("searchInput");
-const statusFilter = document.getElementById("statusFilter");
-const deptFilter = document.getElementById("deptFilter");
-const reloadBtn = document.getElementById("reloadBtn");
-const lastSyncEl = document.getElementById("lastSync");
+  const tbody = document.querySelector("#pcTable tbody");
+  const searchInput = document.getElementById("searchInput");
+  const statusFilter = document.getElementById("statusFilter");
+  const deptFilter = document.getElementById("deptFilter");
+  const reloadBtn = document.getElementById("reloadBtn");
+  const printBtn = document.getElementById("printBtn");
+  const lastSyncEl = document.getElementById("lastSync");
+  const countInfoEl = document.getElementById("countInfo");
 
-async function loadCSV() {
-  try {
-    const res = await fetch("inventory.csv?" + Date.now());
-    if (!res.ok) throw new Error("CSV not found");
-    const text = await res.text();
-    computers = parseCSV(text);
-    updateLastSync();
-    renderTable();
-  } catch (e) {
-    console.error(e);
-    lastSyncEl.textContent = "Error loading CSV";
-  }
-}
-
-function parseCSV(csvText) {
-  const lines = csvText.trim().split(/\r?\n/);
-  const header = splitCSVLine(lines[0]);
-  const data = [];
-  for (let i = 1; i < lines.length; i++) {
-    const cols = splitCSVLine(lines[i]);
-    const row = {};
-    header.forEach((key, idx) => row[key] = (cols[idx] || "").trim());
-    data.push(row);
-  }
-  return data;
-}
-
-function splitCSVLine(line) {
-  const result = [];
-  let cur = "", inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (c === '"') {
-      if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
-      else inQ = !inQ;
-    } else if (c === ',' && !inQ) { result.push(cur); cur = ""; }
-    else cur += c;
-  }
-  result.push(cur);
-  return result;
-}
-
-function updateLastSync() {
-  const latest = computers.reduce((max, c) =>
-    c.last_update && c.last_update > max ? c.last_update : max, "0000-00-00");
-  lastSyncEl.textContent = "Last update: " + (latest !== "0000-00-00" ? latest : "N/A");
-}
-
-function renderTable() {
-  const keyword = searchInput.value.trim().toLowerCase();
-  const fStatus = statusFilter.value;
-  const fDept = deptFilter.value.trim();
-
-  let data = [...computers];
-  data = data.filter(c => {
-    if (fStatus && c.status !== fStatus) return false;
-    if (fDept && c.department !== fDept) return false;
-    if (keyword) {
-      const text = ((c.asset_id||"") + (c.hostname||"") + (c.computer||"") + (c.department||"")).toLowerCase();
-      if (!text.includes(keyword)) return false;
+  async function loadCSV() {
+    try {
+      const res = await fetch("inventory.csv?" + Date.now());
+      if (!res.ok) throw new Error("CSV not found");
+      const text = await res.text();
+      computers = parseCSV(text);
+      updateLastSync();
+      renderTable();
+    } catch (e) {
+      console.error(e);
+      lastSyncEl.textContent = "讀取失敗（請確認 inventory.csv 與此檔同資料夾）";
+      tbody.innerHTML = "";
+      countInfoEl.textContent = "共 0 筆資料";
     }
-    return true;
+  }
+
+  function parseCSV(csvText) {
+    const lines = csvText.trim().split(/\r?\n/);
+    if (lines.length <= 1) return [];
+    const header = splitCSVLine(lines[0]).map(h => h.trim());
+    const data = [];
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      const cols = splitCSVLine(line);
+      const row = {};
+      header.forEach((key, idx) => {
+        row[key] = (cols[idx] || "").trim();
+      });
+      data.push(row);
+    }
+    return data;
+  }
+
+  function splitCSVLine(line) {
+    const result = [];
+    let cur = "";
+    let inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') {
+        if (inQ && line[i + 1] === '"') {
+          cur += '"';
+          i++;
+        } else {
+          inQ = !inQ;
+        }
+      } else if (c === "," && !inQ) {
+        result.push(cur);
+        cur = "";
+      } else {
+        cur += c;
+      }
+    }
+    result.push(cur);
+    return result;
+  }
+
+  function updateLastSync() {
+    if (!computers.length) {
+      lastSyncEl.textContent = "無資料";
+      return;
+    }
+    let latest = "0000-00-00";
+    computers.forEach(c => {
+      if (c.last_update && c.last_update > latest) latest = c.last_update;
+    });
+    lastSyncEl.textContent =
+      latest !== "0000-00-00" ? latest : "由 Excel 管理";
+  }
+
+  function renderTable() {
+    const keyword = searchInput.value.trim().toLowerCase();
+    const fStatus = statusFilter.value;
+    const fDept = deptFilter.value.trim();
+
+    let data = [...computers];
+
+    data = data.filter(c => {
+      if (fStatus && c.status !== fStatus) return false;
+      if (fDept && c.department !== fDept) return false;
+      if (keyword) {
+        const text = (
+          (c.asset_id || "") +
+          (c.hostname || "") +
+          (c.computer || "") +
+          (c.department || "")
+        ).toLowerCase();
+        if (!text.includes(keyword)) return false;
+      }
+      return true;
+    });
+
+    data.sort((a, b) => {
+      const x = (a[currentSortKey] || "").toString();
+      const y = (b[currentSortKey] || "").toString();
+      if (x === y) return 0;
+      return currentSortAsc
+        ? x.localeCompare(y, "zh-Hant")
+        : y.localeCompare(x, "zh-Hant");
+    });
+
+    tbody.innerHTML = "";
+    data.forEach(c => {
+      const status = (c.status || "").toLowerCase();
+      const stClass =
+        status === "using" ? "status-using" :
+        status === "not use" ? "status-notuse" :
+        status === "broken" ? "status-broken" : "";
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${c.asset_id || ""}</td>
+        <td>${c.hostname || ""}</td>
+        <td>${c.computer || ""}</td>
+        <td>${c.department || ""}</td>
+        <td>${c.location || ""}</td>
+        <td>${c.status ? `<span class="${stClass}">${c.status}</span>` : ""}</td>
+        <td>${c.spec || ""}</td>
+        <td>${c.os || ""}</td>
+        <td>${c.owner || ""}</td>
+        <td class="note">${c.note || ""}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    countInfoEl.textContent = `共 ${data.length} 筆資料`;
+  }
+
+  // Events
+  searchInput.addEventListener("input", renderTable);
+  statusFilter.addEventListener("change", renderTable);
+  deptFilter.addEventListener("input", renderTable);
+  reloadBtn.addEventListener("click", loadCSV);
+
+  document.querySelectorAll("th[data-sort]").forEach(th => {
+    th.addEventListener("click", () => {
+      const key = th.getAttribute("data-sort");
+      if (currentSortKey === key) {
+        currentSortAsc = !currentSortAsc;
+      } else {
+        currentSortKey = key;
+        currentSortAsc = true;
+      }
+      renderTable();
+    });
   });
 
-  data.sort((a,b)=>{
-    const x=(a[currentSortKey]||"").toString();
-    const y=(b[currentSortKey]||"").toString();
-    if(x===y)return 0;
-    return currentSortAsc?x.localeCompare(y):y.localeCompare(x);
+  printBtn.addEventListener("click", () => {
+    window.print();
   });
 
-  tbody.innerHTML="";
-  data.forEach(c=>{
-    const stClass =
-      c.status==="using"?"status-using":
-      c.status==="not use"?"status-notuse":
-      c.status==="broken"?"status-broken":"";
-    const tr=document.createElement("tr");
-    tr.innerHTML=`
-      <td>${c.asset_id||""}</td>
-      <td>${c.hostname||""}</td>
-      <td>${c.computer||""}</td>
-      <td>${c.department||""}</td>
-      <td>${c.location||""}</td>
-      <td><span class="${stClass}">${c.status||""}</span></td>
-      <td>${c.spec||""}</td>
-      <td>${c.os||""}</td>
-      <td>${c.owner||""}</td>
-      <td>${c.note||""}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-searchInput.addEventListener("input", renderTable);
-statusFilter.addEventListener("change", renderTable);
-deptFilter.addEventListener("input", renderTable);
-reloadBtn.addEventListener("click", loadCSV);
-document.querySelectorAll("th[data-sort]").forEach(th=>{
-  th.addEventListener("click",()=>{
-    const key=th.getAttribute("data-sort");
-    if(currentSortKey===key) currentSortAsc=!currentSortAsc;
-    else {currentSortKey=key;currentSortAsc=true;}
-    renderTable();
-  });
-});
-
-loadCSV();
+  // Init
+  loadCSV();
 </script>
 </body>
 </html>
