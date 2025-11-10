@@ -345,8 +345,8 @@
     <div class="brand-wrap">
       <div class="brand-logo"></div>
       <div>
-        <div class="brand-main">IT INVENTORY VIEWER</div>
-        <div class="brand-sub">公司電腦資產清單（資料來源：Excel / CSV）</div>
+        <div class="brand-main">BOPP1 PC Manager</div>
+        <div class="brand-sub">Company Computer Asset List（資料來源：Excel / CSV）</div>
       </div>
     </div>
     <div class="top-meta">
@@ -363,9 +363,9 @@
 
   <!-- Filters -->
   <div class="card">
-    <h2>查詢條件</h2>
+    <h2>Query conditions</h2>
     <div class="card-subtitle">
-      此頁面僅供查詢顯示，更新請於 Excel 編輯後匯出 <strong>inventory.csv</strong> 覆蓋。
+      This page is for query display only. To update, please edit the Excel file and export the <strong>inventory.csv</strong> file to overwrite the existing file.
     </div>
     <div class="filters">
       <span class="filters-label">Filter:</span>
@@ -385,7 +385,7 @@
   <!-- Table -->
   <div class="card">
     <h2>電腦設備清單</h2>
-    <div class="card-subtitle" id="countInfo">共 0 筆資料</div>
+    <div class="card-subtitle" id="countInfo">A total of 0 data</div>
     <div class="table-wrap">
       <table id="pcTable">
         <thead>
@@ -432,9 +432,9 @@
       renderTable();
     } catch (e) {
       console.error(e);
-      lastSyncEl.textContent = "讀取失敗（請確認 inventory.csv 與此檔同資料夾）";
+      lastSyncEl.textContent = "loading error（Please check inventory.csv）";
       tbody.innerHTML = "";
-      countInfoEl.textContent = "共 0 筆資料";
+      countInfoEl.textContent = "A total of 0 data";
     }
   }
 
@@ -482,7 +482,7 @@
 
   function updateLastSync() {
     if (!computers.length) {
-      lastSyncEl.textContent = "無資料";
+      lastSyncEl.textContent = "no data";
       return;
     }
     let latest = "0000-00-00";
@@ -490,7 +490,7 @@
       if (c.last_update && c.last_update > latest) latest = c.last_update;
     });
     lastSyncEl.textContent =
-      latest !== "0000-00-00" ? latest : "由 Excel 管理";
+      latest !== "0000-00-00" ? latest : "Manaded by Excel";
   }
 
   function renderTable() {
@@ -547,7 +547,7 @@
       tbody.appendChild(tr);
     });
 
-    countInfoEl.textContent = `共 ${data.length} 筆資料`;
+    countInfoEl.textContent = `A total of ${data.length} data`;
   }
 
   // Events
