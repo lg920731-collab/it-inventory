@@ -1,4 +1,4 @@
-﻿asset_id,hostname,Computer,department,location,status,spec,os,owner,note,last_update,DETAIL,,,
+﻿asset_id,hostname,computer,department,location,status,spec,os,owner,note,last_update,DETAIL,,,
 L1-SCADA-PC1,,GX270,BOPP1,,using,,Windows XP,BOPP1,,,,,,
 L1-SCADA-PC2,,GX270,BOPP1,,using,,Windows XP,BOPP1,,,,,,
 L1-TR-AB-NEW,,GX270,BOPP1,,using,,Windows XP,BOPP1,,,,,,
@@ -21,3 +21,4 @@ Spare-SCADA-003,,GX270,BOPP1,,not use,,Windows XP,BOPP1,,11/10/2025,,,,
 Spare-SCADA-004,,GX270,BOPP1,,not use,,Windows XP,BOPP1,,11/10/2025,,,,
 Spare-SCADA-005,,GX270,BOPP1,,not use,,Windows XP,BOPP1,,11/10/2025,,,,
 Spare-SCADA-006,,GX270,BOPP1,,not use,,Windows XP,BOPP1,,11/10/2025,,,,
+
