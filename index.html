@@ -1,292 +1,77 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>IT-Inventory | 電腦設備狀態管理</title>
+  <title>IT-Inventory | Computer List Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
       --bg: #f3f4f6;
-      --bg-soft: #ffffff;
       --card-bg: #ffffff;
       --border-subtle: #e5e7eb;
       --accent: #2563eb;
-      --accent-soft: rgba(37,99,235,0.08);
-      --accent-soft-2: rgba(37,99,235,0.04);
       --accent-hover: #1d4ed8;
       --text: #111827;
       --text-soft: #6b7280;
-      --danger: #dc2626;
       --radius-xl: 16px;
-      --radius-md: 10px;
-      --shadow-soft: 0 14px 40px rgba(15,23,42,0.08);
       --shadow-soft-sm: 0 8px 20px rgba(15,23,42,0.06);
-      --transition-fast: 0.18s ease;
-      --font: system-ui, -apple-system, BlinkMacSystemFont, -system-ui, sans-serif;
-      --base-font-size: 15px;
       --small-font: 13px;
       --xsmall-font: 11px;
     }
 
-    * { box-sizing: border-box; }
-
     body {
       margin: 0;
-      padding: 0;
-      font-family: var(--font);
-      font-size: var(--base-font-size);
-      background: radial-gradient(circle at top, rgba(129,140,248,0.14), transparent),
-                  var(--bg);
+      font-family: system-ui, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
     }
 
-    .page {
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 24px 16px 32px;
-    }
+    .page { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
-    /* Header */
     .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 12px 18px;
-      margin-bottom: 20px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.98);
-      border: 1px solid var(--border-subtle);
+      background: white;
+      padding: 14px 18px;
+      border-radius: 14px;
       box-shadow: var(--shadow-soft-sm);
-    }
-
-    .brand-title {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .brand-logo {
-      width: 28px;
-      height: 28px;
-      border-radius: 9px;
-      background: radial-gradient(circle at 30% 0, #bfdbfe, #2563eb);
-      box-shadow: 0 0 10px rgba(37,99,235,0.45);
-    }
+    .brand { font-weight: 600; font-size: 16px; }
 
-    .brand-text-main {
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      font-size: 14px;
-      text-transform: uppercase;
-      color: #1f2937;
-    }
-
-    .brand-text-sub {
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-    }
-
-    .top-meta {
+    .filters {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      justify-content: flex-end;
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-    }
-
-    .pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .pill-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 6px #22c55e;
-    }
-
-    .pill-label {
-      color: var(--text-soft);
-    }
-
-    .pill-strong {
-      color: #111827;
-      font-weight: 500;
-    }
-
-    /* Main layout */
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
-      gap: 18px;
-      align-items: flex-start;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border-subtle);
-      padding: 14px 14px 12px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .card h2 {
-      margin: 0 0 4px;
-      font-size: 17px;
-      font-weight: 600;
-      color: #111827;
-    }
-
-    .card-subtitle {
-      font-size: var(--small-font);
-      color: var(--text-soft);
+      gap: 10px;
       margin-bottom: 10px;
     }
 
-    label {
-      display: block;
-      font-size: var(--xsmall-font);
-      margin: 6px 0 3px;
-      color: var(--text-soft);
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-    }
-
-    input, select, textarea {
-      font-size: var(--small-font);
-      padding: 7px 9px;
-      width: 100%;
+    input, select {
+      padding: 6px 9px;
       border-radius: 8px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      color: var(--text);
-      outline: none;
-      transition: border-color var(--transition-fast),
-                  box-shadow var(--transition-fast),
-                  background var(--transition-fast),
-                  transform var(--transition-fast);
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: #9ca3af;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(37,99,235,0.14);
-      background: #ffffff;
-      transform: translateY(-1px);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 60px;
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
+      border: 1px solid #ccc;
+      font-size: var(--small-font);
     }
 
     button {
-      cursor: pointer;
-      border-radius: 999px;
-      padding: 7px 14px;
-      font-size: var(--small-font);
+      padding: 6px 12px;
+      border-radius: 8px;
       border: none;
-      background: var(--accent-soft-2);
-      color: var(--text);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all var(--transition-fast);
-      box-shadow: 0 4px 10px rgba(148,163,253,0.25);
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      font-size: var(--small-font);
     }
 
-    button span.icon {
-      font-size: 14px;
-      line-height: 1;
-    }
-
-    button.primary {
-      background: linear-gradient(to right, var(--accent), var(--accent-hover));
-      color: #ffffff;
-      font-weight: 500;
-      box-shadow: 0 8px 20px rgba(37,99,235,0.28);
-    }
-
-    button.primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(37,99,235,0.36);
-    }
-
-    button:hover {
-      background: var(--accent-soft);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 14px rgba(148,163,253,0.3);
-    }
-
-    button.danger {
-      background: #fef2f2;
-      color: var(--danger);
-      box-shadow: 0 4px 10px rgba(248,113,113,0.2);
-      border: 1px solid #fecaca;
-    }
-
-    button.danger:hover {
-      background: #fee2e2;
-    }
-
-    /* Filters + table */
-    .filters {
-      margin: 2px 0 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .filters-label {
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-      margin-right: 2px;
-    }
-
-    .filters input,
-    .filters select {
-      width: auto;
-      min-width: 150px;
-      padding-right: 26px;
-      background: #ffffff;
-    }
+    button:hover { background: var(--accent-hover); }
 
     .table-wrap {
-      margin-top: 4px;
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
-      overflow: hidden;
-      background: #ffffff;
+      background: white;
+      border-radius: 12px;
       box-shadow: var(--shadow-soft-sm);
+      overflow-x: auto;
     }
 
     table {
@@ -295,574 +80,203 @@
       font-size: var(--small-font);
     }
 
-    thead {
-      background: #f9fafb;
-    }
-
     th, td {
-      padding: 8px 9px;
       border-bottom: 1px solid #e5e7eb;
+      padding: 8px 10px;
       text-align: left;
-      white-space: nowrap;
     }
 
     th {
-      font-size: var(--xsmall-font);
-      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-soft);
-      position: sticky;
-      top: 0;
-      z-index: 5;
-      cursor: pointer;
-      user-select: none;
-      background: #f9fafb;
-    }
-
-    th[data-sort]:hover {
-      color: var(--accent);
-      background: #eef2ff;
-    }
-
-    tbody tr {
-      transition: background var(--transition-fast),
-                  transform var(--transition-fast),
-                  box-shadow var(--transition-fast);
-    }
-
-    tbody tr:nth-child(even) {
-      background: #ffffff;
-    }
-
-    tbody tr:nth-child(odd) {
-      background: #fdfdfd;
-    }
-
-    tbody tr:hover {
-      background: #eff6ff;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(148,163,253,0.35);
-    }
-
-    td {
-      color: #111827;
-      max-width: 260px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .status-ok,
-    .status-repair,
-    .status-retired,
-    .status-loan {
       font-size: var(--xsmall-font);
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      color: var(--text-soft);
+      cursor: pointer;
     }
 
-    .status-ok {
+    tr:hover { background: #f1f5ff; }
+
+    .status-using {
       color: #166534;
       background: #bbf7d0;
-      border: 1px solid #4ade80;
+      border-radius: 999px;
+      padding: 2px 8px;
     }
 
-    .status-repair {
-      color: #92400e;
-      background: #fed7aa;
-      border: 1px solid #fb923c;
-    }
-
-    .status-retired {
-      color: #6b7280;
-      background: #e5e7eb;
-      border: 1px solid #9ca3af;
-    }
-
-    .status-loan {
+    .status-notuse {
       color: #1d4ed8;
       background: #dbeafe;
-      border: 1px solid #60a5fa;
-    }
-
-    .note {
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-      white-space: nowrap;
-    }
-
-    .actions {
-      display: flex;
-      gap: 4px;
-    }
-
-    .actions button {
-      padding: 4px 9px;
-      font-size: var(--xsmall-font);
-      box-shadow: none;
-      background: #ffffff;
       border-radius: 999px;
-      border: 1px solid #d1d5db;
+      padding: 2px 8px;
     }
 
-    .actions button:hover {
-      background: #eff6ff;
-      border-color: var(--accent);
-      transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(148,163,253,0.35);
-    }
-
-    @media (max-width: 860px) {
-      .page { padding: 18px 12px 26px; }
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .layout {
-        grid-template-columns: 1fr;
-      }
+    .status-broken {
+      color: #92400e;
+      background: #fed7aa;
+      border-radius: 999px;
+      padding: 2px 8px;
     }
   </style>
 </head>
 <body>
 <div class="page">
-  <!-- Top bar -->
   <div class="topbar">
-    <div class="brand-title">
-      <div class="brand-logo"></div>
-      <div>
-        <div class="brand-text-main">IT INVENTORY CONSOLE</div>
-        <div class="brand-text-sub">公司電腦資產 · 使用者 · 狀態 · 位置</div>
-      </div>
-    </div>
-    <div class="top-meta">
-      <div class="pill">
-        <div class="pill-dot"></div>
-        <span class="pill-label">使用範圍</span>
-        <span class="pill-strong">公司內部</span>
-      </div>
-      <div class="pill">
-        <span class="pill-label">最後更新</span>
-        <span class="pill-strong" id="lastSync">—</span>
-      </div>
-      <div class="pill">
-        <span class="pill-label">儲存方式</span>
-        <span class="pill-strong">瀏覽器儲存</span>
-      </div>
-    </div>
+    <div class="brand">IT INVENTORY VIEWER</div>
+    <div id="lastSync" style="font-size:12px;color:#6b7280;">Last update: —</div>
   </div>
 
-  <div class="layout">
-    <!-- Left: Form -->
-    <div class="card">
-      <h2 id="formTitle">新增 / 編輯電腦資料</h2>
-      <div class="card-subtitle">
-        以「資產編號」作為唯一鍵，儲存時若已存在同編號，將更新該筆資料。
-      </div>
+  <div class="filters">
+    <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
+    <select id="statusFilter">
+      <option value="">All status</option>
+      <option value="using">Using</option>
+      <option value="not use">Not use</option>
+      <option value="broken">Broken</option>
+    </select>
+    <input type="text" id="deptFilter" placeholder="Department">
+    <button id="reloadBtn">Reload CSV</button>
+  </div>
 
-      <form id="pcForm">
-        <label>資產編號（必填，唯一）
-          <input type="text" id="asset_id" required>
-        </label>
-
-        <label>Hostname
-          <input type="text" id="hostname">
-        </label>
-
-        <div class="row">
-          <div>
-            <label>使用者
-              <input type="text" id="user">
-            </label>
-          </div>
-          <div>
-            <label>部門
-              <input type="text" id="department" placeholder="例如：行政 / 生產 / 品保 / 研發">
-            </label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>位置
-              <input type="text" id="location" placeholder="例如：辦公室A / 倉庫 / 機房">
-            </label>
-          </div>
-          <div>
-            <label>狀態
-              <select id="status">
-                <option value="正常">正常</option>
-                <option value="維修中">維修中</option>
-                <option value="報廢">報廢</option>
-                <option value="借出中">借出中</option>
-              </select>
-            </label>
-          </div>
-        </div>
-
-        <label>規格（選填）
-          <input type="text" id="spec" placeholder="例如：i5 / 16GB / 512GB SSD">
-        </label>
-
-        <div class="row">
-          <div>
-            <label>作業系統
-              <input type="text" id="os" placeholder="例如：Windows 10 Pro">
-            </label>
-          </div>
-          <div>
-            <label>維護人員
-              <input type="text" id="owner" placeholder="例如：IT-Allen">
-            </label>
-          </div>
-        </div>
-
-        <label>備註
-          <textarea id="note" placeholder="例如：風扇異音 / 已送修 / 預計報廢時間"></textarea>
-        </label>
-
-        <div class="btn-row">
-          <button type="submit" class="primary">
-            <span class="icon">💾</span>
-            <span>儲存（新增 / 更新）</span>
-          </button>
-          <button type="button" onclick="clearForm()">
-            <span class="icon">🧹</span>
-            <span>清空表單</span>
-          </button>
-        </div>
-        <div class="btn-row">
-          <button type="button" class="danger" onclick="resetToDefault()">
-            <span class="icon">↺</span>
-            <span>重置為範例資料（僅此瀏覽器）</span>
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Right: List -->
-    <div class="card">
-      <h2>設備清單 / 查詢</h2>
-      <div class="card-subtitle">
-        支援關鍵字搜尋、狀態與部門篩選，點欄位名稱可進行排序。
-      </div>
-
-      <div class="filters">
-        <span class="filters-label">篩選：</span>
-        <input type="text" id="searchInput" placeholder="搜尋 資產編號 / 使用者 / Hostname">
-        <select id="statusFilter">
-          <option value="">狀態：全部</option>
-          <option value="正常">正常</option>
-          <option value="維修中">維修中</option>
-          <option value="報廢">報廢</option>
-          <option value="借出中">借出中</option>
-        </select>
-        <input type="text" id="deptFilter" placeholder="部門：全部">
-      </div>
-
-      <div class="table-wrap">
-        <table id="pcTable">
-          <thead>
-          <tr>
-            <th data-sort="asset_id">資產編號</th>
-            <th data-sort="hostname">Hostname</th>
-            <th data-sort="user">使用者</th>
-            <th data-sort="department">部門</th>
-            <th data-sort="location">位置</th>
-            <th data-sort="status">狀態</th>
-            <th>備註</th>
-            <th>操作</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
+  <div class="table-wrap">
+    <table id="pcTable">
+      <thead>
+      <tr>
+        <th data-sort="asset_id">Asset ID</th>
+        <th data-sort="hostname">Hostname</th>
+        <th data-sort="computer">Computer</th>
+        <th data-sort="department">Department</th>
+        <th data-sort="location">Location</th>
+        <th data-sort="status">Status</th>
+        <th data-sort="spec">Spec</th>
+        <th data-sort="os">OS</th>
+        <th data-sort="owner">Owner</th>
+        <th data-sort="note">Note</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 </div>
 
 <script>
-  const STORAGE_KEY = "it_inventory_data_v1";
+let computers = [];
+let currentSortKey = "asset_id";
+let currentSortAsc = true;
 
-  const defaultComputers = [
-    {
-      asset_id: "PC-001",
-      hostname: "OFFICE-001",
-      user: "王小明",
-      department: "行政",
-      location: "辦公室 A",
-      type: "Desktop",
-      spec: "i5 / 16GB / 512GB SSD",
-      os: "Windows 10 Pro",
-      status: "正常",
-      last_update: "2025-11-01",
-      owner: "IT-Allen",
-      note: ""
-    },
-    {
-      asset_id: "PC-012",
-      hostname: "QA-LAB-01",
-      user: "張品妤",
-      department: "品保",
-      location: "品保實驗室",
-      type: "Desktop",
-      spec: "i7 / 32GB / 1TB SSD",
-      os: "Windows 11 Pro",
-      status: "維修中",
-      last_update: "2025-11-08",
-      owner: "IT-Allen",
-      note: "無法開機，送修中"
-    },
-    {
-      asset_id: "NB-005",
-      hostname: "SALES-NB-01",
-      user: "李先生",
-      department: "生產",
-      location: "外出攜帶",
-      type: "Laptop",
-      spec: "Ryzen 5 / 16GB / 512GB",
-      os: "Windows 11 Pro",
-      status: "借出中",
-      last_update: "2025-11-03",
-      owner: "IT-Allen",
-      note: "預計 11/15 歸還"
-    },
-    {
-      asset_id: "PC-020",
-      hostname: "OLD-SERVER-01",
-      user: "-",
-      department: "研發",
-      location: "機房",
-      type: "Desktop",
-      spec: "古老機種",
-      os: "Windows 7",
-      status: "報廢",
-      last_update: "2025-10-20",
-      owner: "IT-Allen",
-      note: "僅保留硬碟待銷毀"
-    }
-  ];
+const tbody = document.querySelector("#pcTable tbody");
+const searchInput = document.getElementById("searchInput");
+const statusFilter = document.getElementById("statusFilter");
+const deptFilter = document.getElementById("deptFilter");
+const reloadBtn = document.getElementById("reloadBtn");
+const lastSyncEl = document.getElementById("lastSync");
 
-  let computers = [];
-  let currentSortKey = "asset_id";
-  let currentSortAsc = true;
-
-  const lastSyncEl = document.getElementById("lastSync");
-  const tbody = document.querySelector("#pcTable tbody");
-  const searchInput = document.getElementById("searchInput");
-  const statusFilter = document.getElementById("statusFilter");
-  const deptFilter = document.getElementById("deptFilter");
-  const formTitle = document.getElementById("formTitle");
-
-  const form = document.getElementById("pcForm");
-  const f_asset_id = document.getElementById("asset_id");
-  const f_hostname = document.getElementById("hostname");
-  const f_user = document.getElementById("user");
-  const f_department = document.getElementById("department");
-  const f_location = document.getElementById("location");
-  const f_status = document.getElementById("status");
-  const f_spec = document.getElementById("spec");
-  const f_os = document.getElementById("os");
-  const f_owner = document.getElementById("owner");
-  const f_note = document.getElementById("note");
-
-  function loadData() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
-      } catch (e) {
-        console.warn("localStorage 資料解析失敗，使用預設資料");
-      }
-    }
-    return [...defaultComputers];
-  }
-
-  function saveData() {
-    const today = new Date().toISOString().slice(0, 10);
-    computers = computers.map(c => ({
-      ...c,
-      last_update: c.last_update || today
-    }));
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(computers));
+async function loadCSV() {
+  try {
+    const res = await fetch("inventory.csv?" + Date.now());
+    if (!res.ok) throw new Error("CSV not found");
+    const text = await res.text();
+    computers = parseCSV(text);
     updateLastSync();
     renderTable();
+  } catch (e) {
+    console.error(e);
+    lastSyncEl.textContent = "Error loading CSV";
   }
+}
 
-  function updateLastSync() {
-    if (!computers.length) {
-      lastSyncEl.textContent = "無資料";
-      return;
+function parseCSV(csvText) {
+  const lines = csvText.trim().split(/\r?\n/);
+  const header = splitCSVLine(lines[0]);
+  const data = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = splitCSVLine(lines[i]);
+    const row = {};
+    header.forEach((key, idx) => row[key] = (cols[idx] || "").trim());
+    data.push(row);
+  }
+  return data;
+}
+
+function splitCSVLine(line) {
+  const result = [];
+  let cur = "", inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (c === ',' && !inQ) { result.push(cur); cur = ""; }
+    else cur += c;
+  }
+  result.push(cur);
+  return result;
+}
+
+function updateLastSync() {
+  const latest = computers.reduce((max, c) =>
+    c.last_update && c.last_update > max ? c.last_update : max, "0000-00-00");
+  lastSyncEl.textContent = "Last update: " + (latest !== "0000-00-00" ? latest : "N/A");
+}
+
+function renderTable() {
+  const keyword = searchInput.value.trim().toLowerCase();
+  const fStatus = statusFilter.value;
+  const fDept = deptFilter.value.trim();
+
+  let data = [...computers];
+  data = data.filter(c => {
+    if (fStatus && c.status !== fStatus) return false;
+    if (fDept && c.department !== fDept) return false;
+    if (keyword) {
+      const text = ((c.asset_id||"") + (c.hostname||"") + (c.computer||"") + (c.department||"")).toLowerCase();
+      if (!text.includes(keyword)) return false;
     }
-    const latest = computers.reduce(
-      (max, c) => (c.last_update && c.last_update > max ? c.last_update : max),
-      "0000-00-00"
-    );
-    lastSyncEl.textContent = latest || "未設定";
-  }
-
-  function renderTable() {
-    const keyword = searchInput.value.trim().toLowerCase();
-    const fStatus = statusFilter.value;
-    const fDept = deptFilter.value.trim();
-
-    let data = [...computers];
-
-    data = data.filter(c => {
-      if (fStatus && c.status !== fStatus) return false;
-      if (fDept && c.department !== fDept) return false;
-      if (keyword) {
-        const text = (
-          (c.asset_id || "") +
-          (c.hostname || "") +
-          (c.user || "") +
-          (c.department || "")
-        ).toLowerCase();
-        if (!text.includes(keyword)) return false;
-      }
-      return true;
-    });
-
-    data.sort((a, b) => {
-      const x = (a[currentSortKey] || "").toString();
-      const y = (b[currentSortKey] || "").toString();
-      if (x === y) return 0;
-      return currentSortAsc
-        ? x.localeCompare(y, "zh-Hant")
-        : y.localeCompare(x, "zh-Hant");
-    });
-
-    tbody.innerHTML = "";
-    data.forEach(c => {
-      const tr = document.createElement("tr");
-
-      const statusClass =
-        c.status === "正常" ? "status-ok" :
-        c.status === "維修中" ? "status-repair" :
-        c.status === "報廢" ? "status-retired" :
-        c.status === "借出中" ? "status-loan" : "";
-
-      tr.innerHTML = `
-        <td>${c.asset_id || ""}</td>
-        <td>${c.hostname || ""}</td>
-        <td>${c.user || ""}</td>
-        <td>${c.department || ""}</td>
-        <td>${c.location || ""}</td>
-        <td><span class="${statusClass}">${c.status || ""}</span></td>
-        <td class="note">${c.note || ""}</td>
-        <td class="actions">
-          <button type="button" onclick="editComputer('${c.asset_id || ""}')">編輯</button>
-          <button type="button" onclick="deleteComputer('${c.asset_id || ""}')">刪除</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  document.querySelectorAll("th[data-sort]").forEach(th => {
-    th.addEventListener("click", () => {
-      const key = th.getAttribute("data-sort");
-      if (currentSortKey === key) {
-        currentSortAsc = !currentSortAsc;
-      } else {
-        currentSortKey = key;
-        currentSortAsc = true;
-      }
-      renderTable();
-    });
+    return true;
   });
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const asset_id = f_asset_id.value.trim();
-    if (!asset_id) {
-      alert("請填寫資產編號（必填，且不可重複）");
-      return;
-    }
-
-    const existingIndex = computers.findIndex(c => c.asset_id === asset_id);
-    const today = new Date().toISOString().slice(0, 10);
-
-    const newData = {
-      asset_id,
-      hostname: f_hostname.value.trim(),
-      user: f_user.value.trim(),
-      department: f_department.value.trim(),
-      location: f_location.value.trim(),
-      status: f_status.value,
-      spec: f_spec.value.trim(),
-      os: f_os.value.trim(),
-      owner: f_owner.value.trim(),
-      note: f_note.value.trim(),
-      last_update: today
-    };
-
-    if (existingIndex >= 0) {
-      computers[existingIndex] = newData;
-    } else {
-      computers.push(newData);
-    }
-
-    saveData();
-    clearForm();
+  data.sort((a,b)=>{
+    const x=(a[currentSortKey]||"").toString();
+    const y=(b[currentSortKey]||"").toString();
+    if(x===y)return 0;
+    return currentSortAsc?x.localeCompare(y):y.localeCompare(x);
   });
 
-  function clearForm() {
-    form.reset();
-    f_status.value = "正常";
-    formTitle.textContent = "新增 / 編輯電腦資料";
-  }
+  tbody.innerHTML="";
+  data.forEach(c=>{
+    const stClass =
+      c.status==="using"?"status-using":
+      c.status==="not use"?"status-notuse":
+      c.status==="broken"?"status-broken":"";
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td>${c.asset_id||""}</td>
+      <td>${c.hostname||""}</td>
+      <td>${c.computer||""}</td>
+      <td>${c.department||""}</td>
+      <td>${c.location||""}</td>
+      <td><span class="${stClass}">${c.status||""}</span></td>
+      <td>${c.spec||""}</td>
+      <td>${c.os||""}</td>
+      <td>${c.owner||""}</td>
+      <td>${c.note||""}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
 
-  function editComputer(asset_id) {
-    const c = computers.find(x => x.asset_id === asset_id);
-    if (!c) return;
-    f_asset_id.value = c.asset_id || "";
-    f_hostname.value = c.hostname || "";
-    f_user.value = c.user || "";
-    f_department.value = c.department || "";
-    f_location.value = c.location || "";
-    f_status.value = c.status || "正常";
-    f_spec.value = c.spec || "";
-    f_os.value = c.os || "";
-    f_owner.value = c.owner || "";
-    f_note.value = c.note || "";
-    formTitle.textContent = `編輯：${c.asset_id}`;
-    f_asset_id.focus();
-  }
-
-  function deleteComputer(asset_id) {
-    if (!asset_id) return;
-    if (!confirm(`確定要刪除資產編號 ${asset_id} 嗎？`)) return;
-    computers = computers.filter(c => c.asset_id !== asset_id);
-    saveData();
-    if (f_asset_id.value === asset_id) clearForm();
-  }
-
-  function resetToDefault() {
-    if (!confirm("此動作僅影響此瀏覽器，將清除目前資料並還原為範例，確定？")) return;
-    localStorage.removeItem(STORAGE_KEY);
-    computers = [...defaultComputers];
-    updateLastSync();
+searchInput.addEventListener("input", renderTable);
+statusFilter.addEventListener("change", renderTable);
+deptFilter.addEventListener("input", renderTable);
+reloadBtn.addEventListener("click", loadCSV);
+document.querySelectorAll("th[data-sort]").forEach(th=>{
+  th.addEventListener("click",()=>{
+    const key=th.getAttribute("data-sort");
+    if(currentSortKey===key) currentSortAsc=!currentSortAsc;
+    else {currentSortKey=key;currentSortAsc=true;}
     renderTable();
-    clearForm();
-  }
+  });
+});
 
-  window.editComputer = editComputer;
-  window.deleteComputer = deleteComputer;
-  window.resetToDefault = resetToDefault;
-  window.clearForm = clearForm;
-
-  (function init() {
-    computers = loadData();
-    updateLastSync();
-    renderTable();
-  })();
+loadCSV();
 </script>
 </body>
 </html>
