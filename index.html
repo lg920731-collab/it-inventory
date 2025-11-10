@@ -4,167 +4,530 @@
   <meta charset="UTF-8">
   <title>IT-Inventory | 電腦設備狀態管理</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 可選：若內網允許，可保留或移除 Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; margin: 20px; }
-    h1 { margin-bottom: 6px; }
-    p { margin: 4px 0 10px; font-size: 13px; color: #555; }
-    .layout { display: grid; grid-template-columns: minmax(260px, 320px) 1fr; gap: 16px; align-items: flex-start; }
-    .card {
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 6px;
-      background: #fafafa;
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card-bg: #111827;
+      --border-subtle: rgba(148, 163, 253, 0.14);
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.12);
+      --accent-soft-2: rgba(79, 70, 229, 0.06);
+      --accent-hover: #6366f1;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --danger: #f97373;
+      --radius-xl: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 18px 50px rgba(15,23,42,0.55);
+      --shadow-soft-sm: 0 10px 26px rgba(15,23,42,0.42);
+      --transition-fast: 0.18s ease;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Inter", -system-ui, sans-serif;
     }
-    .card h2 {
-      margin: 0 0 6px;
-      font-size: 16px;
-    }
-    label {
-      display: block;
-      font-size: 12px;
-      margin: 4px 0 2px;
-    }
-    input, select, textarea, button {
-      font-size: 13px;
-      padding: 4px 6px;
-      width: 100%;
+
+    * {
       box-sizing: border-box;
     }
-    textarea { resize: vertical; min-height: 40px; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at top, rgba(79,70,229,0.18), transparent 65%),
+        radial-gradient(circle at top right, rgba(14,165,233,0.12), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 18px 32px;
+    }
+
+    /* Header / Nav */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 18px;
+      margin-bottom: 18px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top left, rgba(79,70,229,0.18), transparent),
+                  rgba(9, 9, 15, 0.96);
+      border: 1px solid rgba(148, 163, 253, 0.18);
+      box-shadow: var(--shadow-soft-sm);
+      backdrop-filter: blur(18px);
+    }
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 9px;
+      background: radial-gradient(circle at 30% 0, #ffffff, #4f46e5);
+      box-shadow: 0 0 14px rgba(79,70,229,0.85);
+    }
+    .brand-text-main {
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #c7d2fe;
+    }
+    .brand-text-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+    .top-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+    .pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,253,0.22);
+      background: rgba(15,23,42,0.9);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+    }
+    .pill-label {
+      color: #a5b4fc;
+    }
+    .pill-strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    /* Main layout */
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(79,70,229,0.12), transparent),
+                  var(--card-bg);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      padding: 14px 14px 12px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+    }
+
+    .card h2 {
+      margin: 0 0 2px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #e5e7ff;
+    }
+
+    .card-subtitle {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    label {
+      display: block;
+      font-size: 10px;
+      margin: 6px 0 3px;
+      color: var(--text-soft);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    input, select, textarea {
+      font-size: 12px;
+      padding: 7px 8px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid rgba(75,85,99,0.9);
+      background: rgba(9,9,15,0.96);
+      color: var(--text);
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+    }
+    input::placeholder,
+    textarea::placeholder {
+      color: #6b7280;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(79,70,229,0.35);
+      background: #020817;
+      transform: translateY(-1px);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 52px;
+    }
+
     .row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
+      gap: 8px;
     }
+
     .btn-row {
       display: flex;
-      gap: 6px;
-      margin-top: 6px;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
     }
+
     button {
       cursor: pointer;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      background: #f0f0f0;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 11px;
+      border: none;
+      background: var(--accent-soft-2);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+      box-shadow: 0 4px 10px rgba(15,23,42,0.4);
+    }
+    button span.icon {
+      font-size: 13px;
+      line-height: 1;
     }
     button.primary {
-      background: #007bff;
-      border-color: #007bff;
-      color: #fff;
+      background: linear-gradient(to right, var(--accent), var(--accent-hover));
+      color: #f9fafb;
+      font-weight: 500;
+      box-shadow: 0 8px 20px rgba(79,70,229,0.6);
+    }
+    button.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(79,70,229,0.8);
+    }
+    button:hover {
+      background: var(--accent-soft);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(15,23,42,0.7);
     }
     button.danger {
-      background: #fff3f3;
-      border-color: #e57373;
-      color: #c62828;
+      background: rgba(127,29,29,0.12);
+      color: var(--danger);
+      box-shadow: 0 4px 12px rgba(127,29,29,0.35);
+      border: 1px solid rgba(248,113,113,0.28);
+    }
+    button.danger:hover {
+      background: rgba(127,29,29,0.22);
+      transform: translateY(-1px);
     }
 
-    .filters { margin-bottom: 4px; display: flex; flex-wrap: wrap; gap: 6px; }
-    .filters input, .filters select { width: auto; }
-
-    table { width: 100%; border-collapse: collapse; margin-top: 4px; }
-    th, td { border: 1px solid #ddd; padding: 4px 6px; font-size: 12px; }
-    th { cursor: pointer; white-space: nowrap; background: #f5f5f5; }
-    tr:nth-child(even) { background: #ffffff; }
-    .status-ok { color: #1b8a3c; font-weight: 600; }
-    .status-repair { color: #c97b00; font-weight: 600; }
-    .status-retired { color: #888; font-weight: 600; }
-    .status-loan { color: #0066cc; font-weight: 600; }
-    .note { font-size: 11px; color: #555; }
-    .actions button {
+    /* Filters + table */
+    .filters {
+      margin: 2px 0 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .filters input, .filters select {
       width: auto;
-      padding: 2px 6px;
+      min-width: 130px;
+      padding-right: 26px;
+      background: rgba(9,9,15,0.98);
+    }
+    .filters-label {
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-right: 2px;
+    }
+
+    .table-wrap {
+      margin-top: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,253,0.16);
+      overflow: hidden;
+      background: radial-gradient(circle at top, rgba(15,23,42,1), rgba(9,9,15,1));
+      box-shadow: var(--shadow-soft-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
       font-size: 11px;
+    }
+
+    thead {
+      background: linear-gradient(to right, rgba(15,23,42,0.98), rgba(17,24,39,0.98));
+      backdrop-filter: blur(12px);
+    }
+
+    th, td {
+      padding: 7px 8px;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+      color: #9ca3af;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    th[data-sort]:hover {
+      color: #a5b4fc;
+      background: rgba(15,23,42,0.96);
+    }
+
+    tbody tr {
+      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(9,9,15,0.98);
+    }
+    tbody tr:nth-child(odd) {
+      background: rgba(6,8,16,0.98);
+    }
+
+    tbody tr:hover {
+      background: rgba(17,24,39,1);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15,23,42,0.85);
+    }
+
+    td {
+      color: #e5e7eb;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-ok,
+    .status-repair,
+    .status-retired,
+    .status-loan {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .status-ok {
+      color: #bbf7d0;
+      background: rgba(22,163,74,0.16);
+      border: 1px solid rgba(34,197,94,0.55);
+    }
+    .status-repair {
+      color: #fed7aa;
+      background: rgba(234,179,8,0.12);
+      border: 1px solid rgba(249,115,22,0.55);
+    }
+    .status-retired {
+      color: #9ca3af;
+      background: rgba(75,85,99,0.18);
+      border: 1px solid rgba(75,85,99,0.6);
+    }
+    .status-loan {
+      color: #bfdbfe;
+      background: rgba(37,99,235,0.16);
+      border: 1px solid rgba(59,130,246,0.6);
+    }
+
+    .note {
+      font-size: 10px;
+      color: #9ca3af;
+      white-space: nowrap;
+    }
+
+    .actions {
+      display: flex;
+      gap: 4px;
+    }
+    .actions button {
+      padding: 3px 8px;
+      font-size: 9px;
+      box-shadow: none;
+      background: rgba(15,23,42,0.98);
+      border-radius: 999px;
+      border: 1px solid rgba(75,85,99,0.9);
+    }
+    .actions button:hover {
+      background: rgba(79,70,229,0.16);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(15,23,42,0.85);
+    }
+
+    @media (max-width: 860px) {
+      .page { padding: 18px 12px 26px; }
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        border-radius: 18px;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
-<h1>電腦設備狀態管理</h1>
-<p>
-  僅供公司內部使用 · 最後更新：<span id="lastSync"></span> ·
-  本頁資料儲存於本機瀏覽器（測試用版本）
-</p>
-
-<div class="layout">
-  <!-- 左側：新增 / 編輯表單 -->
-  <div class="card">
-    <h2 id="formTitle">新增 / 編輯電腦資料</h2>
-    <form id="pcForm">
-      <label>資產編號 (必填，作為唯一識別)
-        <input type="text" id="asset_id" required>
-      </label>
-
-      <label>Hostname
-        <input type="text" id="hostname">
-      </label>
-
-      <div class="row">
-        <div>
-          <label>使用者
-            <input type="text" id="user">
-          </label>
-        </div>
-        <div>
-          <label>部門
-            <input type="text" id="department" placeholder="如：行政 / 生產 / 品保 / 研發">
-          </label>
-        </div>
+<div class="page">
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="brand-title">
+      <div class="brand-logo"></div>
+      <div>
+        <div class="brand-text-main">IT INVENTORY CONSOLE</div>
+        <div class="brand-text-sub">Computer Assets · Status · Ownership · Lifecycle</div>
       </div>
-
-      <div class="row">
-        <div>
-          <label>位置
-            <input type="text" id="location" placeholder="如：辦公室A / 倉庫 / 機房">
-          </label>
-        </div>
-        <div>
-          <label>狀態
-            <select id="status">
-              <option value="正常">正常</option>
-              <option value="維修中">維修中</option>
-              <option value="報廢">報廢</option>
-              <option value="借出中">借出中</option>
-            </select>
-          </label>
-        </div>
+    </div>
+    <div class="top-meta">
+      <div class="pill">
+        <div class="pill-dot"></div>
+        <span class="pill-label">Environment</span>
+        <span class="pill-strong">Internal Only</span>
       </div>
-
-      <label>規格 (選填)
-        <input type="text" id="spec" placeholder="如：i5 / 16GB / 512GB SSD">
-      </label>
-
-      <div class="row">
-        <div>
-          <label>作業系統
-            <input type="text" id="os" placeholder="如：Windows 10 Pro">
-          </label>
-        </div>
-        <div>
-          <label>維護人員
-            <input type="text" id="owner" placeholder="如：IT-Allen">
-          </label>
-        </div>
+      <div class="pill">
+        <span class="pill-label">Last Sync</span>
+        <span class="pill-strong" id="lastSync">—</span>
       </div>
-
-      <label>備註
-        <textarea id="note" placeholder="如：風扇有異音 / 送修中 / 預計報廢時間"></textarea>
-      </label>
-
-      <div class="btn-row">
-        <button type="submit" class="primary">儲存（新增或更新）</button>
-        <button type="button" onclick="clearForm()">清空表單</button>
+      <div class="pill">
+        <span class="pill-label">Storage</span>
+        <span class="pill-strong">Local Browser (Demo)</span>
       </div>
-      <div class="btn-row">
-        <button type="button" class="danger" onclick="resetToDefault()">重置為範例資料（本機）</button>
-      </div>
-    </form>
+    </div>
   </div>
 
-  <!-- 右側：篩選 + 表格 -->
-  <div>
+  <div class="layout">
+    <!-- Left: Form -->
     <div class="card">
-      <h2>查詢 / 清單</h2>
+      <h2 id="formTitle">新增 / 編輯電腦資料</h2>
+      <div class="card-subtitle">以「資產編號」作為唯一鍵，儲存時若已存在則自動更新該筆。</div>
+
+      <form id="pcForm">
+        <label>資產編號（必填，唯一）
+          <input type="text" id="asset_id" required>
+        </label>
+
+        <label>Hostname
+          <input type="text" id="hostname">
+        </label>
+
+        <div class="row">
+          <div>
+            <label>使用者
+              <input type="text" id="user">
+            </label>
+          </div>
+          <div>
+            <label>部門
+              <input type="text" id="department" placeholder="例如：行政 / 生產 / 品保 / 研發">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>位置
+              <input type="text" id="location" placeholder="例如：辦公室A / 倉庫 / 機房">
+            </label>
+          </div>
+          <div>
+            <label>狀態
+              <select id="status">
+                <option value="正常">正常</option>
+                <option value="維修中">維修中</option>
+                <option value="報廢">報廢</option>
+                <option value="借出中">借出中</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <label>規格（選填）
+          <input type="text" id="spec" placeholder="例如：i5 / 16GB / 512GB SSD">
+        </label>
+
+        <div class="row">
+          <div>
+            <label>作業系統
+              <input type="text" id="os" placeholder="例如：Windows 10 Pro">
+            </label>
+          </div>
+          <div>
+            <label>維護人員
+              <input type="text" id="owner" placeholder="例如：IT-Allen">
+            </label>
+          </div>
+        </div>
+
+        <label>備註
+          <textarea id="note" placeholder="例如：風扇異音 / 已送修 / 預計報廢時間"></textarea>
+        </label>
+
+        <div class="btn-row">
+          <button type="submit" class="primary">
+            <span class="icon">💾</span>
+            <span>儲存（新增 / 更新）</span>
+          </button>
+          <button type="button" onclick="clearForm()">
+            <span class="icon">🧹</span>
+            <span>清空表單</span>
+          </button>
+        </div>
+        <div class="btn-row">
+          <button type="button" class="danger" onclick="resetToDefault()">
+            <span class="icon">↺</span>
+            <span>重置為範例資料（僅本機）</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right: List -->
+    <div class="card">
+      <h2>設備清單 / 查詢</h2>
+      <div class="card-subtitle">可依狀態、部門與關鍵字快速篩選，點欄位名稱可排序。</div>
+
       <div class="filters">
+        <span class="filters-label">篩選：</span>
         <input type="text" id="searchInput" placeholder="搜尋 資產編號 / 使用者 / Hostname">
         <select id="statusFilter">
           <option value="">狀態：全部</option>
@@ -176,21 +539,23 @@
         <input type="text" id="deptFilter" placeholder="部門：全部">
       </div>
 
-      <table id="pcTable">
-        <thead>
-          <tr>
-            <th data-sort="asset_id">資產編號</th>
-            <th data-sort="hostname">Hostname</th>
-            <th data-sort="user">使用者</th>
-            <th data-sort="department">部門</th>
-            <th data-sort="location">位置</th>
-            <th data-sort="status">狀態</th>
-            <th>備註</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-wrap">
+        <table id="pcTable">
+          <thead>
+            <tr>
+              <th data-sort="asset_id">資產編號</th>
+              <th data-sort="hostname">Hostname</th>
+              <th data-sort="user">使用者</th>
+              <th data-sort="department">部門</th>
+              <th data-sort="location">位置</th>
+              <th data-sort="status">狀態</th>
+              <th>備註</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -198,7 +563,6 @@
 <script>
   const STORAGE_KEY = "it_inventory_data_v1";
 
-  // 預設範例資料（可以改成你們實際資料）
   const defaultComputers = [
     {
       asset_id: "PC-001",
@@ -295,7 +659,6 @@
   }
 
   function saveData() {
-    // 自動寫入 last_update 為今天
     const today = new Date().toISOString().slice(0, 10);
     computers = computers.map(c => ({
       ...c,
@@ -325,7 +688,6 @@
 
     let data = [...computers];
 
-    // 篩選
     data = data.filter(c => {
       if (fStatus && c.status !== fStatus) return false;
       if (fDept && c.department !== fDept) return false;
@@ -341,7 +703,6 @@
       return true;
     });
 
-    // 排序
     data.sort((a, b) => {
       const x = (a[currentSortKey] || "").toString();
       const y = (b[currentSortKey] || "").toString();
@@ -351,7 +712,6 @@
         : y.localeCompare(x, "zh-Hant");
     });
 
-    // 畫表格
     tbody.innerHTML = "";
     data.forEach(c => {
       const tr = document.createElement("tr");
@@ -368,7 +728,7 @@
         <td>${c.user || ""}</td>
         <td>${c.department || ""}</td>
         <td>${c.location || ""}</td>
-        <td class="${statusClass}">${c.status || ""}</td>
+        <td><span class="${statusClass}">${c.status || ""}</span></td>
         <td class="note">${c.note || ""}</td>
         <td class="actions">
           <button type="button" onclick="editComputer('${c.asset_id || ""}')">編輯</button>
@@ -379,7 +739,6 @@
     });
   }
 
-  // 點欄位標題排序
   document.querySelectorAll("th[data-sort]").forEach(th => {
     th.addEventListener("click", () => {
       const key = th.getAttribute("data-sort");
@@ -393,7 +752,6 @@
     });
   });
 
-  // 表單送出：新增或更新
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -404,8 +762,8 @@
     }
 
     const existingIndex = computers.findIndex(c => c.asset_id === asset_id);
-
     const today = new Date().toISOString().slice(0, 10);
+
     const newData = {
       asset_id,
       hostname: f_hostname.value.trim(),
@@ -430,14 +788,12 @@
     clearForm();
   });
 
-  // 清空表單
   function clearForm() {
     form.reset();
     f_status.value = "正常";
     formTitle.textContent = "新增 / 編輯電腦資料";
   }
 
-  // 編輯：把資料帶回左邊表單
   function editComputer(asset_id) {
     const c = computers.find(x => x.asset_id === asset_id);
     if (!c) return;
@@ -455,7 +811,6 @@
     f_asset_id.focus();
   }
 
-  // 刪除
   function deleteComputer(asset_id) {
     if (!asset_id) return;
     if (!confirm(`確定要刪除資產編號 ${asset_id} 嗎？`)) return;
@@ -464,9 +819,8 @@
     if (f_asset_id.value === asset_id) clearForm();
   }
 
-  // 重置為預設資料（只影響本機）
   function resetToDefault() {
-    if (!confirm("此動作只影響本機瀏覽器，將清除目前資料並還原為範例，確定？")) return;
+    if (!confirm("此動作僅影響本機瀏覽器，將清除目前資料並還原為範例，確定？")) return;
     localStorage.removeItem(STORAGE_KEY);
     computers = [...defaultComputers];
     updateLastSync();
@@ -474,13 +828,11 @@
     clearForm();
   }
 
-  // 暴露給 HTML onclick 用
   window.editComputer = editComputer;
   window.deleteComputer = deleteComputer;
   window.resetToDefault = resetToDefault;
   window.clearForm = clearForm;
 
-  // 初始化
   (function init() {
     computers = loadData();
     updateLastSync();
