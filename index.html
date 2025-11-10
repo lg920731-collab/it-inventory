@@ -31,11 +31,7 @@
       min-height: 100vh;
     }
 
-    .page {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 16px 32px;
-    }
+    .page { max-width: 1200px; margin: 0 auto; padding: 20px 16px 32px; }
 
     /* Top bar */
     .topbar {
@@ -123,32 +119,13 @@
       margin-bottom: 8px;
     }
 
-    /* Filter header (click to toggle) */
-    .filter-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      gap: 8px;
-    }
-
-    .filter-header h2 {
-      margin: 0;
-    }
-
-    .filter-toggle-icon {
-      font-size: 16px;
-      color: var(--text-soft);
-      transition: transform 0.2s ease;
-    }
-
     /* Filters */
     .filters {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       align-items: center;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .filters-label {
@@ -207,21 +184,6 @@
 
     .btn-primary:hover {
       background: var(--accent-hover);
-    }
-
-    /* Collapsible behavior */
-    .collapsible {
-      overflow: hidden;
-      max-height: 500px;
-      opacity: 1;
-      transition: max-height 0.3s ease, opacity 0.25s ease;
-    }
-
-    .collapsible.closed {
-      max-height: 0;
-      opacity: 0;
-      margin-top: 0;
-      pointer-events: none;
     }
 
     /* Table */
@@ -323,28 +285,23 @@
       color: var(--text-soft);
     }
 
-    /* Print styles */
+    /* Print */
     @media print {
       body {
         background: #ffffff !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
-      .page {
-        max-width: 100%;
-        padding: 0;
-      }
+      .page { max-width: 100%; padding: 0; }
       .topbar,
       .card {
         box-shadow: none;
         border-radius: 0;
         margin: 0 0 8px 0;
       }
-      /* 隱藏條件區與按鈕 */
       .filters,
       #reloadBtn,
-      #printBtn,
-      .filter-header {
+      #printBtn {
         display: none !important;
       }
       .table-wrap {
@@ -381,8 +338,8 @@
     <div class="brand-wrap">
       <div class="brand-logo"></div>
       <div>
-        <div class="brand-main">BOPP1 PC Manager</div>
-        <div class="brand-sub">Company Computer Asset List（Source: Excel / CSV）</div>
+        <div class="brand-main">IT INVENTORY VIEWER</div>
+        <div class="brand-sub">公司電腦資產清單（資料來源：Excel / CSV）</div>
       </div>
     </div>
     <div class="top-meta">
@@ -397,20 +354,13 @@
     </div>
   </div>
 
-  <!-- Filters (collapsible) -->
+  <!-- Filters -->
   <div class="card">
-    <div class="filter-header" onclick="toggleFilters()">
-      <h2>Query conditions</h2>
-      <span id="toggleIcon" class="filter-toggle-icon">▲</span>
-    </div>
+    <h2>查詢條件</h2>
     <div class="card-subtitle">
-      This page is read-only. To update data, edit the Excel file and export
-      <strong>inventory.csv</strong> to overwrite the existing file.
+      此頁面僅供查詢顯示，更新請於 Excel 編輯後匯出 <strong>inventory.csv</strong> 覆蓋。
     </div>
-
-    <!-- 預設展開：class="filters collapsible open" -->
-    <!-- 如果希望一開始就縮起來，改成：class="filters collapsible closed" -->
-    <div class="filters collapsible closed" id="filtersBox">
+    <div class="filters">
       <span class="filters-label">Filter:</span>
       <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
       <select id="statusFilter">
@@ -421,14 +371,14 @@
       </select>
       <input type="text" id="deptFilter" placeholder="Department">
       <button class="btn" id="reloadBtn">🔄 Reload CSV</button>
-      <button class="btn btn-primary" id="printBtn">🖨 Print list</button>
+      <button class="btn btn-primary" id="printBtn">🖨 列印清單</button>
     </div>
   </div>
 
   <!-- Table -->
   <div class="card">
-    <h2>Computer equipment list</h2>
-    <div class="card-subtitle" id="countInfo">A total of 0 data</div>
+    <h2>電腦設備清單</h2>
+    <div class="card-subtitle" id="countInfo">共 0 筆資料</div>
     <div class="table-wrap">
       <table id="pcTable">
         <thead>
@@ -455,6 +405,7 @@
   let computers = [];
   let currentSortKey = "asset_id";
   let currentSortAsc = true;
+  let inventoryLowNotified = false; // 避免同次載入重複提醒
 
   const tbody = document.querySelector("#pcTable tbody");
   const searchInput = document.getElementById("searchInput");
@@ -475,9 +426,9 @@
       renderTable();
     } catch (e) {
       console.error(e);
-      lastSyncEl.textContent = "Loading error (please check inventory.csv)";
+      lastSyncEl.textContent = "讀取失敗（請確認 inventory.csv 與此檔同資料夾）";
       tbody.innerHTML = "";
-      countInfoEl.textContent = "A total of 0 data";
+      countInfoEl.textContent = "共 0 筆資料";
     }
   }
 
@@ -525,7 +476,7 @@
 
   function updateLastSync() {
     if (!computers.length) {
-      lastSyncEl.textContent = "no data";
+      lastSyncEl.textContent = "無資料";
       return;
     }
     let latest = "0000-00-00";
@@ -533,7 +484,30 @@
       if (c.last_update && c.last_update > latest) latest = c.last_update;
     });
     lastSyncEl.textContent =
-      latest !== "0000-00-00" ? latest : "Managed by Excel";
+      latest !== "0000-00-00" ? latest : "由 Excel 管理";
+  }
+
+  function checkInventoryLow() {
+    const notUseCount = computers.filter(c =>
+      (c.status || "").toLowerCase() === "not use"
+    ).length;
+
+    if (notUseCount <= 5) {
+      if (!inventoryLowNotified) {
+        alert(`Warning: only ${notUseCount} computer(s) with status "not use" remain.`);
+        const recipients = "jwu@inteplastbopp.com;vhuang@inteplastbopp.com;mdeleon@inteplastbopp.com";
+        const subject = encodeURIComponent("Inventory is low");
+        const body = encodeURIComponent(
+          `There are too few computers; please increase the number.\n\nCurrent "not use" computers: ${notUseCount}.`
+        );
+        // 這會開啟使用者預設郵件程式，內容帶好，需人工按「送出」
+        window.location.href = `mailto:${recipients}?subject=${subject}&body=${body}`;
+        inventoryLowNotified = true;
+      }
+    } else {
+      // 如果之後補貨（not use > 5），允許未來再次觸發提醒
+      inventoryLowNotified = false;
+    }
   }
 
   function renderTable() {
@@ -544,7 +518,7 @@
     let data = [...computers];
 
     data = data.filter(c => {
-      if (fStatus && c.status !== fStatus) return false;
+      if (fStatus && (c.status || "").toLowerCase() !== fStatus.toLowerCase()) return false;
       if (fDept && c.department !== fDept) return false;
       if (keyword) {
         const text = (
@@ -574,6 +548,7 @@
         status === "using" ? "status-using" :
         status === "not use" ? "status-notuse" :
         status === "broken" ? "status-broken" : "";
+
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${c.asset_id || ""}</td>
@@ -590,21 +565,10 @@
       tbody.appendChild(tr);
     });
 
-    countInfoEl.textContent = `A total of ${data.length} data`;
-  }
+    countInfoEl.textContent = `共 ${data.length} 筆資料`;
 
-  // Toggle filters (collapse/expand)
-  function toggleFilters() {
-    const box = document.getElementById("filtersBox");
-    const icon = document.getElementById("toggleIcon");
-    const isOpen = !box.classList.contains("closed");
-    if (isOpen) {
-      box.classList.add("closed");
-      icon.textContent = "▼";
-    } else {
-      box.classList.remove("closed");
-      icon.textContent = "▲";
-    }
+    // 每次重新 render 時檢查 not use 數量（用整體 computers，而不是篩選後 data）
+    checkInventoryLow();
   }
 
   // Events
@@ -612,6 +576,7 @@
   statusFilter.addEventListener("change", renderTable);
   deptFilter.addEventListener("input", renderTable);
   reloadBtn.addEventListener("click", loadCSV);
+  printBtn.addEventListener("click", () => window.print());
 
   document.querySelectorAll("th[data-sort]").forEach(th => {
     th.addEventListener("click", () => {
@@ -624,10 +589,6 @@
       }
       renderTable();
     });
-  });
-
-  printBtn.addEventListener("click", () => {
-    window.print();
   });
 
   // Init
