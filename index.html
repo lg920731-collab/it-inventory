@@ -31,7 +31,11 @@
       min-height: 100vh;
     }
 
-    .page { max-width: 1200px; margin: 0 auto; padding: 20px 16px 32px; }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 16px 32px;
+    }
 
     /* Top bar */
     .topbar {
@@ -119,13 +123,32 @@
       margin-bottom: 8px;
     }
 
+    /* Filter header (click to toggle) */
+    .filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      gap: 8px;
+    }
+
+    .filter-header h2 {
+      margin: 0;
+    }
+
+    .filter-toggle-icon {
+      font-size: 16px;
+      color: var(--text-soft);
+      transition: transform 0.2s ease;
+    }
+
     /* Filters */
     .filters {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       align-items: center;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .filters-label {
@@ -184,6 +207,21 @@
 
     .btn-primary:hover {
       background: var(--accent-hover);
+    }
+
+    /* Collapsible behavior */
+    .collapsible {
+      overflow: hidden;
+      max-height: 500px;
+      opacity: 1;
+      transition: max-height 0.3s ease, opacity 0.25s ease;
+    }
+
+    .collapsible.closed {
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0;
+      pointer-events: none;
     }
 
     /* Table */
@@ -296,19 +334,17 @@
         max-width: 100%;
         padding: 0;
       }
-      .topbar {
-        box-shadow: none;
-        border-radius: 0;
-        margin: 0 0 8px 0;
-      }
+      .topbar,
       .card {
         box-shadow: none;
         border-radius: 0;
         margin: 0 0 8px 0;
       }
+      /* 隱藏條件區與按鈕 */
       .filters,
       #reloadBtn,
-      #printBtn {
+      #printBtn,
+      .filter-header {
         display: none !important;
       }
       .table-wrap {
@@ -346,7 +382,7 @@
       <div class="brand-logo"></div>
       <div>
         <div class="brand-main">BOPP1 PC Manager</div>
-        <div class="brand-sub">Company Computer Asset List（Source：Excel / CSV）</div>
+        <div class="brand-sub">Company Computer Asset List（Source: Excel / CSV）</div>
       </div>
     </div>
     <div class="top-meta">
@@ -361,13 +397,20 @@
     </div>
   </div>
 
-  <!-- Filters -->
+  <!-- Filters (collapsible) -->
   <div class="card">
-    <h2>Query conditions</h2>
-    <div class="card-subtitle">
-      This page is for query display only. To update, please edit the Excel file and export the <strong>inventory.csv</strong> file to overwrite the existing file.
+    <div class="filter-header" onclick="toggleFilters()">
+      <h2>Query conditions</h2>
+      <span id="toggleIcon" class="filter-toggle-icon">▲</span>
     </div>
-    <div class="filters">
+    <div class="card-subtitle">
+      This page is read-only. To update data, edit the Excel file and export
+      <strong>inventory.csv</strong> to overwrite the existing file.
+    </div>
+
+    <!-- 預設展開：class="filters collapsible open" -->
+    <!-- 如果希望一開始就縮起來，改成：class="filters collapsible closed" -->
+    <div class="filters collapsible closed" id="filtersBox">
       <span class="filters-label">Filter:</span>
       <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
       <select id="statusFilter">
@@ -432,7 +475,7 @@
       renderTable();
     } catch (e) {
       console.error(e);
-      lastSyncEl.textContent = "loading error（Please check inventory.csv）";
+      lastSyncEl.textContent = "Loading error (please check inventory.csv)";
       tbody.innerHTML = "";
       countInfoEl.textContent = "A total of 0 data";
     }
@@ -490,7 +533,7 @@
       if (c.last_update && c.last_update > latest) latest = c.last_update;
     });
     lastSyncEl.textContent =
-      latest !== "0000-00-00" ? latest : "Manaded by Excel";
+      latest !== "0000-00-00" ? latest : "Managed by Excel";
   }
 
   function renderTable() {
@@ -548,6 +591,20 @@
     });
 
     countInfoEl.textContent = `A total of ${data.length} data`;
+  }
+
+  // Toggle filters (collapse/expand)
+  function toggleFilters() {
+    const box = document.getElementById("filtersBox");
+    const icon = document.getElementById("toggleIcon");
+    const isOpen = !box.classList.contains("closed");
+    if (isOpen) {
+      box.classList.add("closed");
+      icon.textContent = "▼";
+    } else {
+      box.classList.remove("closed");
+      icon.textContent = "▲";
+    }
   }
 
   // Events
