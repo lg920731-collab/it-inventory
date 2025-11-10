@@ -4,43 +4,39 @@
   <meta charset="UTF-8">
   <title>IT-Inventory | 電腦設備狀態管理</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- 可選：若內網允許，可保留或移除 Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      --bg: #0f172a;
-      --bg-soft: #111827;
-      --card-bg: #111827;
-      --border-subtle: rgba(148, 163, 253, 0.14);
-      --accent: #4f46e5;
-      --accent-soft: rgba(79, 70, 229, 0.12);
-      --accent-soft-2: rgba(79, 70, 229, 0.06);
-      --accent-hover: #6366f1;
-      --text: #e5e7eb;
-      --text-soft: #9ca3af;
-      --danger: #f97373;
+      --bg: #f3f4f6;
+      --bg-soft: #ffffff;
+      --card-bg: #ffffff;
+      --border-subtle: #e5e7eb;
+      --accent: #2563eb;
+      --accent-soft: rgba(37,99,235,0.08);
+      --accent-soft-2: rgba(37,99,235,0.04);
+      --accent-hover: #1d4ed8;
+      --text: #111827;
+      --text-soft: #6b7280;
+      --danger: #dc2626;
       --radius-xl: 16px;
       --radius-md: 10px;
-      --shadow-soft: 0 18px 50px rgba(15,23,42,0.55);
-      --shadow-soft-sm: 0 10px 26px rgba(15,23,42,0.42);
+      --shadow-soft: 0 14px 40px rgba(15,23,42,0.08);
+      --shadow-soft-sm: 0 8px 20px rgba(15,23,42,0.06);
       --transition-fast: 0.18s ease;
-      --font: system-ui, -apple-system, BlinkMacSystemFont, "Inter", -system-ui, sans-serif;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, -system-ui, sans-serif;
+      --base-font-size: 15px;
+      --small-font: 13px;
+      --xsmall-font: 11px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       padding: 0;
       font-family: var(--font);
-      background:
-        radial-gradient(circle at top, rgba(79,70,229,0.18), transparent 65%),
-        radial-gradient(circle at top right, rgba(14,165,233,0.12), transparent 55%),
-        var(--bg);
+      font-size: var(--base-font-size);
+      background: radial-gradient(circle at top, rgba(129,140,248,0.14), transparent),
+                  var(--bg);
       color: var(--text);
       min-height: 100vh;
     }
@@ -48,114 +44,119 @@
     .page {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 24px 18px 32px;
+      padding: 24px 16px 32px;
     }
 
-    /* Header / Nav */
+    /* Header */
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 14px;
       padding: 12px 18px;
-      margin-bottom: 18px;
-      border-radius: 999px;
-      background: radial-gradient(circle at top left, rgba(79,70,229,0.18), transparent),
-                  rgba(9, 9, 15, 0.96);
-      border: 1px solid rgba(148, 163, 253, 0.18);
+      margin-bottom: 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.98);
+      border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-soft-sm);
-      backdrop-filter: blur(18px);
     }
+
     .brand-title {
       display: flex;
       align-items: center;
       gap: 10px;
     }
+
     .brand-logo {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 9px;
-      background: radial-gradient(circle at 30% 0, #ffffff, #4f46e5);
-      box-shadow: 0 0 14px rgba(79,70,229,0.85);
+      background: radial-gradient(circle at 30% 0, #bfdbfe, #2563eb);
+      box-shadow: 0 0 10px rgba(37,99,235,0.45);
     }
+
     .brand-text-main {
       font-weight: 600;
       letter-spacing: 0.06em;
       font-size: 14px;
       text-transform: uppercase;
-      color: #c7d2fe;
+      color: #1f2937;
     }
+
     .brand-text-sub {
-      font-size: 11px;
+      font-size: var(--xsmall-font);
       color: var(--text-soft);
     }
+
     .top-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
       justify-content: flex-end;
-      font-size: 11px;
+      font-size: var(--xsmall-font);
       color: var(--text-soft);
     }
+
     .pill {
-      padding: 3px 9px;
+      padding: 4px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,253,0.22);
-      background: rgba(15,23,42,0.9);
-      display: flex;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
+
     .pill-dot {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 999px;
       background: #22c55e;
-      box-shadow: 0 0 8px #22c55e;
+      box-shadow: 0 0 6px #22c55e;
     }
+
     .pill-label {
-      color: #a5b4fc;
+      color: var(--text-soft);
     }
+
     .pill-strong {
-      color: #e5e7eb;
+      color: #111827;
       font-weight: 500;
     }
 
     /* Main layout */
     .layout {
       display: grid;
-      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+      grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
       gap: 18px;
       align-items: flex-start;
     }
 
     .card {
-      background: radial-gradient(circle at top left, rgba(79,70,229,0.12), transparent),
-                  var(--card-bg);
+      background: var(--card-bg);
       border-radius: var(--radius-xl);
       border: 1px solid var(--border-subtle);
       padding: 14px 14px 12px;
       box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(18px);
     }
 
     .card h2 {
-      margin: 0 0 2px;
-      font-size: 15px;
-      font-weight: 500;
-      color: #e5e7ff;
+      margin: 0 0 4px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #111827;
     }
 
     .card-subtitle {
-      font-size: 11px;
+      font-size: var(--small-font);
       color: var(--text-soft);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     label {
       display: block;
-      font-size: 10px;
+      font-size: var(--xsmall-font);
       margin: 6px 0 3px;
       color: var(--text-soft);
       letter-spacing: 0.02em;
@@ -163,29 +164,35 @@
     }
 
     input, select, textarea {
-      font-size: 12px;
-      padding: 7px 8px;
+      font-size: var(--small-font);
+      padding: 7px 9px;
       width: 100%;
       border-radius: 8px;
-      border: 1px solid rgba(75,85,99,0.9);
-      background: rgba(9,9,15,0.96);
+      border: 1px solid #d1d5db;
+      background: #ffffff;
       color: var(--text);
       outline: none;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+      transition: border-color var(--transition-fast),
+                  box-shadow var(--transition-fast),
+                  background var(--transition-fast),
+                  transform var(--transition-fast);
     }
+
     input::placeholder,
     textarea::placeholder {
-      color: #6b7280;
+      color: #9ca3af;
     }
+
     input:focus, select:focus, textarea:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(79,70,229,0.35);
-      background: #020817;
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.14);
+      background: #ffffff;
       transform: translateY(-1px);
     }
+
     textarea {
       resize: vertical;
-      min-height: 52px;
+      min-height: 60px;
     }
 
     .row {
@@ -205,7 +212,7 @@
       cursor: pointer;
       border-radius: 999px;
       padding: 7px 14px;
-      font-size: 11px;
+      font-size: var(--small-font);
       border: none;
       background: var(--accent-soft-2);
       color: var(--text);
@@ -213,123 +220,133 @@
       align-items: center;
       gap: 6px;
       transition: all var(--transition-fast);
-      box-shadow: 0 4px 10px rgba(15,23,42,0.4);
+      box-shadow: 0 4px 10px rgba(148,163,253,0.25);
     }
+
     button span.icon {
-      font-size: 13px;
+      font-size: 14px;
       line-height: 1;
     }
+
     button.primary {
       background: linear-gradient(to right, var(--accent), var(--accent-hover));
-      color: #f9fafb;
+      color: #ffffff;
       font-weight: 500;
-      box-shadow: 0 8px 20px rgba(79,70,229,0.6);
+      box-shadow: 0 8px 20px rgba(37,99,235,0.28);
     }
+
     button.primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(79,70,229,0.8);
+      box-shadow: 0 10px 26px rgba(37,99,235,0.36);
     }
+
     button:hover {
       background: var(--accent-soft);
       transform: translateY(-1px);
-      box-shadow: 0 6px 14px rgba(15,23,42,0.7);
+      box-shadow: 0 6px 14px rgba(148,163,253,0.3);
     }
+
     button.danger {
-      background: rgba(127,29,29,0.12);
+      background: #fef2f2;
       color: var(--danger);
-      box-shadow: 0 4px 12px rgba(127,29,29,0.35);
-      border: 1px solid rgba(248,113,113,0.28);
+      box-shadow: 0 4px 10px rgba(248,113,113,0.2);
+      border: 1px solid #fecaca;
     }
+
     button.danger:hover {
-      background: rgba(127,29,29,0.22);
-      transform: translateY(-1px);
+      background: #fee2e2;
     }
 
     /* Filters + table */
     .filters {
-      margin: 2px 0 8px;
+      margin: 2px 0 10px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       align-items: center;
     }
-    .filters input, .filters select {
-      width: auto;
-      min-width: 130px;
-      padding-right: 26px;
-      background: rgba(9,9,15,0.98);
-    }
+
     .filters-label {
-      font-size: 10px;
+      font-size: var(--xsmall-font);
       color: var(--text-soft);
       margin-right: 2px;
+    }
+
+    .filters input,
+    .filters select {
+      width: auto;
+      min-width: 150px;
+      padding-right: 26px;
+      background: #ffffff;
     }
 
     .table-wrap {
       margin-top: 4px;
       border-radius: 14px;
-      border: 1px solid rgba(148,163,253,0.16);
+      border: 1px solid #e5e7eb;
       overflow: hidden;
-      background: radial-gradient(circle at top, rgba(15,23,42,1), rgba(9,9,15,1));
+      background: #ffffff;
       box-shadow: var(--shadow-soft-sm);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 11px;
+      font-size: var(--small-font);
     }
 
     thead {
-      background: linear-gradient(to right, rgba(15,23,42,0.98), rgba(17,24,39,0.98));
-      backdrop-filter: blur(12px);
+      background: #f9fafb;
     }
 
     th, td {
-      padding: 7px 8px;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-      color: #9ca3af;
+      padding: 8px 9px;
+      border-bottom: 1px solid #e5e7eb;
       text-align: left;
       white-space: nowrap;
     }
 
     th {
-      font-size: 10px;
-      font-weight: 500;
+      font-size: var(--xsmall-font);
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #6b7280;
+      letter-spacing: 0.06em;
+      color: var(--text-soft);
       position: sticky;
       top: 0;
       z-index: 5;
       cursor: pointer;
       user-select: none;
+      background: #f9fafb;
     }
 
     th[data-sort]:hover {
-      color: #a5b4fc;
-      background: rgba(15,23,42,0.96);
+      color: var(--accent);
+      background: #eef2ff;
     }
 
     tbody tr {
-      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+      transition: background var(--transition-fast),
+                  transform var(--transition-fast),
+                  box-shadow var(--transition-fast);
     }
 
     tbody tr:nth-child(even) {
-      background: rgba(9,9,15,0.98);
+      background: #ffffff;
     }
+
     tbody tr:nth-child(odd) {
-      background: rgba(6,8,16,0.98);
+      background: #fdfdfd;
     }
 
     tbody tr:hover {
-      background: rgba(17,24,39,1);
+      background: #eff6ff;
       transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(15,23,42,0.85);
+      box-shadow: 0 4px 10px rgba(148,163,253,0.35);
     }
 
     td {
-      color: #e5e7eb;
+      color: #111827;
       max-width: 260px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -339,38 +356,42 @@
     .status-repair,
     .status-retired,
     .status-loan {
-      font-size: 10px;
-      font-weight: 500;
-      padding: 3px 8px;
+      font-size: var(--xsmall-font);
+      font-weight: 600;
+      padding: 4px 10px;
       border-radius: 999px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
     }
+
     .status-ok {
-      color: #bbf7d0;
-      background: rgba(22,163,74,0.16);
-      border: 1px solid rgba(34,197,94,0.55);
+      color: #166534;
+      background: #bbf7d0;
+      border: 1px solid #4ade80;
     }
+
     .status-repair {
-      color: #fed7aa;
-      background: rgba(234,179,8,0.12);
-      border: 1px solid rgba(249,115,22,0.55);
+      color: #92400e;
+      background: #fed7aa;
+      border: 1px solid #fb923c;
     }
+
     .status-retired {
-      color: #9ca3af;
-      background: rgba(75,85,99,0.18);
-      border: 1px solid rgba(75,85,99,0.6);
+      color: #6b7280;
+      background: #e5e7eb;
+      border: 1px solid #9ca3af;
     }
+
     .status-loan {
-      color: #bfdbfe;
-      background: rgba(37,99,235,0.16);
-      border: 1px solid rgba(59,130,246,0.6);
+      color: #1d4ed8;
+      background: #dbeafe;
+      border: 1px solid #60a5fa;
     }
 
     .note {
-      font-size: 10px;
-      color: #9ca3af;
+      font-size: var(--xsmall-font);
+      color: var(--text-soft);
       white-space: nowrap;
     }
 
@@ -378,19 +399,21 @@
       display: flex;
       gap: 4px;
     }
+
     .actions button {
-      padding: 3px 8px;
-      font-size: 9px;
+      padding: 4px 9px;
+      font-size: var(--xsmall-font);
       box-shadow: none;
-      background: rgba(15,23,42,0.98);
+      background: #ffffff;
       border-radius: 999px;
-      border: 1px solid rgba(75,85,99,0.9);
+      border: 1px solid #d1d5db;
     }
+
     .actions button:hover {
-      background: rgba(79,70,229,0.16);
+      background: #eff6ff;
       border-color: var(--accent);
       transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(15,23,42,0.85);
+      box-shadow: 0 3px 8px rgba(148,163,253,0.35);
     }
 
     @media (max-width: 860px) {
@@ -398,7 +421,6 @@
       .topbar {
         flex-direction: column;
         align-items: flex-start;
-        border-radius: 18px;
       }
       .layout {
         grid-template-columns: 1fr;
@@ -407,7 +429,6 @@
   </style>
 </head>
 <body>
-
 <div class="page">
   <!-- Top bar -->
   <div class="topbar">
@@ -415,22 +436,22 @@
       <div class="brand-logo"></div>
       <div>
         <div class="brand-text-main">IT INVENTORY CONSOLE</div>
-        <div class="brand-text-sub">Computer Assets · Status · Ownership · Lifecycle</div>
+        <div class="brand-text-sub">公司電腦資產 · 使用者 · 狀態 · 位置</div>
       </div>
     </div>
     <div class="top-meta">
       <div class="pill">
         <div class="pill-dot"></div>
-        <span class="pill-label">Environment</span>
-        <span class="pill-strong">Internal Only</span>
+        <span class="pill-label">使用範圍</span>
+        <span class="pill-strong">公司內部</span>
       </div>
       <div class="pill">
-        <span class="pill-label">Last Sync</span>
+        <span class="pill-label">最後更新</span>
         <span class="pill-strong" id="lastSync">—</span>
       </div>
       <div class="pill">
-        <span class="pill-label">Storage</span>
-        <span class="pill-strong">Local Browser (Demo)</span>
+        <span class="pill-label">儲存方式</span>
+        <span class="pill-strong">瀏覽器儲存</span>
       </div>
     </div>
   </div>
@@ -439,7 +460,9 @@
     <!-- Left: Form -->
     <div class="card">
       <h2 id="formTitle">新增 / 編輯電腦資料</h2>
-      <div class="card-subtitle">以「資產編號」作為唯一鍵，儲存時若已存在則自動更新該筆。</div>
+      <div class="card-subtitle">
+        以「資產編號」作為唯一鍵，儲存時若已存在同編號，將更新該筆資料。
+      </div>
 
       <form id="pcForm">
         <label>資產編號（必填，唯一）
@@ -515,7 +538,7 @@
         <div class="btn-row">
           <button type="button" class="danger" onclick="resetToDefault()">
             <span class="icon">↺</span>
-            <span>重置為範例資料（僅本機）</span>
+            <span>重置為範例資料（僅此瀏覽器）</span>
           </button>
         </div>
       </form>
@@ -524,7 +547,9 @@
     <!-- Right: List -->
     <div class="card">
       <h2>設備清單 / 查詢</h2>
-      <div class="card-subtitle">可依狀態、部門與關鍵字快速篩選，點欄位名稱可排序。</div>
+      <div class="card-subtitle">
+        支援關鍵字搜尋、狀態與部門篩選，點欄位名稱可進行排序。
+      </div>
 
       <div class="filters">
         <span class="filters-label">篩選：</span>
@@ -542,16 +567,16 @@
       <div class="table-wrap">
         <table id="pcTable">
           <thead>
-            <tr>
-              <th data-sort="asset_id">資產編號</th>
-              <th data-sort="hostname">Hostname</th>
-              <th data-sort="user">使用者</th>
-              <th data-sort="department">部門</th>
-              <th data-sort="location">位置</th>
-              <th data-sort="status">狀態</th>
-              <th>備註</th>
-              <th>操作</th>
-            </tr>
+          <tr>
+            <th data-sort="asset_id">資產編號</th>
+            <th data-sort="hostname">Hostname</th>
+            <th data-sort="user">使用者</th>
+            <th data-sort="department">部門</th>
+            <th data-sort="location">位置</th>
+            <th data-sort="status">狀態</th>
+            <th>備註</th>
+            <th>操作</th>
+          </tr>
           </thead>
           <tbody></tbody>
         </table>
@@ -820,7 +845,7 @@
   }
 
   function resetToDefault() {
-    if (!confirm("此動作僅影響本機瀏覽器，將清除目前資料並還原為範例，確定？")) return;
+    if (!confirm("此動作僅影響此瀏覽器，將清除目前資料並還原為範例，確定？")) return;
     localStorage.removeItem(STORAGE_KEY);
     computers = [...defaultComputers];
     updateLastSync();
@@ -839,6 +864,5 @@
     renderTable();
   })();
 </script>
-
 </body>
 </html>
