@@ -31,7 +31,11 @@
       min-height: 100vh;
     }
 
-    .page { max-width: 1200px; margin: 0 auto; padding: 20px 16px 32px; }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 16px 32px;
+    }
 
     /* Top bar */
     .topbar {
@@ -119,13 +123,32 @@
       margin-bottom: 8px;
     }
 
+    /* Filter header (click to toggle) */
+    .filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      gap: 8px;
+    }
+
+    .filter-header h2 {
+      margin: 0;
+    }
+
+    .filter-toggle-icon {
+      font-size: 16px;
+      color: var(--text-soft);
+      transition: transform 0.2s ease;
+    }
+
     /* Filters */
     .filters {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       align-items: center;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .filters-label {
@@ -184,6 +207,21 @@
 
     .btn-primary:hover {
       background: var(--accent-hover);
+    }
+
+    /* Collapsible behavior */
+    .collapsible {
+      overflow: hidden;
+      max-height: 500px;
+      opacity: 1;
+      transition: max-height 0.3s ease, opacity 0.25s ease;
+    }
+
+    .collapsible.closed {
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0;
+      pointer-events: none;
     }
 
     /* Table */
@@ -285,23 +323,28 @@
       color: var(--text-soft);
     }
 
-    /* Print */
+    /* Print styles */
     @media print {
       body {
         background: #ffffff !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
-      .page { max-width: 100%; padding: 0; }
+      .page {
+        max-width: 100%;
+        padding: 0;
+      }
       .topbar,
       .card {
         box-shadow: none;
         border-radius: 0;
         margin: 0 0 8px 0;
       }
+      /* 隱藏條件區與按鈕 */
       .filters,
       #reloadBtn,
-      #printBtn {
+      #printBtn,
+      .filter-header {
         display: none !important;
       }
       .table-wrap {
@@ -338,8 +381,8 @@
     <div class="brand-wrap">
       <div class="brand-logo"></div>
       <div>
-        <div class="brand-main">IT INVENTORY VIEWER</div>
-        <div class="brand-sub">公司電腦資產清單（資料來源：Excel / CSV）</div>
+        <div class="brand-main">BOPP1 PC Manager</div>
+        <div class="brand-sub">Company Computer Asset List（Source: Excel / CSV）</div>
       </div>
     </div>
     <div class="top-meta">
@@ -354,13 +397,19 @@
     </div>
   </div>
 
-  <!-- Filters -->
+  <!-- Filters (collapsible) -->
   <div class="card">
-    <h2>查詢條件</h2>
-    <div class="card-subtitle">
-      此頁面僅供查詢顯示，更新請於 Excel 編輯後匯出 <strong>inventory.csv</strong> 覆蓋。
+    <div class="filter-header" onclick="toggleFilters()">
+      <h2>Query conditions</h2>
+      <span id="toggleIcon" class="filter-toggle-icon">▲</span>
     </div>
-    <div class="filters">
+    <div class="card-subtitle">
+      This page is read-only. To update data, edit the Excel file and export
+      <strong>inventory.csv</strong> to overwrite the existing file.
+    </div>
+
+    <!-- 預設收合：closed；如果要一開始展開，把 closed 拿掉 -->
+    <div class="filters collapsible closed" id="filtersBox">
       <span class="filters-label">Filter:</span>
       <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
       <select id="statusFilter">
@@ -371,14 +420,14 @@
       </select>
       <input type="text" id="deptFilter" placeholder="Department">
       <button class="btn" id="reloadBtn">🔄 Reload CSV</button>
-      <button class="btn btn-primary" id="printBtn">🖨 列印清單</button>
+      <button class="btn btn-primary" id="printBtn">🖨 Print list</button>
     </div>
   </div>
 
   <!-- Table -->
   <div class="card">
-    <h2>電腦設備清單</h2>
-    <div class="card-subtitle" id="countInfo">共 0 筆資料</div>
+    <h2>Computer equipment list</h2>
+    <div class="card-subtitle" id="countInfo">A total of 0 data</div>
     <div class="table-wrap">
       <table id="pcTable">
         <thead>
@@ -405,7 +454,7 @@
   let computers = [];
   let currentSortKey = "asset_id";
   let currentSortAsc = true;
-  let inventoryLowNotified = false; // 避免同次載入重複提醒
+  let inventoryLowNotified = false; // 避免同一輪重複通知
 
   const tbody = document.querySelector("#pcTable tbody");
   const searchInput = document.getElementById("searchInput");
@@ -426,9 +475,9 @@
       renderTable();
     } catch (e) {
       console.error(e);
-      lastSyncEl.textContent = "讀取失敗（請確認 inventory.csv 與此檔同資料夾）";
+      lastSyncEl.textContent = "Loading error (please check inventory.csv)";
       tbody.innerHTML = "";
-      countInfoEl.textContent = "共 0 筆資料";
+      countInfoEl.textContent = "A total of 0 data";
     }
   }
 
@@ -476,7 +525,7 @@
 
   function updateLastSync() {
     if (!computers.length) {
-      lastSyncEl.textContent = "無資料";
+      lastSyncEl.textContent = "no data";
       return;
     }
     let latest = "0000-00-00";
@@ -484,41 +533,19 @@
       if (c.last_update && c.last_update > latest) latest = c.last_update;
     });
     lastSyncEl.textContent =
-      latest !== "0000-00-00" ? latest : "由 Excel 管理";
-  }
-
-  function checkInventoryLow() {
-    const notUseCount = computers.filter(c =>
-      (c.status || "").toLowerCase() === "not use"
-    ).length;
-
-    if (notUseCount <= 5) {
-      if (!inventoryLowNotified) {
-        alert(`Warning: only ${notUseCount} computer(s) with status "not use" remain.`);
-        const recipients = "jwu@inteplastbopp.com;vhuang@inteplastbopp.com;mdeleon@inteplastbopp.com";
-        const subject = encodeURIComponent("Inventory is low");
-        const body = encodeURIComponent(
-          `There are too few computers; please increase the number.\n\nCurrent "not use" computers: ${notUseCount}.`
-        );
-        // 這會開啟使用者預設郵件程式，內容帶好，需人工按「送出」
-        window.location.href = `mailto:${recipients}?subject=${subject}&body=${body}`;
-        inventoryLowNotified = true;
-      }
-    } else {
-      // 如果之後補貨（not use > 5），允許未來再次觸發提醒
-      inventoryLowNotified = false;
-    }
+      latest !== "0000-00-00" ? latest : "Managed by Excel";
   }
 
   function renderTable() {
     const keyword = searchInput.value.trim().toLowerCase();
-    const fStatus = statusFilter.value;
+    const fStatus = statusFilter.value.trim().toLowerCase();
     const fDept = deptFilter.value.trim();
 
     let data = [...computers];
 
     data = data.filter(c => {
-      if (fStatus && (c.status || "").toLowerCase() !== fStatus.toLowerCase()) return false;
+      const cStatus = (c.status || "").toLowerCase();
+      if (fStatus && cStatus !== fStatus) return false;
       if (fDept && c.department !== fDept) return false;
       if (keyword) {
         const text = (
@@ -548,7 +575,6 @@
         status === "using" ? "status-using" :
         status === "not use" ? "status-notuse" :
         status === "broken" ? "status-broken" : "";
-
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${c.asset_id || ""}</td>
@@ -565,10 +591,46 @@
       tbody.appendChild(tr);
     });
 
-    countInfoEl.textContent = `共 ${data.length} 筆資料`;
+    countInfoEl.textContent = `A total of ${data.length} data`;
 
-    // 每次重新 render 時檢查 not use 數量（用整體 computers，而不是篩選後 data）
+    // 檢查 not use 數量是否過低（使用完整 computers，而非篩選後 data）
     checkInventoryLow();
+  }
+
+  function checkInventoryLow() {
+    const notUseCount = computers.filter(c =>
+      (c.status || "").toLowerCase() === "not use"
+    ).length;
+
+    if (notUseCount <= 5) {
+      if (!inventoryLowNotified) {
+        alert(`Warning: only ${notUseCount} computer(s) with status "not use" remain.`);
+        const recipients = "jwu@inteplastbopp.com;vhuang@inteplastbopp.com;mdeleon@inteplastbopp.com";
+        const subject = encodeURIComponent("Inventory is low");
+        const body = encodeURIComponent(
+          `There are too few computers; please increase the number.\n\nCurrent "not use" computers: ${notUseCount}.`
+        );
+        window.location.href = `mailto:${recipients}?subject=${subject}&body=${body}`;
+        inventoryLowNotified = true;
+      }
+    } else {
+      // 若恢復到 >5，下次再降到 <=5 仍會提醒
+      inventoryLowNotified = false;
+    }
+  }
+
+  // Toggle filters (collapse/expand)
+  function toggleFilters() {
+    const box = document.getElementById("filtersBox");
+    const icon = document.getElementById("toggleIcon");
+    const isOpen = !box.classList.contains("closed");
+    if (isOpen) {
+      box.classList.add("closed");
+      icon.textContent = "▼";
+    } else {
+      box.classList.remove("closed");
+      icon.textContent = "▲";
+    }
   }
 
   // Events
