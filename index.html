@@ -290,7 +290,8 @@
 
     .status-using,
     .status-spare,
-    .status-broken {
+    .status-broken,
+    .status-test {
       font-size: var(--xsmall-font);
       font-weight: 600;
       padding: 3px 9px;
@@ -316,6 +317,12 @@
       color: #92400e;
       background: #fed7aa;
       border: 1px solid #fb923c;
+    }
+
+    .status-test {
+      color: #6b21a8;
+      background: #ede9fe;
+      border: 1px solid #c4b5fd;
     }
 
     .note {
@@ -357,7 +364,8 @@
       }
       .status-using,
       .status-spare,
-      .status-broken {
+      .status-broken,
+      .status-test {
         border-color: #000 !important;
         color: #000 !important;
         background: #ffffff !important;
@@ -415,6 +423,7 @@
         <option value="using">Using</option>
         <option value="spare">Spare</option>
         <option value="broken">Broken</option>
+        <option value="test">Test</option>
       </select>
       <input type="text" id="deptFilter" placeholder="Department">
       <button class="btn" id="reloadBtn">🔄 Reload CSV</button>
@@ -572,7 +581,9 @@
       const stClass =
         status === "using" ? "status-using" :
         status === "spare" ? "status-spare" :
-        status === "broken" ? "status-broken" : "";
+        status === "broken" ? "status-broken" :
+        status === "test" ? "status-test" :
+        "";
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${c.asset_id || ""}</td>
@@ -589,7 +600,7 @@
       tbody.appendChild(tr);
     });
 
-    // 統計（整體）
+    // 統計
     const totalCount = computers.length;
     const usingCount = computers.filter(c =>
       (c.status || "").toLowerCase() === "using"
@@ -597,12 +608,14 @@
     const spareCount = computers.filter(c =>
       (c.status || "").toLowerCase() === "spare"
     ).length;
+    const testCount = computers.filter(c =>
+      (c.status || "").toLowerCase() === "test"
+    ).length;
 
-    // 目前篩選後數量
     const filteredCount = data.length;
 
     countInfoEl.textContent =
-      `Filter: ${filteredCount} / Total: ${totalCount} ｜ Using: ${usingCount} ｜ Spare: ${spareCount}`;
+      `Filter: ${filteredCount} / Total: ${totalCount} ｜ Using: ${usingCount} ｜ Spare: ${spareCount} ｜ Test: ${testCount}`;
 
     checkInventoryLow();
   }
