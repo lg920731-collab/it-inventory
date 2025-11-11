@@ -5,33 +5,90 @@
   <title>Line 1 Schematic | Maintenance Smart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #f3f4f6;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
+    :root {
+      --bg: #f3f4f6;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --text: #111827;
+      --text-soft: #6b7280;
     }
-    h1 { color: #2563eb; }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(129,140,248,0.12), transparent),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: var(--accent);
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+
+    .pdf-wrap {
+      width: 100%;
+      max-width: 1100px;
+      height: 80vh;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.08);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+    }
+
     iframe {
       width: 100%;
-      height: 85vh;
+      height: 100%;
       border: none;
-      border-radius: 10px;
-      box-shadow: 0 10px 24px rgba(15,23,42,0.08);
     }
-    a {
-      display: inline-block;
-      margin-top: 15px;
+
+    .back {
+      margin-top: 16px;
+      font-size: 13px;
       text-decoration: none;
-      color: #2563eb;
+      color: var(--accent);
+      border: 1px solid rgba(37,99,235,0.3);
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #fff;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 10px rgba(37,99,235,0.12);
     }
-    a:hover { text-decoration: underline; }
+
+    .back:hover {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 6px 14px rgba(37,99,235,0.25);
+      border-color: var(--accent-hover);
+    }
   </style>
 </head>
 <body>
   <h1>Line 1 Schematic</h1>
-  <iframe src="Line1.pdf#view=FitH"></iframe>
-  <a href="index.html">← Back to Portal</a>
+  <div class="subtitle">Production Line 1 – Wiring and PLC Diagram (PDF Viewer)</div>
+
+  <!-- 🔽 Place your PDF in the same folder and name it exactly "Line 1 Schematic.pdf" -->
+  <div class="pdf-wrap">
+    <iframe src="Line 1 Schematic.pdf#view=FitH"></iframe>
+  </div>
+
+  <a href="index.html" class="back">← Back to Portal</a>
 </body>
 </html>
