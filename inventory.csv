@@ -6,14 +6,14 @@ L1-TR-AB-NEW,,,BOPP1,Line 1 control room,using,,Windows 11 PRO,BOPP1,,,
 L1-TR-IFIX,,GX270,BOPP1,Line 1 control room,using,,Windows 11 PRO,BOPP1,,,
 L2-SCADA-PC3,,GX270,BOPP1,Line 2 control room,using,,Windows XP,BOPP1,,,
 L2-SCADA-PC4,,GX270,BOPP1,Line 2 control room,using,,Windows XP,BOPP1,,,
-L2-SCADA-PC3S,,GX270,BOPP1,LAB,using,,Windows XP,BOPP1,,,SPARE
-L2-SCADA-PC4S,,GX270,BOPP1,LAB,using,,Windows XP,BOPP1,,,SPARE
+L2-SCADA-PC3S,,GX270,BOPP1,LAB,TEST,,Windows XP,BOPP1,,,SPARE
+L2-SCADA-PC4S,,GX270,BOPP1,LAB,TEST,,Windows XP,BOPP1,,,SPARE
 L2-TR-AB-NEW,,,BOPP1,Line 2 control room,using,,Windows 11  PRO,BOPP1,,,
 L2-TR-AB-NEW,,GX270,BOPP1,Line 2 control room,using,,Windows XP,BOPP1,,,
 L3-SCADA-PC5,,GX270,BOPP1,Line 3 control room,using,,Windows XP,BOPP1,,,
 L3-SCADA-PC6,,GX270,BOPP1,Line 3 control room,using,,Windows XP,BOPP1,,,
-L3-SCADA-PC5N,,GX270,BOPP1,Office,using,,Windows XP,BOPP1,,,NEW
-L3-SCADA-PC6N,,GX270,BOPP1,Office,using,,Windows XP,BOPP1,,,NEW
+L3-SCADA-PC5N,,GX270,BOPP1,Office,TEST,,Windows XP,BOPP1,,,NEW
+L3-SCADA-PC6N,,GX270,BOPP1,Office,TEST,,Windows XP,BOPP1,,,NEW
 L3-TR-AB-NEW,,GX270,BOPP1,Line 3 control room,using,,Windows XP,BOPP1,,,
 L3-TR-IFIX,,GX270,BOPP1,Line 3 control room,using,,Windows XP,BOPP1,,,
 L4-SCADA-PC7,,GX270,BOPP1,Line 4 control room,using,,Windows XP,BOPP1,,,
