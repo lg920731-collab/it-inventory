@@ -40,7 +40,6 @@
       padding: 24px 16px 40px;
     }
 
-    /* Top brand */
     .topbar {
       background: #ffffff;
       padding: 18px 20px;
@@ -64,8 +63,7 @@
       width: 34px;
       height: 34px;
       border-radius: 12px;
-      background:
-        radial-gradient(circle at 20% 0, #bfdbfe, #2563eb);
+      background: radial-gradient(circle at 20% 0, #bfdbfe, #2563eb);
       box-shadow: 0 0 14px rgba(37,99,235,0.5);
     }
 
@@ -103,7 +101,6 @@
     .pill-label { color: var(--text-soft); }
     .pill-strong { color: var(--text); font-weight: 500; }
 
-    /* Section title */
     .section-head {
       margin-bottom: 12px;
       display: flex;
@@ -125,12 +122,6 @@
       margin: 2px 0 0;
     }
 
-    .section-right {
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-    }
-
-    /* Module grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -140,13 +131,12 @@
     .card {
       background: var(--card-bg);
       border-radius: var(--radius-xl);
-      padding: 14px 14px 13px;
+      padding: 14px;
       border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-soft-sm);
       display: flex;
       flex-direction: column;
       gap: 6px;
-      position: relative;
       transition: all 0.18s ease;
       text-decoration: none;
       color: inherit;
@@ -156,7 +146,6 @@
       transform: translateY(-3px);
       box-shadow: var(--shadow-soft-md);
       border-color: var(--accent);
-      background: #ffffff;
     }
 
     .card-label {
@@ -171,180 +160,57 @@
       font-weight: 500;
     }
 
-    .card-title {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 600;
-      color: #111827;
-    }
-
-    .card-desc {
-      font-size: var(--small-font);
-      color: var(--text-soft);
-      line-height: 1.5;
-    }
-
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent);
-    }
+    .card-title { font-size: 15px; font-weight: 600; }
+    .card-desc { font-size: var(--small-font); color: var(--text-soft); line-height: 1.5; }
+    .card-meta { font-size: var(--xsmall-font); color: var(--text-soft); }
 
     .enter-btn {
       margin-left: auto;
-      margin-top: 4px;
+      margin-top: 6px;
       padding: 5px 11px;
       border-radius: 999px;
       border: none;
       font-size: var(--xsmall-font);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
       background: var(--accent);
       color: #ffffff;
       box-shadow: 0 6px 14px rgba(37,99,235,0.35);
       cursor: pointer;
       transition: all 0.16s ease;
     }
-
-    .card:hover .enter-btn {
-      transform: translateY(-1px);
-      background: var(--accent-hover);
-    }
-
-    .enter-btn span:last-child {
-      font-size: 12px;
-    }
-
-    @media (max-width: 768px) {
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .section-head {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
+    .card:hover .enter-btn { background: var(--accent-hover); }
   </style>
 </head>
 <body>
 <div class="page">
-  <!-- Top brand: Maintenance Smart -->
   <div class="topbar">
     <div class="brand-wrap">
       <div class="brand-logo"></div>
       <div>
         <div class="brand-main">MAINTENANCE SMART</div>
-        <div class="brand-sub">
-          Unified portal for plant maintenance, IT assets & equipment monitoring.
-        </div>
+        <div class="brand-sub">Unified portal for IT assets & equipment monitoring</div>
       </div>
     </div>
     <div class="top-meta">
-      <div class="pill">
-        <span class="pill-label">Environment</span>
-        <span class="pill-strong">Intranet Only</span>
-      </div>
-      <div class="pill">
-        <span class="pill-label">Admin</span>
-        <span class="pill-strong">Benjamin Lin</span>
-      </div>
-      <div class="pill">
-        <span class="pill-label">Version</span>
-        <span class="pill-strong">v1.0</span>
-      </div>
+      <div class="pill"><span class="pill-label">Admin</span><span class="pill-strong">Benjamin Lin</span></div>
     </div>
   </div>
 
-  <!-- Modules -->
   <div class="section-head">
     <div>
       <h2 class="section-title">Modules</h2>
-      <p class="section-sub">Select a function page below. Each module can be maintained as an independent HTML system.</p>
-    </div>
-    <div class="section-right">
-      Hint: Deploy this page as <strong>maintenance-smart/index.html</strong>,
-      and link each module to its own subpage.
+      <p class="section-sub">Choose a page below. Each is an independent system.</p>
     </div>
   </div>
 
   <div class="grid">
-    <!-- BOPP1 PC Manager module -->
-    <a class="card" href="index.html">
-      <div class="card-label">
-        <span class="dot"></span>
-        IT Inventory
-      </div>
+    <a class="card" href="PCmanager.html">
+      <div class="card-label">IT Inventory</div>
       <h3 class="card-title">BOPP1 PC Manager</h3>
-      <p class="card-desc">
-        Read-only computer asset list for BOPP1. Data source: Excel / CSV. Supports
-        filtering, sorting, printing, and low spare stock alert.
-      </p>
-      <div class="card-meta">
-        <span>CSV driven</span>
-        <span>Last update: by inventory.csv</span>
-      </div>
-      <button class="enter-btn" type="button">
-        <span>Enter</span>
-        <span>↗</span>
-      </button>
+      <p class="card-desc">View computer asset list from inventory.csv.</p>
+      <div class="card-meta">CSV-driven • Printable</div>
+      <button class="enter-btn">Enter ↗</button>
     </a>
-
-    <!-- 預留其他模組：之後要再做直接補連結 -->
-    <div class="card">
-      <div class="card-label">
-        <span class="dot"></span>
-        Coming Soon
-      </div>
-      <h3 class="card-title">Equipment PM Schedule</h3>
-      <p class="card-desc">
-        Plan to display preventive maintenance schedule synced from Excel or CMMS.
-        Calendar-style overview of critical machines.
-      </p>
-      <div class="card-meta">
-        <span>Not yet deployed</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">
-        <span class="dot"></span>
-        Coming Soon
-      </div>
-      <h3 class="card-title">Spare Parts & Stock</h3>
-      <p class="card-desc">
-        Future module for spare parts level, reorder threshold,
-        and storage location mapping.
-      </p>
-      <div class="card-meta">
-        <span>Design only</span>
-      </div>
-    </div>
   </div>
 </div>
-
-<script>
-  // 讓「Enter」按鈕點擊時跟 card 同步跳轉
-  document.querySelectorAll('.card[href]').forEach(card => {
-    const btn = card.querySelector('.enter-btn');
-    if (btn) {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.href = card.getAttribute('href');
-      });
-    }
-  });
-</script>
 </body>
 </html>
