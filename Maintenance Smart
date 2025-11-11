@@ -2,86 +2,349 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>Maintenance Smart | Computer List Viewer</title>
+  <title>Maintenance Smart | Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --border-subtle: #e5e7eb;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --accent-hover: #1d4ed8;
+      --text: #111827;
+      --text-soft: #6b7280;
+      --radius-xl: 18px;
+      --shadow-soft-sm: 0 10px 26px rgba(15,23,42,0.06);
+      --shadow-soft-md: 0 16px 40px rgba(15,23,42,0.09);
+      --small-font: 13px;
+      --xsmall-font: 11px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 15px;
+      background:
+        radial-gradient(circle at top, rgba(129,140,248,0.16), transparent),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    /* Top brand */
+    .topbar {
+      background: #ffffff;
+      padding: 18px 20px;
+      border-radius: 22px;
+      box-shadow: var(--shadow-soft-md);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 20% 0, #bfdbfe, #2563eb);
+      box-shadow: 0 0 14px rgba(37,99,235,0.5);
+    }
+
+    .brand-main {
+      font-size: 19px;
+      font-weight: 650;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #111827;
+    }
+
+    .brand-sub {
+      font-size: var(--small-font);
+      color: var(--text-soft);
+    }
+
+    .top-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      font-size: var(--xsmall-font);
+    }
+
+    .pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-label { color: var(--text-soft); }
+    .pill-strong { color: var(--text); font-weight: 500; }
+
+    /* Section title */
+    .section-head {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+    }
+
+    .section-sub {
+      font-size: var(--small-font);
+      color: var(--text-soft);
+      margin: 2px 0 0;
+    }
+
+    .section-right {
+      font-size: var(--xsmall-font);
+      color: var(--text-soft);
+    }
+
+    /* Module grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      padding: 14px 14px 13px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      transition: all 0.18s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-soft-md);
+      border-color: var(--accent);
+      background: #ffffff;
+    }
+
+    .card-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--xsmall-font);
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .card-desc {
+      font-size: var(--small-font);
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: var(--xsmall-font);
+      color: var(--text-soft);
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .enter-btn {
+      margin-left: auto;
+      margin-top: 4px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: none;
+      font-size: var(--xsmall-font);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 6px 14px rgba(37,99,235,0.35);
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .card:hover .enter-btn {
+      transform: translateY(-1px);
+      background: var(--accent-hover);
+    }
+
+    .enter-btn span:last-child {
+      font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .section-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
 <div class="page">
-  <!-- Header -->
+  <!-- Top brand: Maintenance Smart -->
   <div class="topbar">
     <div class="brand-wrap">
       <div class="brand-logo"></div>
       <div>
-        <div class="brand-main">Maintenance Smart</div>
-        <div class="brand-sub">BOPP1 Computer Asset Management System</div>
+        <div class="brand-main">MAINTENANCE SMART</div>
+        <div class="brand-sub">
+          Unified portal for plant maintenance, IT assets & equipment monitoring.
+        </div>
       </div>
     </div>
     <div class="top-meta">
       <div class="pill">
-        <span class="pill-label">Last update</span>
-        <span class="pill-strong" id="lastSync">—</span>
+        <span class="pill-label">Environment</span>
+        <span class="pill-strong">Intranet Only</span>
       </div>
       <div class="pill">
-        <span class="pill-label">Managed by</span>
+        <span class="pill-label">Admin</span>
         <span class="pill-strong">Benjamin Lin</span>
+      </div>
+      <div class="pill">
+        <span class="pill-label">Version</span>
+        <span class="pill-strong">v1.0</span>
       </div>
     </div>
   </div>
 
-  <!-- Filters -->
-  <div class="card">
-    <div class="filter-header" onclick="toggleFilters()">
-      <h2>Query conditions</h2>
-      <span id="toggleIcon" class="filter-toggle-icon">▲</span>
+  <!-- Modules -->
+  <div class="section-head">
+    <div>
+      <h2 class="section-title">Modules</h2>
+      <p class="section-sub">Select a function page below. Each module can be maintained as an independent HTML system.</p>
     </div>
-    <div class="card-subtitle">
-      This page is read-only. To update data, edit the Excel file and export
-      <strong>inventory.csv</strong> to overwrite the existing file.
-    </div>
-
-    <div class="filters collapsible open" id="filtersBox">
-      <span class="filters-label">Filter:</span>
-      <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
-      <select id="statusFilter">
-        <option value="">All status</option>
-        <option value="using">Using</option>
-        <option value="spare">Spare</option>
-        <option value="broken">Broken</option>
-        <option value="test">Test</option>
-      </select>
-      <input type="text" id="deptFilter" placeholder="Department">
-      <button class="btn" id="reloadBtn">🔄 Reload CSV</button>
-      <button class="btn btn-primary" id="printBtn">🖨 Print list</button>
+    <div class="section-right">
+      Hint: Deploy this page as <strong>maintenance-smart/index.html</strong>,
+      and link each module to its own subpage.
     </div>
   </div>
 
-  <!-- Table -->
-  <div class="card">
-    <h2>Computer equipment list</h2>
-    <div class="card-subtitle" id="countInfo">A total of 0 data</div>
-    <div class="table-wrap">
-      <table id="pcTable">
-        <thead>
-          <tr>
-            <th data-sort="asset_id">Asset ID</th>
-            <th data-sort="hostname">Hostname</th>
-            <th data-sort="computer">Computer</th>
-            <th data-sort="department">Department</th>
-            <th data-sort="location">Location</th>
-            <th data-sort="status">Status</th>
-            <th data-sort="spec">Spec</th>
-            <th data-sort="os">OS</th>
-            <th data-sort="owner">Owner</th>
-            <th data-sort="note">Note</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <div class="grid">
+    <!-- BOPP1 PC Manager module -->
+    <a class="card" href="bopp1-pc-manager.html">
+      <div class="card-label">
+        <span class="dot"></span>
+        IT Inventory
+      </div>
+      <h3 class="card-title">BOPP1 PC Manager</h3>
+      <p class="card-desc">
+        Read-only computer asset list for BOPP1. Data source: Excel / CSV. Supports
+        filtering, sorting, printing, and low spare stock alert.
+      </p>
+      <div class="card-meta">
+        <span>CSV driven</span>
+        <span>Last update: by inventory.csv</span>
+      </div>
+      <button class="enter-btn" type="button">
+        <span>Enter</span>
+        <span>↗</span>
+      </button>
+    </a>
+
+    <!-- 預留其他模組：之後要再做直接補連結 -->
+    <div class="card">
+      <div class="card-label">
+        <span class="dot"></span>
+        Coming Soon
+      </div>
+      <h3 class="card-title">Equipment PM Schedule</h3>
+      <p class="card-desc">
+        Plan to display preventive maintenance schedule synced from Excel or CMMS.
+        Calendar-style overview of critical machines.
+      </p>
+      <div class="card-meta">
+        <span>Not yet deployed</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">
+        <span class="dot"></span>
+        Coming Soon
+      </div>
+      <h3 class="card-title">Spare Parts & Stock</h3>
+      <p class="card-desc">
+        Future module for spare parts level, reorder threshold,
+        and storage location mapping.
+      </p>
+      <div class="card-meta">
+        <span>Design only</span>
+      </div>
     </div>
   </div>
 </div>
 
-<script src="js/main.js"></script>
+<script>
+  // 讓「Enter」按鈕點擊時跟 card 同步跳轉
+  document.querySelectorAll('.card[href]').forEach(card => {
+    const btn = card.querySelector('.enter-btn');
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = card.getAttribute('href');
+      });
+    }
+  });
+</script>
 </body>
 </html>
