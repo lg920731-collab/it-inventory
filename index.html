@@ -178,6 +178,23 @@
       transition: all 0.16s ease;
     }
     .card:hover .enter-btn { background: var(--accent-hover); }
+
+    /* ✅ 下拉選單樣式 */
+    .line-select {
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #111827;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: all 0.15s ease;
+    }
+    .line-select:hover {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.14);
+    }
   </style>
 </head>
 <body>
@@ -203,6 +220,7 @@
   </div>
 
   <div class="grid">
+    <!-- PC Manager 模組 -->
     <a class="card" href="PC Manager.html">
       <div class="card-label">BOPP1</div>
       <h3 class="card-title">PC Manager</h3>
@@ -211,14 +229,20 @@
       <button class="enter-btn">Enter ↗</button>
     </a>
 
-    <!-- ✅ 新增 Line Schematic 模組 -->
-    <a class="card" href="Line Schematic.html">
+    <!-- ✅ Line Schematic 模組 -->
+    <div class="card">
       <div class="card-label">Production</div>
       <h3 class="card-title">Line Schematic</h3>
       <p class="card-desc">Visual overview of production line wiring, I/O, and PLC structure.</p>
-      <div class="card-meta">Interactive • SVG-based</div>
-      <button class="enter-btn">Enter ↗</button>
-    </a>
+      <div class="card-meta">Interactive • PDF-based</div>
+      <select class="line-select" onchange="if(this.value) window.location.href=this.value;">
+        <option value="">Select Line</option>
+        <option value="Line 1 Schematic.html">Line 1</option>
+        <option value="Line 2 Schematic.html">Line 2</option>
+        <option value="Line 3 Schematic.html">Line 3</option>
+        <option value="Line 4 Schematic.html">Line 4</option>
+      </select>
+    </div>
   </div>
 </div>
 </body>
