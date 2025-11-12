@@ -5,33 +5,140 @@
   <title>Line 1 Schematic | Maintenance Smart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --bg: #f3f4f6;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --text: #111827;
+      --text-soft: #6b7280;
+    }
+    * { box-sizing: border-box; }
     body {
-      font-family: system-ui, sans-serif;
-      background: #f3f4f6;
       margin: 0;
-      padding: 20px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(129,140,248,0.12), transparent),
+        var(--bg);
+      color: var(--text);
+      min-height: 100dvh; /* 動態視窗高度，行動裝置較準確 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+    h1 {
+      color: var(--accent);
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 6px 0;
       text-align: center;
     }
-    h1 { color: #2563eb; }
-    iframe {
-      width: 100%;
-      height: 85vh;
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 10px 24px rgba(15,23,42,0.08);
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin: 0 0 10px 0;
+      text-align: center;
     }
-    a {
-      display: inline-block;
-      margin-top: 15px;
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .btn {
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(37,99,235,0.35);
+      background: #fff;
+      color: var(--accent);
       text-decoration: none;
-      color: #2563eb;
+      box-shadow: 0 4px 10px rgba(37,99,235,0.12);
+      transition: all 0.15s ease;
+      cursor: pointer;
     }
-    a:hover { text-decoration: underline; }
+    .btn:hover {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 6px 14px rgba(37,99,235,0.25);
+      border-color: var(--accent-hover);
+    }
+    .viewer {
+      width: 100%;
+      max-width: 1100px;
+      height: calc(100dvh - 170px); /* 標題+工具列+外距的總高預留 */
+      min-height: 380px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.08);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    .viewer object, .viewer iframe, .viewer embed {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    .fallback {
+      padding: 18px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    /* 小螢幕微調 */
+    @media (max-width: 480px) {
+      .viewer { height: calc(100dvh - 180px); }
+    }
   </style>
 </head>
 <body>
   <h1>Line 1 Schematic</h1>
-  <iframe src="Line1.pdf#view=FitH"></iframe>
-  <a href="index.html">← Back to Portal</a>
+  <div class="subtitle">Production Line 1 – Wiring and PLC Diagram</div>
+
+  <div class="toolbar">
+    <!-- 行動裝置用這個最穩：直接新分頁開啟 -->
+    <a class="btn" id="openNewTab" href="#" rel="noopener">Open PDF in New Tab ↗</a>
+    <a class="btn" href="index.html">← Back to Portal</a>
+  </div>
+
+  <div class="viewer" id="viewer">
+    <!-- 內嵌 PDF（桌機優先）。行動裝置偵測後會引導用新分頁開啟 -->
+    <object id="pdfObject" data="Line-1-Schematic.pdf#view=FitH" type="application/pdf">
+      <div class="fallback">
+        Your browser cannot display embedded PDFs.  
+        <a class="btn" href="Line-1-Schematic.pdf">Download / Open PDF</a>
+      </div>
+    </object>
+  </div>
+
+  <script>
+    (function () {
+      // 建議不要用空白檔名，這裡使用不含空白的檔名
+      const pdfUrl = "Line-1-Schematic.pdf";
+
+      // 行動裝置（特別是 iOS）常不穩定：直接提供「新分頁開啟」
+      const isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
+      const openNewTab = document.getElementById('openNewTab');
+      openNewTab.href = pdfUrl;
+
+      if (isMobile) {
+        // iOS/Android：保留內嵌（若可用），但提示使用者可按按鈕新分頁開啟更穩
+        // 若你想「行動裝置直接導向新分頁，不內嵌」，取消下一行註解：
+        // window.location.replace(pdfUrl);
+      }
+
+      // 如果 data 讀取失敗（例如 404 或型別不支援），顯示 fallback
+      const obj = document.getElementById('pdfObject');
+      obj.addEventListener('error', () => {
+        document.getElementById('viewer').innerHTML =
+          '<div class="fallback">Unable to load PDF. <a class="btn" href="' + pdfUrl + '">Open PDF</a></div>';
+      });
+    })();
+  </script>
 </body>
 </html>
