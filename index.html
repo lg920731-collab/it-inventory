@@ -33,13 +33,7 @@
       overflow-x: hidden;
     }
 
-    .page {
-      position: relative;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px 16px 40px;
-      z-index: 2;
-    }
+    .page { position: relative; max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; z-index: 2; }
 
     .topbar {
       background: #ffffff;
@@ -54,80 +48,21 @@
       margin-bottom: 22px;
     }
 
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .brand-wrap { display: flex; align-items: center; gap: 10px; }
+    .mascot { height: 32px; vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25)); }
+    .brand-main { font-size: 19px; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; color: #111827; display: flex; align-items: center; gap: 6px; }
+    .brand-sub { font-size: 13px; color: var(--text-soft); }
 
-    .mascot {
-      height: 32px;
-      vertical-align: middle;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
-    }
-
-    .brand-main {
-      font-size: 19px;
-      font-weight: 650;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #111827;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .brand-sub {
-      font-size: 13px;
-      color: var(--text-soft);
-    }
-
-    .top-meta {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-      font-size: 11px;
-    }
-
-    .pill {
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
+    .top-meta { display: flex; gap: 8px; justify-content: flex-end; font-size: 11px; }
+    .pill { padding: 5px 11px; border-radius: 999px; border: 1px solid #e5e7eb; background: #f9fafb; display: inline-flex; align-items: center; gap: 6px; }
     .pill-label { color: var(--text-soft); }
     .pill-strong { color: var(--text); font-weight: 500; }
 
-    .section-head {
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 10px;
-    }
+    .section-head { margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+    .section-title { font-size: 18px; font-weight: 600; color: #111827; margin: 0; }
+    .section-sub { font-size: var(--small-font); color: var(--text-soft); margin: 2px 0 0; }
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #111827;
-      margin: 0;
-    }
-
-    .section-sub {
-      font-size: var(--small-font);
-      color: var(--text-soft);
-      margin: 2px 0 0;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 14px;
-    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
 
     .card {
       background: var(--card-bg);
@@ -143,87 +78,26 @@
       color: inherit;
     }
 
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-soft-md);
-      border-color: var(--accent);
-    }
-
-    .card-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: var(--xsmall-font);
-      color: var(--accent);
-      background: var(--accent-soft);
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-weight: 500;
-    }
-
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft-md); border-color: var(--accent); }
+    .card-label { display: inline-flex; align-items: center; gap: 6px; font-size: var(--xsmall-font); color: var(--accent); background: var(--accent-soft); padding: 3px 8px; border-radius: 999px; font-weight: 500; }
     .card-title { font-size: 15px; font-weight: 600; }
     .card-desc { font-size: var(--small-font); color: var(--text-soft); line-height: 1.5; }
     .card-meta { font-size: var(--xsmall-font); color: var(--text-soft); }
 
-    .enter-btn {
-      margin-left: auto;
-      margin-top: 6px;
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: none;
-      font-size: var(--xsmall-font);
-      background: var(--accent);
-      color: #ffffff;
-      box-shadow: 0 6px 14px rgba(37,99,235,0.35);
-      cursor: pointer;
-      transition: all 0.16s ease;
-    }
-
+    .enter-btn { margin-left: auto; margin-top: 6px; padding: 5px 11px; border-radius: 999px; border: none; font-size: var(--xsmall-font); background: var(--accent); color: #ffffff; box-shadow: 0 6px 14px rgba(37,99,235,0.35); cursor: pointer; transition: all 0.16s ease; }
     .card:hover .enter-btn { background: var(--accent-hover); }
 
-    /* 📸 左右頑皮豹（放大＋上下置中＋朝中間） */
-    .side-panther {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 420px;
-      opacity: 0.9;
-      z-index: 1;
-      pointer-events: none;
-      user-select: none;
-    }
+    .side-panther { position: fixed; top: 50%; transform: translateY(-50%); width: 420px; opacity: 0.9; z-index: 1; pointer-events: none; user-select: none; }
+    .side-panther.left { left: 2.5%; transform: translateY(-50%) scaleX(1); }
+    .side-panther.right { right: 2.5%; transform: translateY(-50%) scaleX(-1); }
+    @media (max-width: 1000px) { .side-panther { display: none; } }
 
-    .side-panther.left {
-      left: 2.5%;
-      transform: translateY(-50%) scaleX(1); /* 左邊正常，朝右 */
-    }
+    .line-select { font-size: 13px; padding: 6px 10px; border-radius: 999px; border: 1px solid #d1d5db; background: #ffffff; color: #111827; cursor: pointer; margin-top: 6px; transition: all 0.15s ease; }
+    .line-select:hover { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.14); }
 
-    .side-panther.right {
-      right: 2.5%;
-      transform: translateY(-50%) scaleX(-1); /* ✅ 右邊鏡像，朝左 */
-    }
-
-    @media (max-width: 1000px) {
-      .side-panther { display: none; }
-    }
-
-    /* 下拉選單樣式 */
-    .line-select {
-      font-size: 13px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      color: #111827;
-      cursor: pointer;
-      margin-top: 6px;
-      transition: all 0.15s ease;
-    }
-
-    .line-select:hover {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 2px rgba(37,99,235,0.14);
-    }
+    .action-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+    .btn-secondary { padding: 6px 12px; border-radius: 999px; border: 1px solid #c7d2fe; background: #eef2ff; color: #1d4ed8; font-size: 12px; cursor: pointer; }
+    .btn-secondary:disabled { opacity: .5; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -235,7 +109,7 @@
   <div class="page">
     <div class="topbar">
       <div class="brand-wrap">
-        <img src="pinkpanther.png" alt="Pink Panther" class="mascot">
+        <img src="pinkpanther1.png" alt="Pink Panther" class="mascot">
         <div>
           <div class="brand-main">MAINTENANCE SMART</div>
           <div class="brand-sub">Make your life easier.</div>
@@ -254,30 +128,59 @@
     </div>
 
     <div class="grid">
-      <!-- PC Manager -->
-      <a class="card" href="PC Manager.html">
-        <div class="card-label">BOPP1</div>
-        <h3 class="card-title">PC Manager</h3>
-        <p class="card-desc">View computer asset list from inventory.csv.</p>
-        <div class="card-meta">CSV-driven • Printable</div>
-        <button class="enter-btn">Enter ↗</button>
-      </a>
-
-      <!-- Line Schematic -->
+      <!-- Line Schematic 多層選單 -->
       <div class="card">
         <div class="card-label">Production</div>
         <h3 class="card-title">Line Schematic</h3>
-        <p class="card-desc">Visual overview of production line wiring, I/O, and PLC structure.</p>
+        <p class="card-desc">Select a Line and its area to open the schematic.</p>
         <div class="card-meta">Interactive • PDF-based</div>
-        <select class="line-select" onchange="if(this.value) window.location.href=this.value;">
-          <option value="">Select Line</option>
-          <option value="Line-1-Schematic.html">Line 1</option>
-          <option value="Line-2-Schematic.html">Line 2</option>
-          <option value="Line-3-Schematic.html">Line 3</option>
-          <option value="Line-4-Schematic.html">Line 4</option>
-        </select>
+
+        <div class="action-row">
+          <select id="schemLine" class="line-select">
+            <option value="">Choose Line</option>
+            <option>Line-1</option>
+            <option>Line-2</option>
+            <option>Line-3</option>
+            <option>Line-4</option>
+          </select>
+
+          <select id="schemArea" class="line-select">
+            <option value="">Choose Area</option>
+            <option>F12</option>
+            <option>F13</option>
+            <option>F16</option>
+            <option>F201</option>
+          </select>
+
+          <button id="schemGo" class="btn-secondary" disabled>Go ↗</button>
+        </div>
+        <!-- 預設連結命名：Line-[x]-[Fx]-Schematic.html -->
       </div>
+
+      <!-- 其他卡片略，可繼續放 Program Back up、Calibration Procedure -->
     </div>
   </div>
+
+  <script>
+    const schemLine = document.getElementById('schemLine');
+    const schemArea = document.getElementById('schemArea');
+    const schemGo = document.getElementById('schemGo');
+
+    function updateSchemBtn() {
+      schemGo.disabled = !(schemLine.value && schemArea.value);
+    }
+
+    schemLine.addEventListener('change', updateSchemBtn);
+    schemArea.addEventListener('change', updateSchemBtn);
+
+    function slugify(s) {
+      return s.trim().replace(/\s+/g, '-');
+    }
+
+    schemGo.addEventListener('click', () => {
+      const link = `${schemLine.value}-${schemArea.value}-Schematic.html`;
+      window.location.href = link;
+    });
+  </script>
 </body>
 </html>
