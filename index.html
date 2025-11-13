@@ -235,36 +235,34 @@
 
       const url = `https://api.github.com/repos/${owner}/${repo}/commits/${branch}`;
 
-      fetch(url)
-        .then(res => {
-          if(!res.ok) throw new Error("GitHub API error");
-          return res.json();
-        })
-        .then(data => {
-          const dateStr = data && data.commit && data.commit.author && data.commit.author.date;
-          if(!dateStr){
-            el.textContent = "N/A";
-            return;
-          }
-          const d = new Date(dateStr);
-          el.textContent = d.toLocaleString([], {
-            year:'numeric', month:'2-digit', day:'2-digit',
-            hour:'2-digit', minute:'2-digit'
-          });
-        })
-        .catch(err => {
-          console.error("GitHub commit time error:", err);
-          // 失敗時 fallback 用 document.lastModified
-          const d = new Date(document.lastModified);
-          if(!isNaN(d)){
-            el.textContent = d.toLocaleString([], {
+      (async function(){
+      const el = document.getElementById('modDate');
+      const owner  = "lg920731-collab";
+      const repo   = "it-inventory";
+      const branch = "main";
+      const url = `https://api.github.com/repos/${owner}/${repo}/commits/${branch}`;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("GitHub API error");
+        const data = await res.json();
+        const dateStr = data?.commit?.author?.date;
+        if (!dateStr) throw new Error("No date");
+        const d = new Date(dateStr);
+        el.textContent = d.toLocaleString([], {
+          year:'numeric', month:'2-digit', day:'2-digit',
+          hour:'2-digit', minute:'2-digit'
+        });
+      } catch (err) {
+        console.error("GitHub commit time error:", err);
+        const d = new Date(document.lastModified);
+        el.textContent = !isNaN(d)
+          ? d.toLocaleString([], {
               year:'numeric', month:'2-digit', day:'2-digit',
               hour:'2-digit', minute:'2-digit'
-            });
-          }else{
-            el.textContent = "N/A";
-          }
-        });
+            })
+          : "N/A";
+      }
     })();
 
     // slug 工具：空白->-，移除特殊字元
