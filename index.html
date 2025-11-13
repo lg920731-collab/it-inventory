@@ -181,26 +181,28 @@
 
     .card:hover .enter-btn { background: var(--accent-hover); }
 
-    /* 📸 左右頑皮豹（放大、往上移、無動畫） */
+    /* 📸 左右裝飾頑皮豹（放大＋上下置中） */
     .side-panther {
       position: fixed;
-      bottom: 120px;      /* 往上移 */
-      width: 320px;       /* 放大尺寸 */
-      opacity: 0.95;
-      z-index: 3;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 420px;
+      opacity: 0.9;
+      z-index: 1;
       pointer-events: none;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+      user-select: none;
     }
 
-    .side-panther.left { left: 6%; }
-    .side-panther.right { right: 6%; transform: scaleX(-1); }
-
-    .side-panther:hover {
-      opacity: 1;
-      transform: scale(1.02);
+    .side-panther.left {
+      left: 2.5%;
     }
 
-    @media (max-width: 900px) {
+    .side-panther.right {
+      right: 2.5%;
+      transform: scaleX(-1) translateY(-50%);
+    }
+
+    @media (max-width: 1000px) {
       .side-panther { display: none; }
     }
 
@@ -226,8 +228,8 @@
 <body>
 
   <!-- 左右頑皮豹 -->
-  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left">
-  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right">
+  <img src="pinkpanther1_clear.png" alt="Pink Panther Left" class="side-panther left">
+  <img src="pinkpanther2_clear.png" alt="Pink Panther Right" class="side-panther right">
 
   <div class="page">
     <div class="topbar">
@@ -251,6 +253,7 @@
     </div>
 
     <div class="grid">
+      <!-- PC Manager -->
       <a class="card" href="PC Manager.html">
         <div class="card-label">BOPP1</div>
         <h3 class="card-title">PC Manager</h3>
@@ -259,6 +262,7 @@
         <button class="enter-btn">Enter ↗</button>
       </a>
 
+      <!-- Line Schematic -->
       <div class="card">
         <div class="card-label">Production</div>
         <h3 class="card-title">Line Schematic</h3>
