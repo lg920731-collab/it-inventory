@@ -166,49 +166,66 @@
     }
     .line-select:hover { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.14); }
 
-    /* 📸 左右裝飾頑皮豹 */
+    /* 📸 左右裝飾頑皮豹（大一點、有動畫） */
     .side-panther {
       position: fixed;
       bottom: 0;
-      width: 180px;
-      opacity: 0.9;
+      width: 280px;
+      opacity: 0.95;
       z-index: 1;
-      transition: transform 0.5s ease;
-      animation: fadeIn 1.5s ease both;
-    }
-    .side-panther.left {
-      left: 40px;
-      transform: rotate(-2deg);
-    }
-    .side-panther.right {
-      right: 40px;
-      transform: scaleX(-1) rotate(2deg);
-    }
-    .side-panther:hover {
-      transform: scale(1.05);
+      pointer-events: none;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      animation: fadeIn 1.2s ease both;
     }
 
-    /* 手機不顯示 */
+    .side-panther.left  { left: 6%; }
+    .side-panther.right { right: 6%; transform: scaleX(-1); }
+
+    .wave-left {
+      transform-origin: 28% 18%;
+      animation: pantherIdle 8s ease-in-out infinite,
+                 pantherWave 4.5s ease-in-out 1s infinite;
+    }
+
+    .blink-right {
+      transform-origin: 50% 85%;
+      animation: pantherIdle 9s ease-in-out infinite,
+                 pantherBlink 7s ease-in-out 2s infinite;
+    }
+
+    @keyframes pantherIdle {
+      0%,100% { transform: translateY(0) var(--x, none); }
+      50%     { transform: translateY(-6px) var(--x, none); }
+    }
+
+    @keyframes pantherWave {
+      0%,100% { transform: rotate(0deg); }
+      15%     { transform: rotate(-6deg); }
+      30%     { transform: rotate(4deg); }
+      45%     { transform: rotate(-3deg); }
+      60%     { transform: rotate(2deg); }
+      75%     { transform: rotate(-1.5deg); }
+    }
+
+    @keyframes pantherBlink {
+      0%,92%,100% { transform: scaleY(1); }
+      95%        { transform: scaleY(0.92); }
+    }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px);} to {opacity:1;transform:translateY(0);} }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+    .side-panther:hover { opacity:1; transform: scale(1.04); }
+
     @media (max-width: 900px) {
       .side-panther { display: none; }
-    }
-
-    /* 動畫效果 */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <!-- 🩷 左側頑皮豹 -->
-  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left">
-  <!-- 💗 右側頑皮豹 -->
-  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right">
+  <!-- 左右頑皮豹 -->
+  <img src="pinkpanther1_clear.png" alt="Pink Panther Left" class="side-panther left wave-left">
+  <img src="pinkpanther2_clear.png" alt="Pink Panther Right" class="side-panther right blink-right">
 
   <div class="page">
     <div class="topbar">
@@ -257,3 +274,4 @@
   </div>
 </body>
 </html>
+
