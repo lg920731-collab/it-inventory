@@ -14,7 +14,11 @@
       --accent-hover: #1d4ed8;
       --text: #111827;
       --text-soft: #6b7280;
+      --radius-xl: 18px;
+      --shadow-soft-sm: 0 10px 26px rgba(15,23,42,0.06);
       --shadow-soft-md: 0 16px 40px rgba(15,23,42,0.09);
+      --small-font: 13px;
+      --xsmall-font: 11px;
     }
 
     * { box-sizing: border-box; }
@@ -48,25 +52,19 @@
       gap: 14px;
       align-items: center;
       margin-bottom: 22px;
-      animation: fadeIn 0.6s ease both;
     }
 
     .brand-wrap {
       display: flex;
       align-items: center;
       gap: 10px;
-      animation: fadeUp 0.8s ease 0.1s both;
     }
 
     .mascot {
       height: 32px;
       vertical-align: middle;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
-      transition: transform 0.3s ease;
-      cursor: pointer;
-      animation: fadeUp 0.8s ease 0.15s both;
     }
-    .mascot:hover { transform: rotate(-3deg) scale(1.05); }
 
     .brand-main {
       font-size: 19px;
@@ -78,7 +76,11 @@
       align-items: center;
       gap: 6px;
     }
-    .brand-sub { font-size: 13px; color: var(--text-soft); }
+
+    .brand-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
 
     .top-meta {
       display: flex;
@@ -97,9 +99,29 @@
       gap: 6px;
     }
 
-    .section-head { margin-bottom: 12px; }
-    .section-title { font-size: 18px; font-weight: 600; color: #111827; margin: 0; }
-    .section-sub { font-size: 13px; color: var(--text-soft); margin: 2px 0 0; }
+    .pill-label { color: var(--text-soft); }
+    .pill-strong { color: var(--text); font-weight: 500; }
+
+    .section-head {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #111827;
+      margin: 0;
+    }
+
+    .section-sub {
+      font-size: var(--small-font);
+      color: var(--text-soft);
+      margin: 2px 0 0;
+    }
 
     .grid {
       display: grid;
@@ -109,34 +131,39 @@
 
     .card {
       background: var(--card-bg);
-      border-radius: 18px;
+      border-radius: var(--radius-xl);
       padding: 14px;
       border: 1px solid var(--border-subtle);
-      box-shadow: 0 10px 26px rgba(15,23,42,0.06);
+      box-shadow: var(--shadow-soft-sm);
       display: flex;
       flex-direction: column;
       gap: 6px;
       transition: all 0.18s ease;
       text-decoration: none;
       color: inherit;
-      animation: fadeUp 0.6s ease 0.3s both;
     }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(15,23,42,0.09); border-color: var(--accent); }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-soft-md);
+      border-color: var(--accent);
+    }
 
     .card-label {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 11px;
+      font-size: var(--xsmall-font);
       color: var(--accent);
       background: var(--accent-soft);
       padding: 3px 8px;
       border-radius: 999px;
       font-weight: 500;
     }
+
     .card-title { font-size: 15px; font-weight: 600; }
-    .card-desc { font-size: 13px; color: var(--text-soft); line-height: 1.5; }
-    .card-meta { font-size: 11px; color: var(--text-soft); }
+    .card-desc { font-size: var(--small-font); color: var(--text-soft); line-height: 1.5; }
+    .card-meta { font-size: var(--xsmall-font); color: var(--text-soft); }
 
     .enter-btn {
       margin-left: auto;
@@ -144,88 +171,63 @@
       padding: 5px 11px;
       border-radius: 999px;
       border: none;
-      font-size: 11px;
+      font-size: var(--xsmall-font);
       background: var(--accent);
-      color: #fff;
+      color: #ffffff;
       box-shadow: 0 6px 14px rgba(37,99,235,0.35);
       cursor: pointer;
       transition: all 0.16s ease;
     }
+
     .card:hover .enter-btn { background: var(--accent-hover); }
 
+    /* 📸 左右頑皮豹（放大、往上移、無動畫） */
+    .side-panther {
+      position: fixed;
+      bottom: 120px;      /* 往上移 */
+      width: 320px;       /* 放大尺寸 */
+      opacity: 0.95;
+      z-index: 3;
+      pointer-events: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .side-panther.left { left: 6%; }
+    .side-panther.right { right: 6%; transform: scaleX(-1); }
+
+    .side-panther:hover {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+
+    @media (max-width: 900px) {
+      .side-panther { display: none; }
+    }
+
+    /* 下拉選單樣式 */
     .line-select {
       font-size: 13px;
       padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid #d1d5db;
-      background: #fff;
+      background: #ffffff;
       color: #111827;
       cursor: pointer;
       margin-top: 6px;
       transition: all 0.15s ease;
     }
-    .line-select:hover { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.14); }
 
-    /* 📸 左右裝飾頑皮豹（大一點、有動畫） */
-    .side-panther {
-      position: fixed;
-      bottom: 0;
-      width: 280px;
-      opacity: 0.95;
-      z-index: 1;
-      pointer-events: none;
-      transition: transform 0.5s ease, opacity 0.5s ease;
-      animation: fadeIn 1.2s ease both;
-    }
-
-    .side-panther.left  { left: 6%; }
-    .side-panther.right { right: 6%; transform: scaleX(-1); }
-
-    .wave-left {
-      transform-origin: 28% 18%;
-      animation: pantherIdle 8s ease-in-out infinite,
-                 pantherWave 4.5s ease-in-out 1s infinite;
-    }
-
-    .blink-right {
-      transform-origin: 50% 85%;
-      animation: pantherIdle 9s ease-in-out infinite,
-                 pantherBlink 7s ease-in-out 2s infinite;
-    }
-
-    @keyframes pantherIdle {
-      0%,100% { transform: translateY(0) var(--x, none); }
-      50%     { transform: translateY(-6px) var(--x, none); }
-    }
-
-    @keyframes pantherWave {
-      0%,100% { transform: rotate(0deg); }
-      15%     { transform: rotate(-6deg); }
-      30%     { transform: rotate(4deg); }
-      45%     { transform: rotate(-3deg); }
-      60%     { transform: rotate(2deg); }
-      75%     { transform: rotate(-1.5deg); }
-    }
-
-    @keyframes pantherBlink {
-      0%,92%,100% { transform: scaleY(1); }
-      95%        { transform: scaleY(0.92); }
-    }
-
-    @keyframes fadeUp { from { opacity:0; transform:translateY(12px);} to {opacity:1;transform:translateY(0);} }
-    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-
-    .side-panther:hover { opacity:1; transform: scale(1.04); }
-
-    @media (max-width: 900px) {
-      .side-panther { display: none; }
+    .line-select:hover {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.14);
     }
   </style>
 </head>
 <body>
+
   <!-- 左右頑皮豹 -->
-  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left wave-left">
-  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right blink-right">
+  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left">
+  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right">
 
   <div class="page">
     <div class="topbar">
@@ -274,4 +276,3 @@
   </div>
 </body>
 </html>
-
