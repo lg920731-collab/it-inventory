@@ -233,6 +233,40 @@
       color:var(--text-soft);
       display:none;
     }
+    /* 📱 手機版排版修正 */
+@media (max-width: 640px){
+  .page{
+    padding:16px 12px 32px;
+  }
+
+  /* topbar 改成上下排，避免往右擠出畫面 */
+  .topbar{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  /* 品牌區塊占滿整行，文字稍微縮一點 */
+  .brand-wrap{
+    width:100%;
+  }
+  .brand-main{
+    font-size:17px;
+    letter-spacing:.08em;
+  }
+
+  /* 上面那幾顆 pill / 按鈕改成靠左排，多行自動換行 */
+  .top-meta{
+    justify-content:flex-start;
+  }
+
+  /* 手機上按鈕文字略小一點比較不擠 */
+  .pill,
+  .btn-ghost{
+    font-size:11px;
+    padding:4px 8px;
+  }
+}
   </style>
 </head>
 <body>
