@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
@@ -45,7 +45,6 @@
     .pill-label{color:var(--text-soft)}
     .pill-strong{color:var(--text);font-weight:500}
 
-    /* 放大「Designed by」那顆 */
     .pill.designer{padding:6px 13px;border-color:#dbeafe;background:#eff6ff}
     .pill-designer-strong{font-size:14px;font-weight:700;letter-spacing:.02em;color:#111827}
 
@@ -53,7 +52,6 @@
     .section-title{font-size:18px;font-weight:600;color:#111827;margin:0}
     .section-sub{font-size:var(--small-font);color:var(--text-soft);margin:2px 0 0}
 
-    /* 田字排版：固定兩欄 */
     .grid{
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
@@ -73,24 +71,33 @@
     .card-title{font-size:15px;font-weight:600;margin:2px 0 4px}
     .card-desc{font-size:var(--small-font);color:var(--text-soft);line-height:1.6;margin:0 0 6px}
     .card-meta{font-size:var(--xsmall-font);color:var(--text-soft);margin-top:auto}
-    .enter-btn{ margin-top:8px;align-self:flex-end;padding:5px 11px;border-radius:999px;border:none;font-size:var(--xsmall-font);background:var(--accent);color:#fff;box-shadow:0 6px 14px rgba(37,99,235,.35);cursor:pointer;transition:all .16s ease}
+    .enter-btn{margin-top:auto;align-self:flex-end;padding:5px 11px;border-radius:999px;border:none;font-size:var(--xsmall-font);background:var(--accent);color:#fff;box-shadow:0 6px 14px rgba(37,99,235,.35);cursor:pointer;transition:all .16s ease}
     .card:hover .enter-btn{background:var(--accent-hover)}
 
-    /* 左右頑皮豹（上下置中、朝中間） */
-    .side-panther{position:fixed;top:50%;transform:translateY(-50%);width:420px;opacity:.9;z-index:1;pointer-events:none;user-select:none}
+    /* Focus-visible：鍵盤可用性提升 */
+    .line-select:focus-visible,
+    .btn-secondary:focus-visible,
+    .enter-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      box-shadow:0 0 0 3px rgba(37,99,235,.25);
+    }
+
+    /* 左右頑皮豹 */
+    .side-panther{
+      position:fixed;top:50%;transform:translateY(-50%);
+      width:420px;opacity:.9;z-index:1;pointer-events:none;user-select:none;
+      transition: transform .25s ease, opacity .25s ease;
+    }
     .side-panther.left{left:2.5%;transform:translateY(-50%) scaleX(1)}
     .side-panther.right{right:2.5%;transform:translateY(-50%) scaleX(-1)}
     @media (max-width:1000px){.side-panther{display:none}}
-    /* 頑皮豹 hover 微互動 */
-    .side-panther{
-      transition: transform .25s ease, opacity .25s ease;
-    }
 
+    /* Hover 微互動 */
     .side-panther.left:hover{
       transform:translateY(-50%) translateX(-4px) scaleX(1);
       opacity:1;
     }
-
     .side-panther.right:hover{
       transform:translateY(-50%) translateX(4px) scaleX(-1);
       opacity:1;
@@ -116,7 +123,7 @@
         <img src="pinkpanther.png" alt="Pink Panther" class="mascot" />
         <div>
           <div class="brand-main">MAINTENANCE SMART</div>
-          <div class="brand-sub">Make your life easier.</div>
+          <div class="brand-sub">Smarter maintenance, easier life.</div>
         </div>
       </div>
       <div class="top-meta">
@@ -126,7 +133,7 @@
         </div>
         <div class="pill">
           <span class="pill-label">Modified Date</span>
-          <span class="pill-strong" id="modDate">Loading...</span>
+          <span class="pill-strong" id="modDate">Checking…</span>
         </div>
       </div>
     </div>
@@ -134,22 +141,21 @@
     <div class="section-head">
       <div>
         <h2 class="section-title">Modules</h2>
-        <p class="section-sub">Select a page below. Each is an independent system.</p>
+        <p class="section-sub">Choose a page below. Each is an independent system.</p>
       </div>
     </div>
 
-    <!-- 田字四張卡片 -->
     <div class="grid">
-      <!-- 1 左上：PC Manager -->
+      <!-- PC Manager -->
       <a class="card" href="PC Manager.html">
         <div class="card-label">BOPP1</div>
         <h3 class="card-title">PC Manager</h3>
         <p class="card-desc">View computer asset list from inventory.csv.</p>
         <div class="card-meta">CSV-driven • Printable</div>
-        <button class="enter-btn">Enter ↗</button>
+        <button class="enter-btn" type="button">Enter ↗</button>
       </a>
 
-      <!-- 2 右上：Line Schematic（Line + Area） -->
+      <!-- Line Schematic -->
       <div class="card">
         <div class="card-label">Production</div>
         <h3 class="card-title">Line Schematic</h3>
@@ -157,7 +163,7 @@
         <div class="card-meta">Interactive • PDF-based</div>
 
         <div class="action-row">
-          <select id="schemLine" class="line-select" aria-label="Select Line">
+          <select id="schemLine" class="line-select">
             <option value="">Select Line</option>
             <option>Line-1</option>
             <option>Line-2</option>
@@ -165,7 +171,7 @@
             <option>Line-4</option>
           </select>
 
-          <select id="schemArea" class="line-select" aria-label="Select Area">
+          <select id="schemArea" class="line-select">
             <option value="">Select Area</option>
             <option>F12</option>
             <option>F13</option>
@@ -173,12 +179,11 @@
             <option>F201</option>
           </select>
 
-          <button id="schemGo" class="btn-secondary" disabled>Go ↗</button>
+          <button id="schemGo" class="btn-secondary" type="button" disabled>Go ↗</button>
         </div>
-        <!-- 連結命名：Line-[x]-[Fx]-Schematic.html -->
       </div>
 
-      <!-- 3 左下：Program Backup -->
+      <!-- Program Backup -->
       <div class="card">
         <div class="card-label">Automation</div>
         <h3 class="card-title">Program Backup</h3>
@@ -186,7 +191,7 @@
         <div class="card-meta">PLC / SCADA • Docs</div>
 
         <div class="action-row">
-          <select id="pbLine" class="line-select" aria-label="Select Line">
+          <select id="pbLine" class="line-select">
             <option value="">Select Line</option>
             <option>Line-1</option>
             <option>Line-2</option>
@@ -194,7 +199,7 @@
             <option>Line-4</option>
           </select>
 
-          <select id="pbSys" class="line-select" aria-label="Select System">
+          <select id="pbSys" class="line-select">
             <option value="">Select System</option>
             <option>SCADA</option>
             <option>F12</option>
@@ -210,12 +215,11 @@
             <option>Grinder</option>
           </select>
 
-          <button id="pbGo" class="btn-secondary" disabled>Go ↗</button>
+          <button id="pbGo" class="btn-secondary" type="button" disabled>Go ↗</button>
         </div>
-        <!-- 連結命名：Program-Backup-[Line-x]-[System-slug].html -->
       </div>
 
-      <!-- 4 右下：Calibration Procedure -->
+      <!-- Calibration -->
       <div class="card">
         <div class="card-label">Maintenance</div>
         <h3 class="card-title">Calibration Procedure</h3>
@@ -223,33 +227,22 @@
         <div class="card-meta">SOP • PDF/HTML</div>
 
         <div class="action-row">
-          <select id="calProc" class="line-select" aria-label="Select Procedure">
+          <select id="calProc" class="line-select">
             <option value="">Select Procedure</option>
             <option>Main Hopper Weight Calibration</option>
             <option>Winder Contact Roll Calibration</option>
             <option>Line Speed Calibration</option>
           </select>
 
-          <button id="calGo" class="btn-secondary" disabled>Go ↗</button>
+          <button id="calGo" class="btn-secondary" type="button" disabled>Go ↗</button>
         </div>
-        <!-- 連結命名：Calibration-[Procedure-slug].html -->
       </div>
     </div>
   </div>
 
   <script>
-    // 🔥 讀取 GitHub 最後 commit 時間（GitHub API）
-    (function(){
-      const el = document.getElementById('modDate');
-
-      // TODO: 這三個請改成你自己的 Repo 設定
-      const owner  = "lg920731-collab";   // 例如: "benjamin-lin"
-      const repo   = "it-inventory";         // 例如: "maintenance-smart"
-      const branch = "main";                   // 或 "master"、其他分支
-
-      const url = `https://api.github.com/repos/${owner}/${repo}/commits/${branch}`;
-
-      (async function(){
+    // GitHub last commit datetime
+    (async function(){
       const el = document.getElementById('modDate');
       const owner  = "lg920731-collab";
       const repo   = "it-inventory";
@@ -279,7 +272,6 @@
       }
     })();
 
-    // slug 工具：空白->-，移除特殊字元
     function slugify(s){return s.trim().replace(/\s+/g,'-').replace(/[^A-Za-z0-9\-]/g,'')}
 
     /* Line Schematic */
