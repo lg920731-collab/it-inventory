@@ -42,6 +42,15 @@
       min-height:100vh;overflow-x:hidden;
       transition:background .25s ease,color .25s ease;
     }
+
+    /* panther / hangyodon 主題各自改背景色 */
+    html[data-style="panther"] body{
+      background:radial-gradient(circle at top,rgba(244,114,182,.28),transparent),var(--bg);
+    }
+    html[data-style="hangyodon"] body{
+      background:radial-gradient(circle at top,rgba(56,189,248,.35),transparent),var(--bg);
+    }
+
     .page{position:relative;max-width:1200px;margin:0 auto;padding:24px 16px 40px;z-index:2}
 
     .topbar{
@@ -149,21 +158,46 @@
       box-shadow:0 0 0 3px rgba(37,99,235,.25);
     }
 
-    /* 左右頑皮豹 */
+    /* 左右頑皮豹 – 預設不顯示，只有 panther 主題會出現 */
     .side-panther{
       position:fixed;top:50%;transform:translateY(-50%);
       width:420px;opacity:.9;z-index:1;pointer-events:auto;user-select:none;
       transition: transform .25s ease, opacity .25s ease;
+      display:none;
     }
     .side-panther.left{left:2.5%;transform:translateY(-50%) scaleX(1)}
     .side-panther.right{right:2.5%;transform:translateY(-50%) scaleX(-1)}
-    @media (max-width:1000px){.side-panther{display:none}}
 
-    .side-panther.left:hover{
+    html[data-style="panther"] .side-panther{
+      display:block;
+    }
+
+    /* 左右 Hangyodon – 預設不顯示，只有 hangyodon 主題會出現 */
+    .side-hangyodon{
+      position:fixed;top:50%;transform:translateY(-50%);
+      width:420px;opacity:.9;z-index:1;pointer-events:auto;user-select:none;
+      transition: transform .25s ease, opacity .25s ease;
+      display:none;
+    }
+    .side-hangyodon.left{left:2.5%;transform:translateY(-50%) scaleX(1)}
+    .side-hangyodon.right{right:2.5%;transform:translateY(-50%) scaleX(-1)}
+
+    html[data-style="hangyodon"] .side-hangyodon{
+      display:block;
+    }
+
+    @media (max-width:1000px){
+      .side-panther,
+      .side-hangyodon{display:none}
+    }
+
+    .side-panther.left:hover,
+    .side-hangyodon.left:hover{
       transform:translateY(-50%) translateX(-4px) scaleX(1);
       opacity:1;
     }
-    .side-panther.right:hover{
+    .side-panther.right:hover,
+    .side-hangyodon.right:hover{
       transform:translateY(-50%) translateX(4px) scaleX(-1);
       opacity:1;
     }
@@ -193,7 +227,6 @@
       background:rgba(59,130,246,.3);
     }
 
-    /* 搜尋時沒有結果的提示 */
     .no-result{
       margin-top:18px;
       font-size:12px;
@@ -208,13 +241,18 @@
   <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left" />
   <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right" />
 
+  <!-- 左右 Hangyodon -->
+  <img src="hangyodon1.png" alt="Hangyodon Left" class="side-hangyodon left" />
+  <img src="hangyodon2.png" alt="Hangyodon Right" class="side-hangyodon right" />
+
   <div class="page">
     <div class="topbar">
       <div class="brand-wrap">
-        <img src="pinkpanther.png" alt="Pink Panther" class="mascot" />
+        <!-- 這張 src 會被 JS 覆蓋成對應主題的 icon -->
+        <img src="pinkpanther.png" alt="Theme Mascot" class="mascot" />
         <div>
           <div class="brand-main">MAINTENANCE SMART</div>
-          <div id="brandSub" class="brand-sub">Make your life easier.</div>
+          <div id="brandSub" class="brand-sub">Smarter maintenance, easier life.</div>
         </div>
       </div>
       <div class="top-meta">
@@ -365,11 +403,10 @@
       en: {
         brandSub: "Smarter maintenance, easier life.",
         designedBy: "Designed by",
+        nameDesigner: "Benjamin Lin",
         modifiedDate: "Modified Date",
         langLabel: "Language",
         themeLabel: "Theme",
-
-        nameDesigner: "Benjamin Lin",
         sectionTitle: "Modules",
         sectionSub: "Choose a page below. Each is an independent system.",
         searchPlaceholder: "Search modules… (e.g. PC, Schematic)",
@@ -406,12 +443,12 @@
         btnCalGo: "Go ↗"
       },
       zh: {
-        brandSub: "讓你的生活更輕鬆。",
+        brandSub: "讓維護更聰明，生活更輕鬆。",
         designedBy: "設計",
+        nameDesigner: "林哲銘",
         modifiedDate: "最後更新",
         langLabel: "語言",
         themeLabel: "主題",
-        nameDesigner: "林哲銘",
         sectionTitle: "模組總覽",
         sectionSub: "請選擇下方頁面，每個都是獨立系統。",
         searchPlaceholder: "搜尋模組⋯（例如 PC、Schematic）",
@@ -425,7 +462,7 @@
         btnPC: "進入 ↗",
 
         labelSchematic: "生產線",
-        titleSchematic: "產線配線圖（Line Schematic）",
+        titleSchematic: "線體配線圖（Line Schematic）",
         descSchematic: "選擇線別與區域以開啟電氣配線 / 線體圖。",
         metaSchematic: "可互動 • PDF 檔",
         optSchemLineDefault: "選擇線別",
@@ -449,17 +486,16 @@
       }
     };
 
-    // --- 語系套用 ---
     function applyLang(lang){
       const t = i18n[lang] || i18n.en;
       document.documentElement.setAttribute('data-lang', lang);
 
       document.getElementById('brandSub').textContent = t.brandSub;
       document.getElementById('labelDesignedBy').textContent = t.designedBy;
+      document.getElementById('designerName').textContent = t.nameDesigner;
       document.getElementById('labelModifiedDate').textContent = t.modifiedDate;
       document.getElementById('langLabel').textContent = t.langLabel;
       document.getElementById('themeLabel').textContent = t.themeLabel;
-      document.getElementById('designerName').textContent = t.nameDesigner;
 
       document.getElementById('sectionTitle').textContent = t.sectionTitle;
       document.getElementById('sectionSub').textContent = t.sectionSub;
@@ -511,7 +547,7 @@
       localStorage.setItem('ms-lang', lang);
     })();
 
-    // --- GitHub last commit datetime ---
+    // GitHub last commit datetime
     (async function(){
       const el = document.getElementById('modDate');
       const owner  = "lg920731-collab";
@@ -645,6 +681,63 @@
       }
 
       input.addEventListener('input', filterModules);
+    })();
+
+    // --- Style Theme (blue / panther / hangyodon) – 用左上角圖片切換 ---
+    (function(){
+      const STYLE_KEY = 'ms-style';
+      const root = document.documentElement;
+      const mascot = document.querySelector('.mascot');
+      const styles = ['blue', 'panther', 'hangyodon'];
+
+      // 建立藍色方塊 SVG icon（不用額外檔案）
+      const blueSvg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">' +
+        '<rect width="32" height="32" rx="8" fill="#2563eb"/>' +
+        '<rect x="8" y="8" width="16" height="16" rx="4" fill="#eff6ff"/></svg>';
+      const blueIcon = 'data:image/svg+xml;utf8,' + encodeURIComponent(blueSvg);
+
+      const themeConfig = {
+        blue: {
+          mascotSrc: blueIcon,
+          mascotAlt: 'Blue theme'
+        },
+        panther: {
+          mascotSrc: 'pinkpanther.png',
+          mascotAlt: 'Pink Panther theme'
+        },
+        hangyodon: {
+          mascotSrc: 'hangyodon.png',
+          mascotAlt: 'Hangyodon theme'
+        }
+      };
+
+      function applyStyle(style){
+        const s = themeConfig[style] ? style : 'blue';
+        root.setAttribute('data-style', s);
+        const cfg = themeConfig[s];
+        if (mascot){
+          mascot.src = cfg.mascotSrc;
+          mascot.alt = cfg.mascotAlt;
+        }
+        localStorage.setItem(STYLE_KEY, s);
+      }
+
+      function cycleStyle(){
+        const current = root.getAttribute('data-style') || 'blue';
+        const idx = styles.indexOf(current);
+        const next = styles[(idx + 1) % styles.length];
+        applyStyle(next);
+      }
+
+      const saved = localStorage.getItem(STYLE_KEY) || 'blue';
+      applyStyle(saved);
+
+      if (mascot){
+        mascot.style.cursor = 'pointer';
+        mascot.title = 'Click to change theme';
+        mascot.addEventListener('click', cycleStyle);
+      }
     })();
   </script>
 </body>
