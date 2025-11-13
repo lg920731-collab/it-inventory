@@ -220,7 +220,7 @@
       <div class="top-meta">
         <div class="pill designer">
           <span id="labelDesignedBy" class="pill-label">Designed by</span>
-          <span class="pill-designer-strong">Benjamin Lin</span>
+          <span id="designerName" class="pill-designer-strong"></span>
         </div>
         <div class="pill">
           <span id="labelModifiedDate" class="pill-label">Modified Date</span>
@@ -368,6 +368,8 @@
         modifiedDate: "Modified Date",
         langLabel: "Language",
         themeLabel: "Theme",
+
+        nameDesigner: "Benjamin Lin",
         sectionTitle: "Modules",
         sectionSub: "Choose a page below. Each is an independent system.",
         searchPlaceholder: "Search modules… (e.g. PC, Schematic)",
@@ -409,6 +411,7 @@
         modifiedDate: "最後更新",
         langLabel: "語言",
         themeLabel: "主題",
+        nameDesigner: "林哲銘",
         sectionTitle: "模組總覽",
         sectionSub: "請選擇下方頁面，每個都是獨立系統。",
         searchPlaceholder: "搜尋模組⋯（例如 PC、Schematic）",
@@ -456,6 +459,7 @@
       document.getElementById('labelModifiedDate').textContent = t.modifiedDate;
       document.getElementById('langLabel').textContent = t.langLabel;
       document.getElementById('themeLabel').textContent = t.themeLabel;
+      document.getElementById('designerName').textContent = t.nameDesigner;
 
       document.getElementById('sectionTitle').textContent = t.sectionTitle;
       document.getElementById('sectionSub').textContent = t.sectionSub;
