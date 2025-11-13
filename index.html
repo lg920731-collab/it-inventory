@@ -14,11 +14,7 @@
       --accent-hover: #1d4ed8;
       --text: #111827;
       --text-soft: #6b7280;
-      --radius-xl: 18px;
-      --shadow-soft-sm: 0 10px 26px rgba(15,23,42,0.06);
       --shadow-soft-md: 0 16px 40px rgba(15,23,42,0.09);
-      --small-font: 13px;
-      --xsmall-font: 11px;
     }
 
     * { box-sizing: border-box; }
@@ -30,12 +26,15 @@
       background: radial-gradient(circle at top, rgba(129,140,248,0.16), transparent), var(--bg);
       color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .page {
+      position: relative;
       max-width: 1200px;
       margin: 0 auto;
       padding: 24px 16px 40px;
+      z-index: 2;
     }
 
     .topbar {
@@ -49,40 +48,25 @@
       gap: 14px;
       align-items: center;
       margin-bottom: 22px;
-      /* 整條上方淡入 */
-      animation: barFade 600ms ease both;
+      animation: fadeIn 0.6s ease both;
     }
 
     .brand-wrap {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      animation: fadeUp 0.8s ease 0.1s both;
     }
 
-    .brand-logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
-      background: radial-gradient(circle at 20% 0, #bfdbfe, #2563eb);
-      box-shadow: 0 0 14px rgba(37,99,235,0.5);
-      /* ① Logo 先進場 */
-      animation: fadeUp 600ms ease 80ms both;
-    }
-
-    /* 🐾 頑皮豹圖片樣式 + 動畫 */
     .mascot {
       height: 32px;
-      margin-right: 6px;
       vertical-align: middle;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
       transition: transform 0.3s ease;
       cursor: pointer;
-      animation: fadeUp 600ms ease 160ms both, blink 5s infinite ease-in-out 1s;
+      animation: fadeUp 0.8s ease 0.15s both;
     }
-    .mascot:hover {
-      animation: tailwave 0.8s ease-in-out infinite alternate, blink 5s infinite ease-in-out;
-      transform: rotate(-3deg) scale(1.05);
-    }
+    .mascot:hover { transform: rotate(-3deg) scale(1.05); }
 
     .brand-main {
       font-size: 19px;
@@ -93,25 +77,14 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      /* ③ 標題再進場 */
-      animation: fadeUp 600ms ease 240ms both;
     }
-
-    .brand-sub {
-      font-size: var(--small-font);
-      color: var(--text-soft);
-      /* ④ 副標最後進場 */
-      animation: fadeUp 600ms ease 320ms both;
-    }
+    .brand-sub { font-size: 13px; color: var(--text-soft); }
 
     .top-meta {
       display: flex;
-      flex-wrap: wrap;
       gap: 8px;
       justify-content: flex-end;
-      font-size: var(--xsmall-font);
-      /* 與標題同時淡入 */
-      animation: fadeUp 600ms ease 240ms both;
+      font-size: 11px;
     }
 
     .pill {
@@ -124,48 +97,37 @@
       gap: 6px;
     }
 
-    .pill-label { color: var(--text-soft); }
-    .pill-strong { color: var(--text); font-weight: 500; }
-
-    .section-head {
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 10px;
-      animation: fadeUp 600ms ease 380ms both;
-    }
-
+    .section-head { margin-bottom: 12px; }
     .section-title { font-size: 18px; font-weight: 600; color: #111827; margin: 0; }
-    .section-sub { font-size: var(--small-font); color: var(--text-soft); margin: 2px 0 0; }
+    .section-sub { font-size: 13px; color: var(--text-soft); margin: 2px 0 0; }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 14px;
-      animation: fadeUp 600ms ease 460ms both;
     }
 
     .card {
       background: var(--card-bg);
-      border-radius: var(--radius-xl);
+      border-radius: 18px;
       padding: 14px;
       border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-soft-sm);
+      box-shadow: 0 10px 26px rgba(15,23,42,0.06);
       display: flex;
       flex-direction: column;
       gap: 6px;
       transition: all 0.18s ease;
       text-decoration: none;
       color: inherit;
+      animation: fadeUp 0.6s ease 0.3s both;
     }
-    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft-md); border-color: var(--accent); }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(15,23,42,0.09); border-color: var(--accent); }
 
     .card-label {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: var(--xsmall-font);
+      font-size: 11px;
       color: var(--accent);
       background: var(--accent-soft);
       padding: 3px 8px;
@@ -173,8 +135,8 @@
       font-weight: 500;
     }
     .card-title { font-size: 15px; font-weight: 600; }
-    .card-desc { font-size: var(--small-font); color: var(--text-soft); line-height: 1.5; }
-    .card-meta { font-size: var(--xsmall-font); color: var(--text-soft); }
+    .card-desc { font-size: 13px; color: var(--text-soft); line-height: 1.5; }
+    .card-meta { font-size: 11px; color: var(--text-soft); }
 
     .enter-btn {
       margin-left: auto;
@@ -182,9 +144,9 @@
       padding: 5px 11px;
       border-radius: 999px;
       border: none;
-      font-size: var(--xsmall-font);
+      font-size: 11px;
       background: var(--accent);
-      color: #ffffff;
+      color: #fff;
       box-shadow: 0 6px 14px rgba(37,99,235,0.35);
       cursor: pointer;
       transition: all 0.16s ease;
@@ -196,7 +158,7 @@
       padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid #d1d5db;
-      background: #ffffff;
+      background: #fff;
       color: #111827;
       cursor: pointer;
       margin-top: 6px;
@@ -204,87 +166,94 @@
     }
     .line-select:hover { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.14); }
 
-    /* 👁️ 眨眼效果（輕微縮放模擬） */
-    @keyframes blink {
-      0%, 90%, 100% { transform: scaleY(1); }
-      95% { transform: scaleY(0.85); }
+    /* 📸 左右裝飾頑皮豹 */
+    .side-panther {
+      position: fixed;
+      bottom: 0;
+      width: 180px;
+      opacity: 0.9;
+      z-index: 1;
+      transition: transform 0.5s ease;
+      animation: fadeIn 1.5s ease both;
     }
-    /* 🌀 搖尾巴（左右微擺） */
-    @keyframes tailwave {
-      0% { transform: rotate(0deg) scale(1.05); }
-      50% { transform: rotate(4deg) scale(1.08); }
-      100% { transform: rotate(-4deg) scale(1.05); }
+    .side-panther.left {
+      left: 40px;
+      transform: rotate(-2deg);
     }
-    /* 🚪 元件依序淡入上移 */
+    .side-panther.right {
+      right: 40px;
+      transform: scaleX(-1) rotate(2deg);
+    }
+    .side-panther:hover {
+      transform: scale(1.05);
+    }
+
+    /* 手機不顯示 */
+    @media (max-width: 900px) {
+      .side-panther { display: none; }
+    }
+
+    /* 動畫效果 */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes barFade {
+    @keyframes fadeIn {
       from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    /* 📱 手機調整頑皮豹大小與字距 */
-    @media (max-width: 600px) {
-      .mascot { height: 24px; margin-right: 4px; }
-      .brand-main { font-size: 17px; letter-spacing: 0.08em; }
-    }
-
-    /* ♿ 若使用者偏好減少動效，自動關閉動畫 */
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-<div class="page">
-  <div class="topbar">
-    <div class="brand-wrap">
-      <div class="brand-logo"></div>
-      <img src="pinkpanther.png" alt="Pink Panther" class="mascot">
-      <div>
-        <div class="brand-main">MAINTENANCE SMART</div>
-        <div class="brand-sub">Make your life easier.</div>
+  <!-- 🩷 左側頑皮豹 -->
+  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left">
+  <!-- 💗 右側頑皮豹 -->
+  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right">
+
+  <div class="page">
+    <div class="topbar">
+      <div class="brand-wrap">
+        <img src="pinkpanther.png" alt="Pink Panther" class="mascot">
+        <div>
+          <div class="brand-main">MAINTENANCE SMART</div>
+          <div class="brand-sub">Make your life easier.</div>
+        </div>
+      </div>
+      <div class="top-meta">
+        <div class="pill"><span class="pill-label">Admin</span><span class="pill-strong">Benjamin Lin</span></div>
       </div>
     </div>
-    <div class="top-meta">
-      <div class="pill"><span class="pill-label">Admin</span><span class="pill-strong">Benjamin Lin</span></div>
+
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Modules</h2>
+        <p class="section-sub">Choose a page below. Each is an independent system.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <a class="card" href="PC Manager.html">
+        <div class="card-label">BOPP1</div>
+        <h3 class="card-title">PC Manager</h3>
+        <p class="card-desc">View computer asset list from inventory.csv.</p>
+        <div class="card-meta">CSV-driven • Printable</div>
+        <button class="enter-btn">Enter ↗</button>
+      </a>
+
+      <div class="card">
+        <div class="card-label">Production</div>
+        <h3 class="card-title">Line Schematic</h3>
+        <p class="card-desc">Visual overview of production line wiring, I/O, and PLC structure.</p>
+        <div class="card-meta">Interactive • PDF-based</div>
+        <select class="line-select" onchange="if(this.value) window.location.href=this.value;">
+          <option value="">Select Line</option>
+          <option value="Line-1-Schematic.html">Line 1</option>
+          <option value="Line-2-Schematic.html">Line 2</option>
+          <option value="Line-3-Schematic.html">Line 3</option>
+          <option value="Line-4-Schematic.html">Line 4</option>
+        </select>
+      </div>
     </div>
   </div>
-
-  <div class="section-head">
-    <div>
-      <h2 class="section-title">Modules</h2>
-      <p class="section-sub">Choose a page below. Each is an independent system.</p>
-    </div>
-  </div>
-
-  <div class="grid">
-    <!-- PC Manager -->
-    <a class="card" href="PC Manager.html">
-      <div class="card-label">BOPP1</div>
-      <h3 class="card-title">PC Manager</h3>
-      <p class="card-desc">View computer asset list from inventory.csv.</p>
-      <div class="card-meta">CSV-driven • Printable</div>
-      <button class="enter-btn">Enter ↗</button>
-    </a>
-
-    <!-- Line Schematic with dropdown -->
-    <div class="card">
-      <div class="card-label">Production</div>
-      <h3 class="card-title">Line Schematic</h3>
-      <p class="card-desc">Visual overview of production line wiring, I/O, and PLC structure.</p>
-      <div class="card-meta">Interactive • PDF-based</div>
-      <select class="line-select" onchange="if(this.value) window.location.href=this.value;">
-        <option value="">Select Line</option>
-        <option value="Line-1-Schematic.html">Line 1</option>
-        <option value="Line-2-Schematic.html">Line 2</option>
-        <option value="Line-3-Schematic.html">Line 3</option>
-        <option value="Line-4-Schematic.html">Line 4</option>
-      </select>
-    </div>
-  </div>
-</div>
 </body>
 </html>
