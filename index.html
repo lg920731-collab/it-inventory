@@ -112,7 +112,7 @@
         </div>
         <div class="pill">
           <span class="pill-label">Modified Date</span>
-          <span class="pill-strong" id="modDate">—</span>
+          <span class="pill-strong" id="modDate">Loading...</span>
         </div>
       </div>
     </div>
@@ -224,22 +224,47 @@
   </div>
 
   <script>
-    // Modified Date：以檔案最後修改時間為主，無法取得時改用現在時間
+    // 🔥 讀取 GitHub 最後 commit 時間（GitHub API）
     (function(){
       const el = document.getElementById('modDate');
-      const d  = new Date(document.lastModified);
-      if(!isNaN(d)) {
-        el.textContent = d.toLocaleString([], {
-          year:'numeric', month:'2-digit', day:'2-digit',
-          hour:'2-digit', minute:'2-digit'
+
+      // TODO: 這三個請改成你自己的 Repo 設定
+      const owner  = "lg920731-collab";   // 例如: "benjamin-lin"
+      const repo   = "it-inventory";         // 例如: "maintenance-smart"
+      const branch = "main";                   // 或 "master"、其他分支
+
+      const url = `https://api.github.com/repos/${owner}/${repo}/commits/${branch}`;
+
+      fetch(url)
+        .then(res => {
+          if(!res.ok) throw new Error("GitHub API error");
+          return res.json();
+        })
+        .then(data => {
+          const dateStr = data && data.commit && data.commit.author && data.commit.author.date;
+          if(!dateStr){
+            el.textContent = "N/A";
+            return;
+          }
+          const d = new Date(dateStr);
+          el.textContent = d.toLocaleString([], {
+            year:'numeric', month:'2-digit', day:'2-digit',
+            hour:'2-digit', minute:'2-digit'
+          });
+        })
+        .catch(err => {
+          console.error("GitHub commit time error:", err);
+          // 失敗時 fallback 用 document.lastModified
+          const d = new Date(document.lastModified);
+          if(!isNaN(d)){
+            el.textContent = d.toLocaleString([], {
+              year:'numeric', month:'2-digit', day:'2-digit',
+              hour:'2-digit', minute:'2-digit'
+            });
+          }else{
+            el.textContent = "N/A";
+          }
         });
-      } else {
-        const now = new Date();
-        el.textContent = now.toLocaleString([], {
-          year:'numeric', month:'2-digit', day:'2-digit',
-          hour:'2-digit', minute:'2-digit'
-        });
-      }
     })();
 
     // slug 工具：空白->-，移除特殊字元
