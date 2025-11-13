@@ -36,9 +36,18 @@
     .mascot{height:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
     .brand-main{font-size:19px;font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:#111827;display:flex;align-items:center;gap:6px}
     .brand-sub{font-size:13px;color:var(--text-soft)}
-    .top-meta{display:flex;gap:8px;font-size:11px}
-    .pill{padding:5px 11px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;display:inline-flex;align-items:center;gap:6px}
-    .pill-label{color:var(--text-soft)} .pill-strong{color:var(--text);font-weight:500}
+
+    .top-meta{display:flex;gap:8px;align-items:center;font-size:11px;flex-wrap:wrap}
+    .pill{
+      padding:5px 11px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;
+      display:inline-flex;align-items:center;gap:6px
+    }
+    .pill-label{color:var(--text-soft)}
+    .pill-strong{color:var(--text);font-weight:500}
+
+    /* 放大「Designed by」那顆 */
+    .pill.designer{padding:6px 13px;border-color:#dbeafe;background:#eff6ff}
+    .pill-designer-strong{font-size:14px;font-weight:700;letter-spacing:.02em;color:#111827}
 
     .section-head{margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
     .section-title{font-size:18px;font-weight:600;color:#111827;margin:0}
@@ -97,7 +106,14 @@
         </div>
       </div>
       <div class="top-meta">
-        <div class="pill"><span class="pill-label">Admin</span><span class="pill-strong">Benjamin Lin</span></div>
+        <div class="pill designer">
+          <span class="pill-label">Designed by</span>
+          <span class="pill-designer-strong">Benjamin Lin</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">Modified Date</span>
+          <span class="pill-strong" id="modDate">—</span>
+        </div>
       </div>
     </div>
 
@@ -208,6 +224,24 @@
   </div>
 
   <script>
+    // Modified Date：以檔案最後修改時間為主，無法取得時改用現在時間
+    (function(){
+      const el = document.getElementById('modDate');
+      const d  = new Date(document.lastModified);
+      if(!isNaN(d)) {
+        el.textContent = d.toLocaleString([], {
+          year:'numeric', month:'2-digit', day:'2-digit',
+          hour:'2-digit', minute:'2-digit'
+        });
+      } else {
+        const now = new Date();
+        el.textContent = now.toLocaleString([], {
+          year:'numeric', month:'2-digit', day:'2-digit',
+          hour:'2-digit', minute:'2-digit'
+        });
+      }
+    })();
+
     // slug 工具：空白->-，移除特殊字元
     function slugify(s){return s.trim().replace(/\s+/g,'-').replace(/[^A-Za-z0-9\-]/g,'')}
 
