@@ -27,9 +27,7 @@
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 15px;
-      background:
-        radial-gradient(circle at top, rgba(129,140,248,0.16), transparent),
-        var(--bg);
+      background: radial-gradient(circle at top, rgba(129,140,248,0.16), transparent), var(--bg);
       color: var(--text);
       min-height: 100vh;
     }
@@ -51,6 +49,8 @@
       gap: 14px;
       align-items: center;
       margin-bottom: 22px;
+      /* 整條上方淡入 */
+      animation: barFade 600ms ease both;
     }
 
     .brand-wrap {
@@ -65,18 +65,23 @@
       border-radius: 12px;
       background: radial-gradient(circle at 20% 0, #bfdbfe, #2563eb);
       box-shadow: 0 0 14px rgba(37,99,235,0.5);
+      /* ① Logo 先進場 */
+      animation: fadeUp 600ms ease 80ms both;
     }
 
+    /* 🐾 頑皮豹圖片樣式 + 動畫 */
     .mascot {
       height: 32px;
       margin-right: 6px;
       vertical-align: middle;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
       transition: transform 0.3s ease;
+      cursor: pointer;
+      animation: fadeUp 600ms ease 160ms both, blink 5s infinite ease-in-out 1s;
     }
-
     .mascot:hover {
-      transform: rotate(-6deg) scale(1.08);
+      animation: tailwave 0.8s ease-in-out infinite alternate, blink 5s infinite ease-in-out;
+      transform: rotate(-3deg) scale(1.05);
     }
 
     .brand-main {
@@ -88,11 +93,15 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      /* ③ 標題再進場 */
+      animation: fadeUp 600ms ease 240ms both;
     }
 
     .brand-sub {
       font-size: var(--small-font);
       color: var(--text-soft);
+      /* ④ 副標最後進場 */
+      animation: fadeUp 600ms ease 320ms both;
     }
 
     .top-meta {
@@ -101,6 +110,8 @@
       gap: 8px;
       justify-content: flex-end;
       font-size: var(--xsmall-font);
+      /* 與標題同時淡入 */
+      animation: fadeUp 600ms ease 240ms both;
     }
 
     .pill {
@@ -122,25 +133,17 @@
       justify-content: space-between;
       align-items: flex-end;
       gap: 10px;
+      animation: fadeUp 600ms ease 380ms both;
     }
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #111827;
-      margin: 0;
-    }
-
-    .section-sub {
-      font-size: var(--small-font);
-      color: var(--text-soft);
-      margin: 2px 0 0;
-    }
+    .section-title { font-size: 18px; font-weight: 600; color: #111827; margin: 0; }
+    .section-sub { font-size: var(--small-font); color: var(--text-soft); margin: 2px 0 0; }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 14px;
+      animation: fadeUp 600ms ease 460ms both;
     }
 
     .card {
@@ -156,12 +159,7 @@
       text-decoration: none;
       color: inherit;
     }
-
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-soft-md);
-      border-color: var(--accent);
-    }
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft-md); border-color: var(--accent); }
 
     .card-label {
       display: inline-flex;
@@ -174,7 +172,6 @@
       border-radius: 999px;
       font-weight: 500;
     }
-
     .card-title { font-size: 15px; font-weight: 600; }
     .card-desc { font-size: var(--small-font); color: var(--text-soft); line-height: 1.5; }
     .card-meta { font-size: var(--xsmall-font); color: var(--text-soft); }
@@ -205,9 +202,38 @@
       margin-top: 6px;
       transition: all 0.15s ease;
     }
-    .line-select:hover {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 2px rgba(37,99,235,0.14);
+    .line-select:hover { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.14); }
+
+    /* 👁️ 眨眼效果（輕微縮放模擬） */
+    @keyframes blink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.85); }
+    }
+    /* 🌀 搖尾巴（左右微擺） */
+    @keyframes tailwave {
+      0% { transform: rotate(0deg) scale(1.05); }
+      50% { transform: rotate(4deg) scale(1.08); }
+      100% { transform: rotate(-4deg) scale(1.05); }
+    }
+    /* 🚪 元件依序淡入上移 */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes barFade {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* 📱 手機調整頑皮豹大小與字距 */
+    @media (max-width: 600px) {
+      .mascot { height: 24px; margin-right: 4px; }
+      .brand-main { font-size: 17px; letter-spacing: 0.08em; }
+    }
+
+    /* ♿ 若使用者偏好減少動效，自動關閉動畫 */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
     }
   </style>
 </head>
@@ -235,6 +261,7 @@
   </div>
 
   <div class="grid">
+    <!-- PC Manager -->
     <a class="card" href="PC Manager.html">
       <div class="card-label">BOPP1</div>
       <h3 class="card-title">PC Manager</h3>
@@ -243,6 +270,7 @@
       <button class="enter-btn">Enter ↗</button>
     </a>
 
+    <!-- Line Schematic with dropdown -->
     <div class="card">
       <div class="card-label">Production</div>
       <h3 class="card-title">Line Schematic</h3>
