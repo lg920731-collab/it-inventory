@@ -181,7 +181,7 @@
 
     .card:hover .enter-btn { background: var(--accent-hover); }
 
-    /* 📸 左右裝飾頑皮豹（放大＋上下置中） */
+    /* 📸 左右頑皮豹（放大＋上下置中＋朝中間） */
     .side-panther {
       position: fixed;
       top: 50%;
@@ -195,12 +195,12 @@
 
     .side-panther.left {
       left: 2.5%;
-      transform: scaleX(-1) translateY(-50%); /* 左邊不變，維持面向右 */
+      transform: translateY(-50%) scaleX(1); /* 左邊正常，朝右 */
     }
 
     .side-panther.right {
       right: 2.5%;
-      transform: translateY(-50%); /* ✅ 右邊鏡像取消 → 改為朝左 */
+      transform: translateY(-50%) scaleX(-1); /* ✅ 右邊鏡像，朝左 */
     }
 
     @media (max-width: 1000px) {
@@ -235,7 +235,7 @@
   <div class="page">
     <div class="topbar">
       <div class="brand-wrap">
-        <img src="pinkpanther.png" alt="Pink Panther" class="mascot">
+        <img src="pinkpanther1.png" alt="Pink Panther" class="mascot">
         <div>
           <div class="brand-main">MAINTENANCE SMART</div>
           <div class="brand-sub">Make your life easier.</div>
