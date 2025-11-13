@@ -267,6 +267,25 @@
     padding:4px 8px;
   }
 }
+    /* 📱 手機版：只顯示左側圖片，並置中顯示 */
+@media (max-width: 640px){
+
+  /* 先隱藏右邊的 panther + hangyodon */
+  .side-panther.right,
+  .side-hangyodon.right {
+    display: none !important;
+  }
+
+  /* 讓左側圖片置中，不靠左 */
+  .side-panther.left,
+  .side-hangyodon.left {
+    left: 50% !important;
+    transform: translate(-50%, -50%) scaleX(1) !important;
+    /* 你可以視覺需要調整大小 */
+    width: 300px;
+    opacity: 0.9;
+  }
+}
   </style>
 </head>
 <body>
