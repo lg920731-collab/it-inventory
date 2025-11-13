@@ -19,38 +19,106 @@
       --shadow-soft-md:0 16px 40px rgba(15,23,42,.09);
       --small-font:13px; --xsmall-font:11px;
     }
+
+    /* Dark mode 變數覆寫：html[data-theme="dark"] */
+    html[data-theme="dark"]{
+      --bg:#020617;
+      --card-bg:#020617;
+      --border-subtle:#1f2937;
+      --accent:#60a5fa;
+      --accent-soft:rgba(37,99,235,.14);
+      --accent-hover:#3b82f6;
+      --text:#e5e7eb;
+      --text-soft:#9ca3af;
+      --shadow-soft-sm:0 10px 26px rgba(0,0,0,.6);
+      --shadow-soft-md:0 16px 40px rgba(0,0,0,.75);
+    }
+
     *{box-sizing:border-box}
     body{
       margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
       font-size:15px;color:var(--text);
       background:radial-gradient(circle at top,rgba(129,140,248,.16),transparent),var(--bg);
       min-height:100vh;overflow-x:hidden;
+      transition:background .25s ease,color .25s ease;
     }
     .page{position:relative;max-width:1200px;margin:0 auto;padding:24px 16px 40px;z-index:2}
 
     .topbar{
-      background:#fff;padding:18px 20px;border-radius:22px;border:1px solid var(--border-subtle);
-      box-shadow:var(--shadow-soft-md);display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:22px
+      background:var(--card-bg);padding:18px 20px;border-radius:22px;border:1px solid var(--border-subtle);
+      box-shadow:var(--shadow-soft-md);display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:22px;
+      transition:background .25s ease,box-shadow .25s ease,border-color .25s ease;
     }
     .brand-wrap{display:flex;align-items:center;gap:10px}
     .mascot{height:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
-    .brand-main{font-size:19px;font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:#111827;display:flex;align-items:center;gap:6px}
+    .brand-main{font-size:19px;font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:var(--text);display:flex;align-items:center;gap:6px}
     .brand-sub{font-size:13px;color:var(--text-soft)}
 
-    .top-meta{display:flex;gap:8px;align-items:center;font-size:11px;flex-wrap:wrap}
+    .top-meta{display:flex;gap:8px;align-items:center;font-size:11px;flex-wrap:wrap;justify-content:flex-end}
     .pill{
       padding:5px 11px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;
-      display:inline-flex;align-items:center;gap:6px
+      display:inline-flex;align-items:center;gap:6px;transition:background .2s ease,border-color .2s ease,color .2s ease;
+    }
+    html[data-theme="dark"] .pill{
+      border-color:#1f2937;
+      background:#020617;
     }
     .pill-label{color:var(--text-soft)}
     .pill-strong{color:var(--text);font-weight:500}
 
     .pill.designer{padding:6px 13px;border-color:#dbeafe;background:#eff6ff}
-    .pill-designer-strong{font-size:14px;font-weight:700;letter-spacing:.02em;color:#111827}
+    html[data-theme="dark"] .pill.designer{
+      border-color:#1d4ed8;
+      background:rgba(37,99,235,.18);
+    }
+    .pill-designer-strong{font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--text)}
 
-    .section-head{margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
-    .section-title{font-size:18px;font-weight:600;color:#111827;margin:0}
+    /* theme toggle */
+    .btn-ghost{
+      border-radius:999px;border:1px solid #e5e7eb;background:transparent;
+      padding:5px 9px;font-size:13px;display:inline-flex;align-items:center;gap:6px;
+      cursor:pointer;color:var(--text-soft);transition:all .18s ease;
+    }
+    html[data-theme="dark"] .btn-ghost{
+      border-color:#1f2937;
+    }
+    .btn-ghost-icon{font-size:14px}
+    .btn-ghost:hover{
+      border-color:var(--accent);
+      color:var(--accent);
+      box-shadow:0 0 0 2px rgba(37,99,235,.14);
+      background:var(--accent-soft);
+    }
+
+    .section-head{margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+    .section-title{font-size:18px;font-weight:600;color:var(--text);margin:0}
     .section-sub{font-size:var(--small-font);color:var(--text-soft);margin:2px 0 0}
+
+    /* 搜尋框 */
+    .section-tools{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .search-input{
+      font-size:13px;padding:7px 11px;border-radius:999px;border:1px solid #d1d5db;background:#fff;color:var(--text);
+      min-width:220px;transition:all .18s ease;
+    }
+    .search-input::placeholder{color:#9ca3af}
+    .search-input:focus-visible{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 2px rgba(37,99,235,.2);
+    }
+    html[data-theme="dark"] .search-input{
+      background:#020617;
+      border-color:#1f2937;
+    }
+
+    .search-hint{
+      font-size:11px;color:var(--text-soft);
+    }
 
     .grid{
       display:grid;
@@ -64,7 +132,7 @@
 
     .card{
       background:var(--card-bg);border-radius:var(--radius-xl);padding:14px;border:1px solid var(--border-subtle);
-      box-shadow:var(--shadow-soft-sm);display:flex;flex-direction:column;gap:6px;transition:all .18s ease;text-decoration:none;color:inherit;min-height:230px
+      box-shadow:var(--shadow-soft-sm);display:flex;flex-direction:column;gap:6px;transition:all .18s ease;text-decoration:none;color:inherit;min-height:230px;
     }
     .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-soft-md);border-color:var(--accent)}
     .card-label{display:inline-flex;align-items:center;gap:6px;font-size:var(--xsmall-font);color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:999px;font-weight:500}
@@ -77,7 +145,8 @@
     /* Focus-visible：鍵盤可用性提升 */
     .line-select:focus-visible,
     .btn-secondary:focus-visible,
-    .enter-btn:focus-visible {
+    .enter-btn:focus-visible,
+    .btn-ghost:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
       box-shadow:0 0 0 3px rgba(37,99,235,.25);
@@ -86,14 +155,13 @@
     /* 左右頑皮豹 */
     .side-panther{
       position:fixed;top:50%;transform:translateY(-50%);
-      width:420px;opacity:.9;z-index:1;pointer-events:none;user-select:none;
+      width:420px;opacity:.9;z-index:1;pointer-events:auto;user-select:none;
       transition: transform .25s ease, opacity .25s ease;
     }
     .side-panther.left{left:2.5%;transform:translateY(-50%) scaleX(1)}
     .side-panther.right{right:2.5%;transform:translateY(-50%) scaleX(-1)}
     @media (max-width:1000px){.side-panther{display:none}}
 
-    /* Hover 微互動 */
     .side-panther.left:hover{
       transform:translateY(-50%) translateX(-4px) scaleX(1);
       opacity:1;
@@ -106,9 +174,35 @@
     /* 共用選單與操作列 */
     .line-select{font-size:13px;padding:6px 10px;border-radius:999px;border:1px solid #d1d5db;background:#fff;color:#111827;cursor:pointer;transition:all .15s ease}
     .line-select:hover{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.14)}
+    html[data-theme="dark"] .line-select{
+      background:#020617;
+      border-color:#1f2937;
+      color:var(--text);
+    }
+
     .action-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
-    .btn-secondary{padding:6px 12px;border-radius:999px;border:1px solid #c7d2fe;background:#eef2ff;color:#1d4ed8;font-size:12px;cursor:pointer}
+    .btn-secondary{padding:6px 12px;border-radius:999px;border:1px solid #c7d2fe;background:#eef2ff;color:#1d4ed8;font-size:12px;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease}
     .btn-secondary:disabled{opacity:.5;cursor:not-allowed}
+    .btn-secondary:hover:not(:disabled){
+      background:#e0e7ff;
+      border-color:#a5b4fc;
+    }
+    html[data-theme="dark"] .btn-secondary{
+      background:rgba(59,130,246,.15);
+      border-color:#1d4ed8;
+      color:#bfdbfe;
+    }
+    html[data-theme="dark"] .btn-secondary:hover:not(:disabled){
+      background:rgba(59,130,246,.3);
+    }
+
+    /* 搜尋時沒有結果的提示 */
+    .no-result{
+      margin-top:18px;
+      font-size:12px;
+      color:var(--text-soft);
+      display:none;
+    }
   </style>
 </head>
 <body>
@@ -135,6 +229,10 @@
           <span class="pill-label">Modified Date</span>
           <span class="pill-strong" id="modDate">Checking…</span>
         </div>
+        <button id="themeToggle" class="btn-ghost" type="button" aria-label="Toggle theme">
+          <span class="btn-ghost-icon" id="themeIcon">🌞</span>
+          <span>Theme</span>
+        </button>
       </div>
     </div>
 
@@ -143,11 +241,21 @@
         <h2 class="section-title">Modules</h2>
         <p class="section-sub">Choose a page below. Each is an independent system.</p>
       </div>
+      <div class="section-tools">
+        <input
+          id="moduleSearch"
+          class="search-input"
+          type="search"
+          placeholder="Search modules… (e.g. PC, Schematic)"
+          aria-label="Search modules"
+        />
+        <div class="search-hint">Filter by module name or description.</div>
+      </div>
     </div>
 
-    <div class="grid">
+    <div class="grid" id="moduleGrid">
       <!-- PC Manager -->
-      <a class="card" href="PC Manager.html">
+      <a class="card" href="PC Manager.html" data-keywords="pc manager computer asset inventory boppl list csv">
         <div class="card-label">BOPP1</div>
         <h3 class="card-title">PC Manager</h3>
         <p class="card-desc">View computer asset list from inventory.csv.</p>
@@ -156,7 +264,7 @@
       </a>
 
       <!-- Line Schematic -->
-      <div class="card">
+      <div class="card" data-keywords="line schematic production electrical pdf f12 f13 f16 f201">
         <div class="card-label">Production</div>
         <h3 class="card-title">Line Schematic</h3>
         <p class="card-desc">Select a Line and its area to open the schematic.</p>
@@ -184,7 +292,7 @@
       </div>
 
       <!-- Program Backup -->
-      <div class="card">
+      <div class="card" data-keywords="program backup plc scada docs automation main blending loading grinder tdo winder mdo">
         <div class="card-label">Automation</div>
         <h3 class="card-title">Program Backup</h3>
         <p class="card-desc">Select a Line and a system to open its backup page.</p>
@@ -220,7 +328,7 @@
       </div>
 
       <!-- Calibration -->
-      <div class="card">
+      <div class="card" data-keywords="calibration procedure maintenance hopper weight winder contact roll line speed sop">
         <div class="card-label">Maintenance</div>
         <h3 class="card-title">Calibration Procedure</h3>
         <p class="card-desc">Open the step-by-step calibration SOP.</p>
@@ -238,9 +346,19 @@
         </div>
       </div>
     </div>
+
+    <div id="noResult" class="no-result">No modules found. Try another keyword.</div>
   </div>
 
   <script>
+    // --- Theme 初始化（跟隨系統 + localStorage） ---
+    (function initTheme(){
+      const stored = localStorage.getItem('ms-theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+
     // GitHub last commit datetime
     (async function(){
       const el = document.getElementById('modDate');
@@ -297,6 +415,68 @@
     const calGo=document.getElementById('calGo');
     calProc.addEventListener('change',()=>{calGo.disabled=!calProc.value});
     calGo.addEventListener('click',()=>{window.location.href=`Calibration-${slugify(calProc.value)}.html`});
+
+    /* Theme Toggle */
+    (function(){
+      const btn = document.getElementById('themeToggle');
+      const icon = document.getElementById('themeIcon');
+
+      function applyIcon(theme){
+        icon.textContent = theme === 'dark' ? '🌙' : '🌞';
+      }
+
+      function toggleTheme(){
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('ms-theme', next);
+        applyIcon(next);
+      }
+
+      const initial = document.documentElement.getAttribute('data-theme') || 'light';
+      applyIcon(initial);
+
+      btn.addEventListener('click', toggleTheme);
+    })();
+
+    /* Module Search Filter */
+    (function(){
+      const input = document.getElementById('moduleSearch');
+      const cards = Array.from(document.querySelectorAll('#moduleGrid .card'));
+      const noResult = document.getElementById('noResult');
+
+      function normalize(str){
+        return str.toLowerCase();
+      }
+
+      function filterModules(){
+        const query = normalize(input.value.trim());
+        let visibleCount = 0;
+
+        if (!query){
+          cards.forEach(card => {
+            card.style.display = '';
+          });
+          noResult.style.display = 'none';
+          return;
+        }
+
+        cards.forEach(card => {
+          const text = (
+            card.getAttribute('data-keywords') ||
+            card.textContent ||
+            ''
+          );
+          const match = normalize(text).includes(query);
+          card.style.display = match ? '' : 'none';
+          if (match) visibleCount++;
+        });
+
+        noResult.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      input.addEventListener('input', filterModules);
+    })();
   </script>
 </body>
 </html>
