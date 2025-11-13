@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
@@ -81,6 +81,20 @@
     .side-panther.left{left:2.5%;transform:translateY(-50%) scaleX(1)}
     .side-panther.right{right:2.5%;transform:translateY(-50%) scaleX(-1)}
     @media (max-width:1000px){.side-panther{display:none}}
+    /* 頑皮豹 hover 微互動 */
+    .side-panther{
+      transition: transform .25s ease, opacity .25s ease;
+    }
+
+    .side-panther.left:hover{
+      transform:translateY(-50%) translateX(-4px) scaleX(1);
+      opacity:1;
+    }
+
+    .side-panther.right:hover{
+      transform:translateY(-50%) translateX(4px) scaleX(-1);
+      opacity:1;
+    }
 
     /* 共用選單與操作列 */
     .line-select{font-size:13px;padding:6px 10px;border-radius:999px;border:1px solid #d1d5db;background:#fff;color:#111827;cursor:pointer;transition:all .15s ease}
