@@ -195,11 +195,12 @@
 
     .side-panther.left {
       left: 2.5%;
+      transform: scaleX(-1) translateY(-50%); /* 左邊不變，維持面向右 */
     }
 
     .side-panther.right {
       right: 2.5%;
-      transform: scaleX(-1) translateY(-50%);
+      transform: translateY(-50%); /* ✅ 右邊鏡像取消 → 改為朝左 */
     }
 
     @media (max-width: 1000px) {
@@ -228,8 +229,8 @@
 <body>
 
   <!-- 左右頑皮豹 -->
-  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left">
-  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right">
+  <img src="pinkpanther1_clear.png" alt="Pink Panther Left" class="side-panther left">
+  <img src="pinkpanther2_clear.png" alt="Pink Panther Right" class="side-panther right">
 
   <div class="page">
     <div class="topbar">
