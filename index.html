@@ -67,12 +67,27 @@
       box-shadow: 0 0 14px rgba(37,99,235,0.5);
     }
 
+    .mascot {
+      height: 32px;
+      margin-right: 6px;
+      vertical-align: middle;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+      transition: transform 0.3s ease;
+    }
+
+    .mascot:hover {
+      transform: rotate(-6deg) scale(1.08);
+    }
+
     .brand-main {
       font-size: 19px;
       font-weight: 650;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .brand-sub {
@@ -179,7 +194,6 @@
     }
     .card:hover .enter-btn { background: var(--accent-hover); }
 
-    /* ✅ 下拉選單樣式 */
     .line-select {
       font-size: 13px;
       padding: 6px 10px;
@@ -202,6 +216,7 @@
   <div class="topbar">
     <div class="brand-wrap">
       <div class="brand-logo"></div>
+      <img src="pinkpanther.png" alt="Pink Panther" class="mascot">
       <div>
         <div class="brand-main">MAINTENANCE SMART</div>
         <div class="brand-sub">Make your life easier.</div>
@@ -220,7 +235,6 @@
   </div>
 
   <div class="grid">
-    <!-- PC Manager 模組 -->
     <a class="card" href="PC Manager.html">
       <div class="card-label">BOPP1</div>
       <h3 class="card-title">PC Manager</h3>
@@ -229,7 +243,6 @@
       <button class="enter-btn">Enter ↗</button>
     </a>
 
-    <!-- ✅ Line Schematic 模組 -->
     <div class="card">
       <div class="card-label">Production</div>
       <h3 class="card-title">Line Schematic</h3>
@@ -237,10 +250,10 @@
       <div class="card-meta">Interactive • PDF-based</div>
       <select class="line-select" onchange="if(this.value) window.location.href=this.value;">
         <option value="">Select Line</option>
-        <option value="Line 1 Schematic.html">Line 1</option>
-        <option value="Line 2 Schematic.html">Line 2</option>
-        <option value="Line 3 Schematic.html">Line 3</option>
-        <option value="Line 4 Schematic.html">Line 4</option>
+        <option value="Line-1-Schematic.html">Line 1</option>
+        <option value="Line-2-Schematic.html">Line 2</option>
+        <option value="Line-3-Schematic.html">Line 3</option>
+        <option value="Line-4-Schematic.html">Line 4</option>
       </select>
     </div>
   </div>
