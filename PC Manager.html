@@ -1,816 +1,769 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Maintenance Smart | BOPP1 PC Manager</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Apply theme & style from portal -->
-  <script>
-    (function () {
-      // light / dark
-      const storedTheme = localStorage.getItem('ms-theme');
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = storedTheme || (prefersDark ? 'dark' : 'light');
-      document.documentElement.setAttribute('data-theme', theme);
-
-      // style: blue / panther / hangyodon
-      const style = localStorage.getItem('ms-style') || 'blue';
-      document.documentElement.setAttribute('data-style', style);
-    })();
-  </script>
-
+  <meta charset="UTF-8" />
+  <title>Maintenance Smart | Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    :root {
-      --bg: #f3f4f6;
-      --card-bg: #ffffff;
-      --border-subtle: #e5e7eb;
-      --accent: #2563eb;
-      --accent-hover: #1d4ed8;
-      --text: #111827;
-      --text-soft: #6b7280;
-      --radius-xl: 16px;
-      --shadow-soft-sm: 0 8px 20px rgba(15,23,42,0.06);
-      --small-font: 13px;
-      --xsmall-font: 11px;
+    :root{
+      --bg:#f3f4f6;
+      --card-bg:#fff;
+      --border-subtle:#e5e7eb;
+      --accent:#2563eb;
+      --accent-soft:#eff6ff;
+      --accent-hover:#1d4ed8;
+      --text:#111827;
+      --text-soft:#6b7280;
+      --radius-xl:18px;
+      --shadow-soft-sm:0 10px 26px rgba(15,23,42,.06);
+      --shadow-soft-md:0 16px 40px rgba(15,23,42,.09);
+      --small-font:13px; --xsmall-font:11px;
     }
 
     /* Dark mode */
-    html[data-theme="dark"] {
-      --bg: #020617;
-      --card-bg: #020617;
-      --border-subtle: #1f2937;
-      --accent: #60a5fa;
-      --accent-hover: #3b82f6;
-      --text: #e5e7eb;
-      --text-soft: #9ca3af;
-      --shadow-soft-sm: 0 8px 20px rgba(0,0,0,0.75);
+    html[data-theme="dark"]{
+      --bg:#020617;
+      --card-bg:#020617;
+      --border-subtle:#1f2937;
+      --accent:#60a5fa;
+      --accent-soft:rgba(37,99,235,.14);
+      --accent-hover:#3b82f6;
+      --text:#e5e7eb;
+      --text-soft:#9ca3af;
+      --shadow-soft-sm:0 10px 26px rgba(0,0,0,.6);
+      --shadow-soft-md:0 16px 40px rgba(0,0,0,.75);
     }
 
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      font-size: 15px;
-      background:
-        radial-gradient(circle at top, rgba(129,140,248,0.14), transparent),
-        var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-text-size-adjust: 100%;
-      transition: background .25s ease, color .25s ease;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      font-size:15px;
+      color:var(--text);
+      background:radial-gradient(circle at top,rgba(129,140,248,.16),transparent),var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+      transition:background .25s ease,color .25s ease;
     }
 
-    /* style 背景：跟首頁一致 */
-    html[data-style="panther"] body {
-      background:
-        radial-gradient(circle at top, rgba(244,114,182,.28), transparent),
-        var(--bg);
+    /* style 主題背景（桌機） */
+    html[data-style="panther"] body{
+      background:radial-gradient(circle at top,rgba(244,114,182,.28),transparent),var(--bg);
     }
-    html[data-style="hangyodon"] body {
-      background:
-        radial-gradient(circle at top, rgba(56,189,248,.35), transparent),
-        var(--bg);
+    html[data-style="hangyodon"] body{
+      background:radial-gradient(circle at top,rgba(56,189,248,.35),transparent),var(--bg);
     }
 
-    /* Side characters */
+    .page{
+      position:relative;
+      max-width:1200px;
+      margin:0 auto;
+      padding:24px 16px 40px;
+      z-index:2;
+    }
+
+    .topbar{
+      background:var(--card-bg);
+      padding:18px 20px;
+      border-radius:22px;
+      border:1px solid var(--border-subtle);
+      box-shadow:var(--shadow-soft-md);
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:center;
+      margin-bottom:18px;
+      transition:background .25s ease,box-shadow .25s ease,border-color .25s ease;
+    }
+    .brand-wrap{display:flex;align-items:center;gap:10px}
+
+    /* 左上主題 icon（之後用 JS 替換） */
+    .mascot{
+      height:32px;width:32px;border-radius:12px;
+      box-shadow:0 0 14px rgba(37,99,235,.5);
+      object-fit:cover;
+    }
+
+    .brand-main{
+      font-size:19px;
+      font-weight:650;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      gap:6px
+    }
+    .brand-sub{font-size:13px;color:var(--text-soft)}
+
+    .top-meta{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-size:11px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      padding:5px 11px;
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      transition:background .2s ease,border-color .2s ease,color .2s ease;
+    }
+    html[data-theme="dark"] .pill{
+      border-color:#1f2937;
+      background:#020617;
+    }
+    .pill-label{color:var(--text-soft)}
+    .pill-strong{color:var(--text);font-weight:500}
+
+    .pill.designer{
+      padding:6px 13px;
+      border-color:#dbeafe;
+      background:#eff6ff;
+    }
+    html[data-theme="dark"] .pill.designer{
+      border-color:#1d4ed8;
+      background:rgba(37,99,235,.18);
+    }
+    .pill-designer-strong{
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:.02em;
+      color:var(--text);
+    }
+
+    /* theme 按鈕 */
+    .btn-ghost{
+      border-radius:999px;
+      border:1px solid #e5e7eb;
+      background:transparent;
+      padding:5px 9px;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      color:var(--text-soft);
+      transition:all .18s ease;
+    }
+    html[data-theme="dark"] .btn-ghost{
+      border-color:#1f2937;
+    }
+    .btn-ghost-icon{font-size:14px}
+    .btn-ghost:hover{
+      border-color:var(--accent);
+      color:var(--accent);
+      box-shadow:0 0 0 2px rgba(37,99,235,.14);
+      background:var(--accent-soft);
+    }
+
+    .section-head{
+      margin-bottom:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .section-title{font-size:18px;font-weight:600;color:var(--text);margin:0}
+    .section-sub{font-size:var(--small-font);color:var(--text-soft);margin:2px 0 0}
+
+    /* 搜尋 + 提示 */
+    .section-tools{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .search-input{
+      font-size:13px;
+      padding:7px 11px;
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      background:#fff;
+      color:var(--text);
+      min-width:220px;
+      transition:all .18s ease;
+    }
+    .search-input::placeholder{color:#9ca3af}
+    .search-input:focus-visible{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 2px rgba(37,99,235,.2);
+    }
+    html[data-theme="dark"] .search-input{
+      background:#020617;
+      border-color:#1f2937;
+    }
+    .search-hint{font-size:11px;color:var(--text-soft);}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:var(--card-bg);
+      border-radius:var(--radius-xl);
+      padding:14px;
+      border:1px solid var(--border-subtle);
+      box-shadow:var(--shadow-soft-sm);
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      transition:all .18s ease;
+      text-decoration:none;
+      color:inherit;
+      min-height:230px;
+    }
+    .card:hover{
+      transform:translateY(-3px);
+      box-shadow:var(--shadow-soft-md);
+      border-color:var(--accent);
+    }
+    .card-label{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:var(--xsmall-font);
+      color:var(--accent);
+      background:var(--accent-soft);
+      padding:3px 8px;
+      border-radius:999px;
+      font-weight:500;
+    }
+    .card-title{font-size:15px;font-weight:600;margin:2px 0 4px}
+    .card-desc{font-size:var(--small-font);color:var(--text-soft);line-height:1.6;margin:0 0 6px}
+    .card-meta{font-size:var(--xsmall-font);color:var(--text-soft);margin-top:auto}
+    .enter-btn{
+      margin-top:auto;
+      align-self:flex-end;
+      padding:5px 11px;
+      border-radius:999px;
+      border:none;
+      font-size:var(--xsmall-font);
+      background:var(--accent);
+      color:#fff;
+      box-shadow:0 6px 14px rgba(37,99,235,.35);
+      cursor:pointer;
+      transition:all .16s ease;
+    }
+    .card:hover .enter-btn{background:var(--accent-hover)}
+
+    .line-select:focus-visible,
+    .btn-secondary:focus-visible,
+    .enter-btn:focus-visible,
+    .btn-ghost:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      box-shadow:0 0 0 3px rgba(37,99,235,.25);
+    }
+
+    /* 左右 panther / hangyodon */
     .side-panther,
     .side-hangyodon{
       position:fixed;
       top:50%;
       transform:translateY(-50%);
-      width:360px;
+      width:420px;
       opacity:.9;
       z-index:1;
-      pointer-events:none;
+      pointer-events:auto;
       user-select:none;
+      transition: transform .25s ease, opacity .25s ease;
       display:none;
-      transition:transform .25s ease, opacity .25s ease;
     }
-    .side-panther.left{left:1.5%;transform:translateY(-50%) scaleX(1)}
-    .side-panther.right{right:1.5%;transform:translateY(-50%) scaleX(1)}
-    .side-hangyodon.left{left:1.5%;transform:translateY(-50%) scaleX(-1)}
-    .side-hangyodon.right{right:1.5%;transform:translateY(-50%) scaleX(-1)}
+
+    /* 桌機版：左右各一隻，往中間看 */
+    .side-panther.left{left:2.5%;transform:translateY(-50%) scaleX(1);}
+    .side-panther.right{right:2.5%;transform:translateY(-50%) scaleX(1);}
+
+    .side-hangyodon.left{left:2.5%;transform:translateY(-50%) scaleX(-1);}
+    .side-hangyodon.right{right:2.5%;transform:translateY(-50%) scaleX(1);}
 
     html[data-style="panther"] .side-panther{display:block;}
     html[data-style="hangyodon"] .side-hangyodon{display:block;}
 
-    @media (max-width:1000px){
-      .side-panther,
-      .side-hangyodon{display:none}
+    /* 手機 / 平板：保留右邊大圖並置中 */
+    @media (max-width: 900px){
+      body{
+        /* 手機只保留底色，不再使用 mobile-bg 圖片 */
+        background:var(--bg);
+      }
+
+      /* 左邊角色隱藏 */
+      .side-panther.left,
+      .side-hangyodon.left{
+        display:none;
+      }
+
+      /* 右邊角色改成置中顯示 */
+      .side-panther.right,
+      .side-hangyodon.right{
+        display:block;
+        left:50%;
+        right:auto;
+        top:50%;
+        transform:translate(-50%,-50%);
+        width:260px;
+        opacity:0.9;
+        pointer-events:none; /* 以免擋到點擊 */
+      }
+
+      .page{
+        padding-top:16px;
+      }
+
+      /* 手機版 topbar 改成上下排版 */
+      .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+      }
+
+      .brand-main{
+        font-size:17px;
+        letter-spacing:.10em;
+      }
+      .brand-sub{
+        font-size:12px;
+      }
+
+      .top-meta{
+        width:100%;
+        justify-content:flex-start;
+        gap:6px;
+        flex-wrap:wrap;
+      }
+
+      .top-meta .pill,
+      .top-meta .btn-ghost{
+        flex-shrink:0;
+      }
     }
 
-    .page {
-      position:relative;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 16px 32px;
-      z-index:2;
+    .side-panther.left:hover,
+    .side-hangyodon.left:hover{
+      transform:translateY(-50%) translateX(-4px) scaleX(1);
+      opacity:1;
+    }
+    .side-panther.right:hover,
+    .side-hangyodon.right:hover{
+      transform:translateY(-50%) translateX(4px) scaleX(-1);
+      opacity:1;
     }
 
-    /* Top bar */
-    .topbar {
-      background: var(--card-bg);
-      padding: 14px 18px;
-      border-radius: 18px;
-      box-shadow: var(--shadow-soft-sm);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      border: 1px solid var(--border-subtle);
-      transition: background .25s ease, box-shadow .25s ease, border-color .25s ease;
+    /* 共用選單與操作列 */
+    .line-select{
+      font-size:13px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #d1d5db;
+      background:#fff;
+      color:#111827;
+      cursor:pointer;
+      transition:all .15s ease;
     }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .line-select:hover{
+      border-color:#2563eb;
+      box-shadow:0 0 0 2px rgba(37,99,235,.14);
     }
-
-    .brand-logo {
-      width: 28px;
-      height: 28px;
-      border-radius: 9px;
-      background: radial-gradient(circle at 30% 0, #bfdbfe, #2563eb);
-      box-shadow: 0 0 10px rgba(37,99,235,0.35);
-    }
-
-    .brand-main {
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      font-size: 13px;
-      text-transform: uppercase;
-      color: #6b7280;
-    }
-
-    .brand-sub {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      margin-top: 1px;
-    }
-
-    .brand-sub-note {
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-    }
-
-    .top-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      justify-content: flex-end;
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-    }
-
-    .pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background .2s ease, border-color .2s ease;
-    }
-
-    html[data-theme="dark"] .pill {
-      border-color: #1f2937;
-      background: #020617;
-    }
-
-    .pill-label { color: var(--text-soft); }
-    .pill-strong { color: var(--text); font-weight: 500; }
-
-    .back-link {
-      font-size: var(--xsmall-font);
-      color: var(--accent);
-      text-decoration: none;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #eff6ff;
-      margin-right: 4px;
-      transition: all 0.15s ease;
-    }
-    .back-link:hover {
-      background: #dbeafe;
-      transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(148,163,253,0.35);
-    }
-
-    /* Card */
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border-subtle);
-      padding: 14px;
-      box-shadow: var(--shadow-soft-sm);
-      margin-bottom: 14px;
-      transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
-    }
-
-    .card h2 {
-      margin: 0 0 4px;
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .card-subtitle {
-      font-size: var(--small-font);
-      color: var(--text-soft);
-      margin-bottom: 8px;
-    }
-
-    /* Filter header */
-    .filter-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      gap: 8px;
-    }
-
-    .filter-header h2 { margin: 0; }
-
-    .filter-toggle-icon {
-      font-size: 16px;
-      color: var(--text-soft);
-      transition: transform 0.2s ease;
-    }
-
-    /* Filters */
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin-top: 6px;
-    }
-
-    .filters-label {
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-      margin-right: 2px;
-    }
-
-    .filters input,
-    .filters select {
-      font-size: var(--small-font);
-      padding: 7px 9px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      color: var(--text);
-      min-width: 150px;
-      transition: all 0.15s ease;
-    }
-
-    html[data-theme="dark"] .filters input,
-    html[data-theme="dark"] .filters select {
+    html[data-theme="dark"] .line-select{
       background:#020617;
       border-color:#1f2937;
       color:var(--text);
     }
 
-    .filters input::placeholder { color: #9ca3af; }
-
-    .filters input:focus,
-    .filters select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(37,99,235,0.14);
-      outline: none;
-      transform: translateY(-1px);
+    .action-row{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .btn-secondary{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid #c7d2fe;
+      background:#eef2ff;
+      color:#1d4ed8;
+      font-size:12px;
+      cursor:pointer;
+      transition:background .18s ease,border-color .18s ease,color .18s ease;
+    }
+    .btn-secondary:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+    .btn-secondary:hover:not(:disabled){
+      background:#e0e7ff;
+      border-color:#a5b4fc;
+    }
+    html[data-theme="dark"] .btn-secondary{
+      background:rgba(59,130,246,.15);
+      border-color:#1d4ed8;
+      color:#bfdbfe;
+    }
+    html[data-theme="dark"] .btn-secondary:hover:not(:disabled){
+      background:rgba(59,130,246,.3);
     }
 
-    .btn {
-      cursor: pointer;
-      border-radius: 999px;
-      padding: 7px 13px;
-      font-size: var(--xsmall-font);
-      border: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .btn:hover {
-      background: #d1d5db;
-      transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(148,163,253,0.35);
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(37,99,235,0.35);
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-hover);
-    }
-
-    /* Collapsible */
-    .collapsible {
-      overflow: hidden;
-      max-height: 500px;
-      opacity: 1;
-      transition: max-height 0.3s ease, opacity 0.25s ease;
-    }
-    .collapsible.closed {
-      max-height: 0;
-      opacity: 0;
-      margin-top: 0;
-      pointer-events: none;
-    }
-
-    /* Table */
-    .table-wrap {
-      margin-top: 4px;
-      border-radius: 14px;
-      border: 1px solid #e5e7eb;
-      overflow-x: auto;
-      background: #ffffff;
-      box-shadow: var(--shadow-soft-sm);
-    }
-
-    html[data-theme="dark"] .table-wrap {
-      background:#020617;
-      border-color:#1f2937;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: var(--small-font);
-    }
-
-    thead { background: #f9fafb; }
-
-    html[data-theme="dark"] thead {
-      background:#020617;
-    }
-
-    th, td {
-      padding: 8px 9px;
-      border-bottom: 1px solid #e5e7eb;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    html[data-theme="dark"] th,
-    html[data-theme="dark"] td {
-      border-bottom-color:#1f2937;
-    }
-
-    th {
-      font-size: var(--xsmall-font);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-soft);
-      position: sticky;
-      top: 0;
-      z-index: 5;
-      cursor: pointer;
-      user-select: none;
-      background: #f9fafb;
-    }
-
-    th[data-sort]:hover {
-      color: var(--accent);
-      background: #eef2ff;
-    }
-
-    tbody tr {
-      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    tbody tr:nth-child(even) { background: #ffffff; }
-    tbody tr:nth-child(odd)  { background: #fdfdfd; }
-
-    html[data-theme="dark"] tbody tr:nth-child(even),
-    html[data-theme="dark"] tbody tr:nth-child(odd) {
-      background:transparent;
-    }
-
-    tbody tr:hover {
-      background: #eff6ff;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(148,163,253,0.25);
-    }
-
-    html[data-theme="dark"] tbody tr:hover {
-      background:rgba(37,99,235,.25);
-    }
-
-    td {
-      color: var(--text);
-      max-width: 260px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .status-using,
-    .status-spare,
-    .status-broken,
-    .status-test {
-      font-size: var(--xsmall-font);
-      font-weight: 600;
-      padding: 3px 9px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .status-using {
-      color: #166534;
-      background: #bbf7d0;
-      border: 1px solid #4ade80;
-    }
-    .status-spare {
-      color: #1d4ed8;
-      background: #dbeafe;
-      border: 1px solid #60a5fa;
-    }
-    .status-broken {
-      color: #92400e;
-      background: #fed7aa;
-      border: 1px solid #fb923c;
-    }
-    .status-test {
-      color: #6b21a8;
-      background: #ede9fe;
-      border: 1px solid #c4b5fd;
-    }
-
-    .note {
-      font-size: var(--xsmall-font);
-      color: var(--text-soft);
-    }
-
-    /* Print */
-    @media print {
-      body {
-        background: #ffffff !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .page {
-        max-width: 100%;
-        padding: 0;
-      }
-      .topbar,
-      .card {
-        box-shadow: none;
-        border-radius: 0;
-        margin: 0 0 8px 0;
-      }
-      .filters,
-      #reloadBtn,
-      #printBtn,
-      .filter-header,
-      .back-link,
-      .side-panther,
-      .side-hangyodon {
-        display: none !important;
-      }
-      .table-wrap {
-        box-shadow: none;
-        border-radius: 0;
-        border: 1px solid #000;
-      }
-      th, td {
-        border-color: #000 !important;
-        color: #000 !important;
-      }
-      .status-using,
-      .status-spare,
-      .status-broken,
-      .status-test {
-        border-color: #000 !important;
-        color: #000 !important;
-        background: #ffffff !important;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-      }
+    .no-result{
+      margin-top:18px;
+      font-size:12px;
+      color:var(--text-soft);
+      display:none;
     }
   </style>
 </head>
 <body>
 
   <!-- side characters -->
-  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left">
-  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right">
-  <img src="hangyodon1.png" alt="Hangyodon Left" class="side-hangyodon left">
-  <img src="hangyodon2.png" alt="Hangyodon Right" class="side-hangyodon right">
+  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left" />
+  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right" />
+
+  <img src="hangyodon1.png" alt="Hangyodon Left" class="side-hangyodon left" />
+  <img src="hangyodon2.png" alt="Hangyodon Right" class="side-hangyodon right" />
 
   <div class="page">
-    <!-- Header -->
     <div class="topbar">
       <div class="brand-wrap">
-        <div class="brand-logo"></div>
+        <!-- src 會被 JS 替換成對應主題圖 -->
+        <img src="" alt="Theme Mascot" class="mascot" />
         <div>
           <div class="brand-main">MAINTENANCE SMART</div>
-          <div class="brand-sub">BOPP1 PC Manager</div>
-          <div class="brand-sub-note">Company computer asset list (Source: Excel / CSV)</div>
+          <div class="brand-sub">Smarter maintenance, easier life.</div>
         </div>
       </div>
       <div class="top-meta">
-        <a href="index.html" class="back-link">← Maintenance Smart Portal</a>
-        <div class="pill">
-          <span class="pill-label">Last update</span>
-          <span class="pill-strong" id="lastSync">—</span>
+        <div class="pill designer">
+          <span class="pill-label">Designed by</span>
+          <span class="pill-designer-strong">Benjamin Lin</span>
         </div>
         <div class="pill">
-          <span class="pill-label">Managed by</span>
-          <span class="pill-strong">Benjamin Lin</span>
+          <span class="pill-label">Modified Date</span>
+          <span class="pill-strong" id="modDate">Checking…</span>
+        </div>
+        <button id="themeToggle" class="btn-ghost" type="button" aria-label="Toggle theme">
+          <span class="btn-ghost-icon" id="themeIcon">🌞</span>
+          <span id="themeLabel">Theme</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Modules</h2>
+        <p class="section-sub">Choose a page below. Each is an independent system.</p>
+      </div>
+      <div class="section-tools">
+        <input
+          id="moduleSearch"
+          class="search-input"
+          type="search"
+          placeholder="Search modules… (e.g. PC, Schematic)"
+          aria-label="Search modules"
+        />
+        <div class="search-hint">Filter by module name or description.</div>
+      </div>
+    </div>
+
+    <div class="grid" id="moduleGrid">
+      <!-- PC Manager -->
+      <a class="card" href="PC Manager.html" data-keywords="pc manager computer asset inventory bopp1 list csv">
+        <div class="card-label">BOPP1</div>
+        <h3 class="card-title">PC Manager</h3>
+        <p class="card-desc">View computer asset list from inventory.csv.</p>
+        <div class="card-meta">CSV-driven • Printable</div>
+        <button class="enter-btn" type="button">Enter ↗</button>
+      </a>
+
+      <!-- Line Schematic -->
+      <div class="card" data-keywords="line schematic production electrical pdf f12 f13 f16 f201">
+        <div class="card-label">Production</div>
+        <h3 class="card-title">Line Schematic</h3>
+        <p class="card-desc">Select a Line and its area to open the schematic.</p>
+        <div class="card-meta">Interactive • PDF-based</div>
+
+        <div class="action-row">
+          <select id="schemLine" class="line-select">
+            <option value="">Select Line</option>
+            <option>Line-1</option>
+            <option>Line-2</option>
+            <option>Line-3</option>
+            <option>Line-4</option>
+          </select>
+
+          <select id="schemArea" class="line-select">
+            <option value="">Select Area</option>
+            <option>F12</option>
+            <option>F13</option>
+            <option>F16</option>
+            <option>F201</option>
+          </select>
+
+          <button id="schemGo" class="btn-secondary" type="button" disabled>Go ↗</button>
+        </div>
+      </div>
+
+      <!-- Program Backup -->
+      <div class="card" data-keywords="program backup plc scada docs automation main blending loading grinder tdo winder mdo">
+        <div class="card-label">Automation</div>
+        <h3 class="card-title">Program Backup</h3>
+        <p class="card-desc">Select a Line and a system to open its backup page.</p>
+        <div class="card-meta">PLC / SCADA • Docs</div>
+
+        <div class="action-row">
+          <select id="pbLine" class="line-select">
+            <option value="">Select Line</option>
+            <option>Line-1</option>
+            <option>Line-2</option>
+            <option>Line-3</option>
+            <option>Line-4</option>
+          </select>
+
+          <select id="pbSys" class="line-select">
+            <option value="">Select System</option>
+            <option>SCADA</option>
+            <option>F12</option>
+            <option>F16</option>
+            <option>F13</option>
+            <option>F201</option>
+            <option>Main blending</option>
+            <option>Main Loading</option>
+            <option>Softal Treater</option>
+            <option>TDO Bruckpanel</option>
+            <option>Winder Carriage Bruckpanel</option>
+            <option>MDO Oil Skid</option>
+            <option>Grinder</option>
+          </select>
+
+          <button id="pbGo" class="btn-secondary" type="button" disabled>Go ↗</button>
+        </div>
+      </div>
+
+      <!-- Calibration -->
+      <div class="card" data-keywords="calibration procedure maintenance hopper weight winder contact roll line speed sop">
+        <div class="card-label">Maintenance</div>
+        <h3 class="card-title">Calibration Procedure</h3>
+        <p class="card-desc">Open the step-by-step calibration SOP.</p>
+        <div class="card-meta">SOP • PDF/HTML</div>
+
+        <div class="action-row">
+          <select id="calProc" class="line-select">
+            <option value="">Select Procedure</option>
+            <option>Main Hopper Weight Calibration</option>
+            <option>Winder Contact Roll Calibration</option>
+            <option>Line Speed Calibration</option>
+          </select>
+
+          <button id="calGo" class="btn-secondary" type="button" disabled>Go ↗</button>
         </div>
       </div>
     </div>
 
-    <!-- Filters (collapsible) -->
-    <div class="card">
-      <div class="filter-header" onclick="toggleFilters()">
-        <h2>Filter conditions</h2>
-        <span id="toggleIcon" class="filter-toggle-icon">▲</span>
-      </div>
-      <div class="card-subtitle">
-        This page is read-only. To update data, edit the Excel file and export
-        <strong>inventory.csv</strong> to overwrite the existing file.
-      </div>
-
-      <div class="filters collapsible open" id="filtersBox">
-        <span class="filters-label">Filter:</span>
-        <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
-        <select id="statusFilter">
-          <option value="">All status</option>
-          <option value="using">Using</option>
-          <option value="spare">Spare</option>
-          <option value="broken">Broken</option>
-          <option value="test">Test</option>
-        </select>
-        <input type="text" id="deptFilter" placeholder="Department">
-        <button class="btn" id="reloadBtn">🔄 Reload CSV</button>
-        <button class="btn btn-primary" id="printBtn">🖨 Print list</button>
-      </div>
-    </div>
-
-    <!-- Table -->
-    <div class="card">
-      <h2>Computer equipment list</h2>
-      <div class="card-subtitle" id="countInfo">Total: 0 records</div>
-      <div class="table-wrap">
-        <table id="pcTable">
-          <thead>
-          <tr>
-            <th data-sort="asset_id">Asset ID</th>
-            <th data-sort="hostname">Hostname</th>
-            <th data-sort="computer">Computer</th>
-            <th data-sort="department">Department</th>
-            <th data-sort="location">Location</th>
-            <th data-sort="status">Status</th>
-            <th data-sort="spec">Spec</th>
-            <th data-sort="os">OS</th>
-            <th data-sort="owner">Owner</th>
-            <th data-sort="note">Note</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
+    <div id="noResult" class="no-result">No modules found. Try another keyword.</div>
   </div>
 
-<script>
-  let computers = [];
-  let currentSortKey = "asset_id";
-  let currentSortAsc = true;
-  let inventoryLowNotified = false;
+  <script>
+    // --- Init light/dark theme from localStorage + system ---
+    (function initTheme(){
+      const stored = localStorage.getItem('ms-theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
 
-  const tbody = document.querySelector("#pcTable tbody");
-  const searchInput = document.getElementById("searchInput");
-  const statusFilter = document.getElementById("statusFilter");
-  const deptFilter = document.getElementById("deptFilter");
-  const reloadBtn = document.getElementById("reloadBtn");
-  const printBtn = document.getElementById("printBtn");
-  const lastSyncEl = document.getElementById("lastSync");
-  const countInfoEl = document.getElementById("countInfo");
+    // GitHub last commit datetime
+    (async function(){
+      const el = document.getElementById('modDate');
+      const owner  = "lg920731-collab";
+      const repo   = "it-inventory";
+      const branch = "main";
+      const url = `https://api.github.com/repos/${owner}/${repo}/commits/${branch}`;
 
-  async function loadCSV() {
-    try {
-      const res = await fetch("inventory.csv?" + Date.now());
-      if (!res.ok) throw new Error("CSV not found");
-      const text = await res.text();
-      computers = parseCSV(text);
-      updateLastSync();
-      renderTable();
-    } catch (e) {
-      console.error(e);
-      lastSyncEl.textContent = "Loading error (please check inventory.csv)";
-      tbody.innerHTML = "";
-      countInfoEl.textContent = "Total: 0 records";
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("GitHub API error");
+        const data = await res.json();
+        const dateStr = data?.commit?.author?.date;
+        if (!dateStr) throw new Error("No date");
+        const d = new Date(dateStr);
+        el.textContent = d.toLocaleString([], {
+          year:'numeric', month:'2-digit', day:'2-digit',
+          hour:'2-digit', minute:'2-digit'
+        });
+      } catch (err) {
+        console.error("GitHub commit time error:", err);
+        const d = new Date(document.lastModified);
+        el.textContent = !isNaN(d)
+          ? d.toLocaleString([], {
+              year:'numeric', month:'2-digit', day:'2-digit',
+              hour:'2-digit', minute:'2-digit'
+            })
+          : "N/A";
+      }
+    })();
+
+    function slugify(s){
+      return s.trim().replace(/\s+/g,'-').replace(/[^A-Za-z0-9\-]/g,'')
     }
-  }
 
-  function parseCSV(csvText) {
-    const lines = csvText.trim().split(/\r?\n/);
-    if (lines.length <= 1) return [];
-    const header = splitCSVLine(lines[0]).map(h => h.trim());
-    const data = [];
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
-      const cols = splitCSVLine(line);
-      const row = {};
-      header.forEach((key, idx) => {
-        row[key] = (cols[idx] || "").trim();
-      });
-      data.push(row);
-    }
-    return data;
-  }
+    /* Line Schematic */
+    const schemLine=document.getElementById('schemLine');
+    const schemArea=document.getElementById('schemArea');
+    const schemGo=document.getElementById('schemGo');
+    function updateSchemBtn(){schemGo.disabled=!(schemLine.value&&schemArea.value)}
+    schemLine.addEventListener('change',updateSchemBtn);
+    schemArea.addEventListener('change',updateSchemBtn);
+    schemGo.addEventListener('click',()=>{
+      window.location.href=`${schemLine.value}-${schemArea.value}-Schematic.html`;
+    });
 
-  function splitCSVLine(line) {
-    const result = [];
-    let cur = "";
-    let inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') {
-        if (inQ && line[i + 1] === '"') {
-          cur += '"';
-          i++;
-        } else {
-          inQ = !inQ;
+    /* Program Backup */
+    const pbLine=document.getElementById('pbLine');
+    const pbSys=document.getElementById('pbSys');
+    const pbGo=document.getElementById('pbGo');
+    function updatePbBtn(){pbGo.disabled=!(pbLine.value&&pbSys.value)}
+    pbLine.addEventListener('change',updatePbBtn);
+    pbSys.addEventListener('change',updatePbBtn);
+    pbGo.addEventListener('click',()=>{
+      window.location.href=`Program-Backup-${pbLine.value}-${slugify(pbSys.value)}.html`;
+    });
+
+    /* Calibration Procedure */
+    const calProc=document.getElementById('calProc');
+    const calGo=document.getElementById('calGo');
+    calProc.addEventListener('change',()=>{calGo.disabled=!calProc.value});
+    calGo.addEventListener('click',()=>{
+      window.location.href=`Calibration-${slugify(calProc.value)}.html`;
+    });
+
+    /* Theme Toggle (light/dark) */
+    (function(){
+      const btn = document.getElementById('themeToggle');
+      const icon = document.getElementById('themeIcon');
+
+      function applyIcon(theme){
+        icon.textContent = theme === 'dark' ? '🌙' : '🌞';
+      }
+
+      function toggleTheme(){
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('ms-theme', next);
+        applyIcon(next);
+      }
+
+      const initial = document.documentElement.getAttribute('data-theme') || 'light';
+      applyIcon(initial);
+      btn.addEventListener('click', toggleTheme);
+    })();
+
+    /* Module Search Filter */
+    (function(){
+      const input = document.getElementById('moduleSearch');
+      const cards = Array.from(document.querySelectorAll('#moduleGrid .card'));
+      const noResult = document.getElementById('noResult');
+
+      function normalize(str){return str.toLowerCase();}
+
+      function filterModules(){
+        const query = normalize(input.value.trim());
+        let visibleCount = 0;
+
+        if (!query){
+          cards.forEach(card => { card.style.display = ''; });
+          noResult.style.display = 'none';
+          return;
         }
-      } else if (c === "," && !inQ) {
-        result.push(cur);
-        cur = "";
-      } else {
-        cur += c;
+
+        cards.forEach(card => {
+          const text = (card.getAttribute('data-keywords') || card.textContent || '');
+          const match = normalize(text).includes(query);
+          card.style.display = match ? '' : 'none';
+          if (match) visibleCount++;
+        });
+
+        noResult.style.display = visibleCount === 0 ? 'block' : 'none';
       }
-    }
-    result.push(cur);
-    return result;
-  }
 
-  function updateLastSync() {
-    if (!computers.length) {
-      lastSyncEl.textContent = "no data";
-      return;
-    }
-    let latest = "0000-00-00";
-    computers.forEach(c => {
-      if (c.last_update && c.last_update > latest) latest = c.last_update;
-    });
-    lastSyncEl.textContent =
-      latest !== "0000-00-00" ? latest : "Managed by Excel";
-  }
+      input.addEventListener('input', filterModules);
+    })();
 
-  function renderTable() {
-    const keyword = searchInput.value.trim().toLowerCase();
-    const fStatus = statusFilter.value.trim().toLowerCase();
-    const fDept = deptFilter.value.trim();
+    // --- Style Theme (blue / panther / hangyodon) – 點左上 icon 切換 ---
+    (function(){
+      const STYLE_KEY = 'ms-style';
+      const root = document.documentElement;
+      const mascot = document.querySelector('.mascot');
+      const styles = ['blue', 'panther', 'hangyodon'];
 
-    let data = [...computers];
+      // mac / iOS 風格圓角漸層藍色方塊
+      const blueSvg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">' +
+          '<defs>' +
+            '<linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+              '<stop offset="0%" stop-color="#bfdbfe"/>' +
+              '<stop offset="100%" stop-color="#2563eb"/>' +
+            '</linearGradient>' +
+          '</defs>' +
+          '<rect x="2" y="2" width="28" height="28" rx="10" fill="url(#g)"/>' +
+        '</svg>';
+      const blueIcon = 'data:image/svg+xml;utf8,' + encodeURIComponent(blueSvg);
 
-    data = data.filter(c => {
-      const cStatus = (c.status || "").toLowerCase();
-      if (fStatus && cStatus !== fStatus) return false;
-      if (fDept && c.department !== fDept) return false;
-      if (keyword) {
-        const text = (
-          (c.asset_id || "") +
-          (c.hostname || "") +
-          (c.computer || "") +
-          (c.department || "")
-        ).toLowerCase();
-        if (!text.includes(keyword)) return false;
+      const themeConfig = {
+        blue: {
+          mascotSrc: blueIcon,
+          mascotAlt: 'Blue theme'
+        },
+        panther: {
+          mascotSrc: 'pinkpanther.png',
+          mascotAlt: 'Pink Panther theme'
+        },
+        hangyodon: {
+          mascotSrc: 'hangyodon.png',
+          mascotAlt: 'Hangyodon theme'
+        }
+      };
+
+      function applyStyle(style){
+        const s = themeConfig[style] ? style : 'blue';
+        root.setAttribute('data-style', s);
+        const cfg = themeConfig[s];
+        if (mascot){
+          mascot.src = cfg.mascotSrc;
+          mascot.alt = cfg.mascotAlt;
+        }
+        localStorage.setItem(STYLE_KEY, s);
       }
-      return true;
-    });
 
-    data.sort((a, b) => {
-      const x = (a[currentSortKey] || "").toString();
-      const y = (b[currentSortKey] || "").toString();
-      if (x === y) return 0;
-      return currentSortAsc
-        ? x.localeCompare(y, "en")
-        : y.localeCompare(x, "en");
-    });
-
-    tbody.innerHTML = "";
-    data.forEach(c => {
-      const status = (c.status || "").toLowerCase();
-      const stClass =
-        status === "using" ? "status-using" :
-        status === "spare" ? "status-spare" :
-        status === "broken" ? "status-broken" :
-        status === "test" ? "status-test" :
-        "";
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${c.asset_id || ""}</td>
-        <td>${c.hostname || ""}</td>
-        <td>${c.computer || ""}</td>
-        <td>${c.department || ""}</td>
-        <td>${c.location || ""}</td>
-        <td>${c.status ? `<span class="${stClass}">${c.status}</span>` : ""}</td>
-        <td>${c.spec || ""}</td>
-        <td>${c.os || ""}</td>
-        <td>${c.owner || ""}</td>
-        <td class="note">${c.note || ""}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    const totalCount = computers.length;
-    const usingCount = computers.filter(c =>
-      (c.status || "").toLowerCase() === "using"
-    ).length;
-    const spareCount = computers.filter(c =>
-      (c.status || "").toLowerCase() === "spare"
-    ).length;
-    const testCount = computers.filter(c =>
-      (c.status || "").toLowerCase() === "test"
-    ).length;
-
-    const filteredCount = data.length;
-
-    countInfoEl.textContent =
-      `Filter: ${filteredCount} / Total: ${totalCount} | Using: ${usingCount} | Spare: ${spareCount} | Test: ${testCount}`;
-
-    checkInventoryLow();
-  }
-
-  function checkInventoryLow() {
-    const spareCount = computers.filter(c =>
-      (c.status || "").toLowerCase() === "spare"
-    ).length;
-
-    if (spareCount <= 5) {
-      if (!inventoryLowNotified) {
-        alert(`Warning: only ${spareCount} spare computer(s) remain.`);
-        const recipients = "jwu@inteplastbopp.com;vhuang@inteplastbopp.com;mdeleon@inteplastbopp.com";
-        const subject = encodeURIComponent("Inventory is low");
-        const body = encodeURIComponent(
-          `There are too few computers; please increase the number.\n\nCurrent "spare" computers: ${spareCount}.`
-        );
-        window.location.href = `mailto:${recipients}?subject=${subject}&body=${body}`;
-        inventoryLowNotified = true;
+      function cycleStyle(){
+        const current = root.getAttribute('data-style') || 'blue';
+        const idx = styles.indexOf(current);
+        const next = styles[(idx + 1) % styles.length];
+        applyStyle(next);
       }
-    } else {
-      inventoryLowNotified = false;
-    }
-  }
 
-  function toggleFilters() {
-    const box = document.getElementById("filtersBox");
-    const icon = document.getElementById("toggleIcon");
-    const isOpen = !box.classList.contains("closed");
-    if (isOpen) {
-      box.classList.add("closed");
-      icon.textContent = "▼";
-    } else {
-      box.classList.remove("closed");
-      icon.textContent = "▲";
-    }
-  }
+      const saved = localStorage.getItem(STYLE_KEY) || 'blue';
+      applyStyle(saved);
 
-  searchInput.addEventListener("input", renderTable);
-  statusFilter.addEventListener("change", renderTable);
-  deptFilter.addEventListener("input", renderTable);
-  reloadBtn.addEventListener("click", loadCSV);
-  printBtn.addEventListener("click", () => window.print());
-
-  document.querySelectorAll("th[data-sort]").forEach(th => {
-    th.addEventListener("click", () => {
-      const key = th.getAttribute("data-sort");
-      if (currentSortKey === key) {
-        currentSortAsc = !currentSortAsc;
-      } else {
-        currentSortKey = key;
-        currentSortAsc = true;
+      if (mascot){
+        mascot.style.cursor = 'pointer';
+        mascot.title = 'Click to change style';
+        mascot.addEventListener('click', cycleStyle);
       }
-      renderTable();
-    });
-  });
-
-  loadCSV();
-</script>
+    })();
+  </script>
 </body>
 </html>
