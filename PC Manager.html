@@ -96,9 +96,28 @@
     html[data-style="panther"] .side-panther{display:block;}
     html[data-style="hangyodon"] .side-hangyodon{display:block;}
 
-    @media (max-width:1000px){
-      .side-panther,
-      .side-hangyodon{display:none}
+    /* 手機 / 平板：只保留右邊大圖並置中 */
+    @media (max-width: 900px){
+      /* 左邊角色一定關閉 */
+      html[data-style="panther"] .side-panther.left,
+      html[data-style="hangyodon"] .side-hangyodon.left{
+        display:none !important;
+      }
+
+      /* 右邊角色置中顯示 */
+      html[data-style="panther"] .side-panther.right,
+      html[data-style="hangyodon"] .side-hangyodon.right{
+        display:block !important;
+        position:fixed !important;
+        left:50% !important;
+        right:auto !important;
+        top:50% !important;
+        transform:translate(-50%, -50%) !important;
+        width:260px;
+        opacity:0.9;
+        pointer-events:none;
+        z-index:1;
+      }
     }
 
     .page {
