@@ -1,9 +1,25 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Maintenance Smart | BOPP1 PC Manager</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Apply theme & style from portal -->
+  <script>
+    (function () {
+      // light / dark
+      const storedTheme = localStorage.getItem('ms-theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = storedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+
+      // style: blue / panther / hangyodon
+      const style = localStorage.getItem('ms-style') || 'blue';
+      document.documentElement.setAttribute('data-style', style);
+    })();
+  </script>
+
   <style>
     :root {
       --bg: #f3f4f6;
@@ -18,13 +34,18 @@
       --small-font: 13px;
       --xsmall-font: 11px;
     }
- <script>
-   // ===== Apply theme from localStorage =====
-    (function () {
-      const s = localStorage.getItem('ms-style') || 'blue';
-      document.documentElement.setAttribute('data-style', s);
-    })();
-  </script>
+
+    /* Dark mode */
+    html[data-theme="dark"] {
+      --bg: #020617;
+      --card-bg: #020617;
+      --border-subtle: #1f2937;
+      --accent: #60a5fa;
+      --accent-hover: #3b82f6;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --shadow-soft-sm: 0 8px 20px rgba(0,0,0,0.75);
+    }
 
     * { box-sizing: border-box; }
 
@@ -32,21 +53,65 @@
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 15px;
-      background: radial-gradient(circle at top, rgba(129,140,248,0.14), transparent),
-                  var(--bg);
+      background:
+        radial-gradient(circle at top, rgba(129,140,248,0.14), transparent),
+        var(--bg);
       color: var(--text);
       min-height: 100vh;
+      -webkit-text-size-adjust: 100%;
+      transition: background .25s ease, color .25s ease;
+    }
+
+    /* style 背景：跟首頁一致 */
+    html[data-style="panther"] body {
+      background:
+        radial-gradient(circle at top, rgba(244,114,182,.28), transparent),
+        var(--bg);
+    }
+    html[data-style="hangyodon"] body {
+      background:
+        radial-gradient(circle at top, rgba(56,189,248,.35), transparent),
+        var(--bg);
+    }
+
+    /* Side characters */
+    .side-panther,
+    .side-hangyodon{
+      position:fixed;
+      top:50%;
+      transform:translateY(-50%);
+      width:360px;
+      opacity:.9;
+      z-index:1;
+      pointer-events:none;
+      user-select:none;
+      display:none;
+      transition:transform .25s ease, opacity .25s ease;
+    }
+    .side-panther.left{left:1.5%;transform:translateY(-50%) scaleX(1)}
+    .side-panther.right{right:1.5%;transform:translateY(-50%) scaleX(-1)}
+    .side-hangyodon.left{left:1.5%;transform:translateY(-50%) scaleX(-1)}
+    .side-hangyodon.right{right:1.5%;transform:translateY(-50%) scaleX(1)}
+
+    html[data-style="panther"] .side-panther{display:block;}
+    html[data-style="hangyodon"] .side-hangyodon{display:block;}
+
+    @media (max-width:1000px){
+      .side-panther,
+      .side-hangyodon{display:none}
     }
 
     .page {
+      position:relative;
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px 16px 32px;
+      z-index:2;
     }
 
     /* Top bar */
     .topbar {
-      background: #ffffff;
+      background: var(--card-bg);
       padding: 14px 18px;
       border-radius: 18px;
       box-shadow: var(--shadow-soft-sm);
@@ -55,6 +120,7 @@
       align-items: center;
       margin-bottom: 16px;
       border: 1px solid var(--border-subtle);
+      transition: background .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
 
     .brand-wrap {
@@ -82,7 +148,7 @@
     .brand-sub {
       font-size: 15px;
       font-weight: 600;
-      color: #111827;
+      color: var(--text);
       margin-top: 1px;
     }
 
@@ -109,10 +175,16 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    html[data-theme="dark"] .pill {
+      border-color: #1f2937;
+      background: #020617;
     }
 
     .pill-label { color: var(--text-soft); }
-    .pill-strong { color: #111827; font-weight: 500; }
+    .pill-strong { color: var(--text); font-weight: 500; }
 
     .back-link {
       font-size: var(--xsmall-font);
@@ -138,13 +210,14 @@
       padding: 14px;
       box-shadow: var(--shadow-soft-sm);
       margin-bottom: 14px;
+      transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
     }
 
     .card h2 {
       margin: 0 0 4px;
       font-size: 17px;
       font-weight: 600;
-      color: #111827;
+      color: var(--text);
     }
 
     .card-subtitle {
@@ -195,6 +268,13 @@
       color: var(--text);
       min-width: 150px;
       transition: all 0.15s ease;
+    }
+
+    html[data-theme="dark"] .filters input,
+    html[data-theme="dark"] .filters select {
+      background:#020617;
+      border-color:#1f2937;
+      color:var(--text);
     }
 
     .filters input::placeholder { color: #9ca3af; }
@@ -261,6 +341,11 @@
       box-shadow: var(--shadow-soft-sm);
     }
 
+    html[data-theme="dark"] .table-wrap {
+      background:#020617;
+      border-color:#1f2937;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -269,11 +354,20 @@
 
     thead { background: #f9fafb; }
 
+    html[data-theme="dark"] thead {
+      background:#020617;
+    }
+
     th, td {
       padding: 8px 9px;
       border-bottom: 1px solid #e5e7eb;
       text-align: left;
       white-space: nowrap;
+    }
+
+    html[data-theme="dark"] th,
+    html[data-theme="dark"] td {
+      border-bottom-color:#1f2937;
     }
 
     th {
@@ -302,14 +396,23 @@
     tbody tr:nth-child(even) { background: #ffffff; }
     tbody tr:nth-child(odd)  { background: #fdfdfd; }
 
+    html[data-theme="dark"] tbody tr:nth-child(even),
+    html[data-theme="dark"] tbody tr:nth-child(odd) {
+      background:transparent;
+    }
+
     tbody tr:hover {
       background: #eff6ff;
       transform: translateY(-1px);
       box-shadow: 0 4px 10px rgba(148,163,253,0.25);
     }
 
+    html[data-theme="dark"] tbody tr:hover {
+      background:rgba(37,99,235,.25);
+    }
+
     td {
-      color: #111827;
+      color: var(--text);
       max-width: 260px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -374,7 +477,9 @@
       #reloadBtn,
       #printBtn,
       .filter-header,
-      .back-link {
+      .back-link,
+      .side-panther,
+      .side-hangyodon {
         display: none !important;
       }
       .table-wrap {
@@ -406,82 +511,89 @@
   </style>
 </head>
 <body>
-<div class="page">
-  <!-- Header -->
-  <div class="topbar">
-    <div class="brand-wrap">
-      <div class="brand-logo"></div>
-      <div>
-        <div class="brand-main">MAINTENANCE SMART</div>
-        <div class="brand-sub">BOPP1 PC Manager</div>
-        <div class="brand-sub-note">Company Computer Asset List（Source: Excel / CSV）</div>
+
+  <!-- side characters -->
+  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left">
+  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right">
+  <img src="hangyodon1.png" alt="Hangyodon Left" class="side-hangyodon left">
+  <img src="hangyodon2.png" alt="Hangyodon Right" class="side-hangyodon right">
+
+  <div class="page">
+    <!-- Header -->
+    <div class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-logo"></div>
+        <div>
+          <div class="brand-main">MAINTENANCE SMART</div>
+          <div class="brand-sub">BOPP1 PC Manager</div>
+          <div class="brand-sub-note">Company computer asset list (Source: Excel / CSV)</div>
+        </div>
+      </div>
+      <div class="top-meta">
+        <a href="index.html" class="back-link">← Maintenance Smart Portal</a>
+        <div class="pill">
+          <span class="pill-label">Last update</span>
+          <span class="pill-strong" id="lastSync">—</span>
+        </div>
+        <div class="pill">
+          <span class="pill-label">Managed by</span>
+          <span class="pill-strong">Benjamin Lin</span>
+        </div>
       </div>
     </div>
-    <div class="top-meta">
-      <a href="index.html" class="back-link">← Maintenance Smart Portal</a>
-      <div class="pill">
-        <span class="pill-label">Last update</span>
-        <span class="pill-strong" id="lastSync">—</span>
+
+    <!-- Filters (collapsible) -->
+    <div class="card">
+      <div class="filter-header" onclick="toggleFilters()">
+        <h2>Filter conditions</h2>
+        <span id="toggleIcon" class="filter-toggle-icon">▲</span>
       </div>
-      <div class="pill">
-        <span class="pill-label">Managed by</span>
-        <span class="pill-strong">Benjamin Lin</span>
+      <div class="card-subtitle">
+        This page is read-only. To update data, edit the Excel file and export
+        <strong>inventory.csv</strong> to overwrite the existing file.
+      </div>
+
+      <div class="filters collapsible open" id="filtersBox">
+        <span class="filters-label">Filter:</span>
+        <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
+        <select id="statusFilter">
+          <option value="">All status</option>
+          <option value="using">Using</option>
+          <option value="spare">Spare</option>
+          <option value="broken">Broken</option>
+          <option value="test">Test</option>
+        </select>
+        <input type="text" id="deptFilter" placeholder="Department">
+        <button class="btn" id="reloadBtn">🔄 Reload CSV</button>
+        <button class="btn btn-primary" id="printBtn">🖨 Print list</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+      <h2>Computer equipment list</h2>
+      <div class="card-subtitle" id="countInfo">Total: 0 records</div>
+      <div class="table-wrap">
+        <table id="pcTable">
+          <thead>
+          <tr>
+            <th data-sort="asset_id">Asset ID</th>
+            <th data-sort="hostname">Hostname</th>
+            <th data-sort="computer">Computer</th>
+            <th data-sort="department">Department</th>
+            <th data-sort="location">Location</th>
+            <th data-sort="status">Status</th>
+            <th data-sort="spec">Spec</th>
+            <th data-sort="os">OS</th>
+            <th data-sort="owner">Owner</th>
+            <th data-sort="note">Note</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
   </div>
-
-  <!-- Filters (collapsible) -->
-  <div class="card">
-    <div class="filter-header" onclick="toggleFilters()">
-      <h2>Query conditions</h2>
-      <span id="toggleIcon" class="filter-toggle-icon">▲</span>
-    </div>
-    <div class="card-subtitle">
-      This page is read-only. To update data, edit the Excel file and export
-      <strong>inventory.csv</strong> to overwrite the existing file.
-    </div>
-
-    <div class="filters collapsible open" id="filtersBox">
-      <span class="filters-label">Filter:</span>
-      <input type="text" id="searchInput" placeholder="Search asset / computer / hostname">
-      <select id="statusFilter">
-        <option value="">All status</option>
-        <option value="using">Using</option>
-        <option value="spare">Spare</option>
-        <option value="broken">Broken</option>
-        <option value="test">Test</option>
-      </select>
-      <input type="text" id="deptFilter" placeholder="Department">
-      <button class="btn" id="reloadBtn">🔄 Reload CSV</button>
-      <button class="btn btn-primary" id="printBtn">🖨 Print list</button>
-    </div>
-  </div>
-
-  <!-- Table -->
-  <div class="card">
-    <h2>Computer equipment list</h2>
-    <div class="card-subtitle" id="countInfo">A total of 0 data</div>
-    <div class="table-wrap">
-      <table id="pcTable">
-        <thead>
-        <tr>
-          <th data-sort="asset_id">Asset ID</th>
-          <th data-sort="hostname">Hostname</th>
-          <th data-sort="computer">Computer</th>
-          <th data-sort="department">Department</th>
-          <th data-sort="location">Location</th>
-          <th data-sort="status">Status</th>
-          <th data-sort="spec">Spec</th>
-          <th data-sort="os">OS</th>
-          <th data-sort="owner">Owner</th>
-          <th data-sort="note">Note</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </div>
-</div>
 
 <script>
   let computers = [];
@@ -510,7 +622,7 @@
       console.error(e);
       lastSyncEl.textContent = "Loading error (please check inventory.csv)";
       tbody.innerHTML = "";
-      countInfoEl.textContent = "A total of 0 data";
+      countInfoEl.textContent = "Total: 0 records";
     }
   }
 
@@ -597,8 +709,8 @@
       const y = (b[currentSortKey] || "").toString();
       if (x === y) return 0;
       return currentSortAsc
-        ? x.localeCompare(y, "zh-Hant")
-        : y.localeCompare(x, "zh-Hant");
+        ? x.localeCompare(y, "en")
+        : y.localeCompare(x, "en");
     });
 
     tbody.innerHTML = "";
@@ -640,7 +752,7 @@
     const filteredCount = data.length;
 
     countInfoEl.textContent =
-      `Filter: ${filteredCount} / Total: ${totalCount} ｜ Using: ${usingCount} ｜ Spare: ${spareCount} ｜ Test: ${testCount}`;
+      `Filter: ${filteredCount} / Total: ${totalCount} | Using: ${usingCount} | Spare: ${spareCount} | Test: ${testCount}`;
 
     checkInventoryLow();
   }
