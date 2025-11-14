@@ -12,6 +12,13 @@
       --text: #111827;
       --text-soft: #6b7280;
     }
+  <script>
+   // ===== Apply theme from localStorage =====
+    (function () {
+      const s = localStorage.getItem('ms-style') || 'blue';
+      document.documentElement.setAttribute('data-style', s);
+    })();
+  </script>
     * { box-sizing: border-box; }
     body {
       margin: 0;
