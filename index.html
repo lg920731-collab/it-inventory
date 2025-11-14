@@ -234,48 +234,59 @@
       display:none;
     }
 
-    /* Mobile tweaks: stack topbar content & center single background image */
+    /* Mobile tweaks: stack topbar content & only one BG character */
     @media (max-width: 768px){
 
-  /* Topbar 垂直排列 / 不擠 */
-  .topbar{
-    flex-direction:column;
-    align-items:flex-start;
-    width:100%;
-    padding:16px 16px;
-  }
-  .top-meta{
-    width:100%;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
+      /* Topbar 垂直排列 / 不擠 */
+      .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        width:100%;
+        padding:16px 16px;
+      }
+      .top-meta{
+        width:100%;
+        display:flex;
+        flex-wrap:wrap;
+        gap:8px;
+      }
 
-  /* 手機背景：只顯示一張圖片、置中靠下、不遮擋文字 */
-  body{
-    background: var(--bg) !important;
-  }
+      /* 手機上不顯示左右兩側角色圖片 */
+      .side-panther,
+      .side-hangyodon{
+        display:none !important;
+      }
 
-  html[data-style="hangyodon"] body{
-    background:
-      var(--bg)
-      url('hangyodon2.png')
-      center calc(100% - 120px) / 360px
-      no-repeat !important;
-  }
+      /* 手機上隱藏上方大圖示，只保留文字 + Theme icon 按鈕 */
+      .mascot{
+        display:none;
+      }
 
-  html[data-style="panther"] body{
-    background:
-      var(--bg)
-      url('pinkpanther1.png')
-      center calc(100% - 120px) / 360px
-      no-repeat !important;
-  }
+      /* 手機背景：僅一張角色圖置中靠下 */
+      body{
+        background: var(--bg) !important;
+      }
 
-  html[data-style="blue"] body{
-    background: var(--bg) !important;
-  }
-}
+      html[data-style="hangyodon"] body{
+        background:
+          var(--bg)
+          url('hangyodon2.png')
+          center calc(100% - 120px) / 360px
+          no-repeat !important;
+      }
+
+      html[data-style="panther"] body{
+        background:
+          var(--bg)
+          url('pinkpanther1.png')
+          center calc(100% - 120px) / 360px
+          no-repeat !important;
+      }
+
+      html[data-style="blue"] body{
+        background: var(--bg) !important;
+      }
+    }
 
   </style>
 </head>
