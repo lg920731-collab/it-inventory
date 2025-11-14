@@ -72,7 +72,7 @@
         var(--bg);
     }
 
-    /* 角色：桌機兩邊各一隻，小螢幕只留右下角一隻 */
+    /* 角色：桌機兩邊各一隻，小螢幕只留一隻置中 */
     .side-panther,
     .side-hangyodon{
       position:fixed;
@@ -96,31 +96,27 @@
     html[data-style="panther"] .side-panther{display:block;}
     html[data-style="hangyodon"] .side-hangyodon{display:block;}
 
-    /* 手機 / 小螢幕：只留右下角一隻，縮小當背景圖案 */
+    /* 手機 / 小螢幕：只留右邊那一隻，置中顯示 */
     @media (max-width: 900px){
-      .side-panther.left,
-      .side-hangyodon.left{
-        display:none;
+      /* 左邊角色強制關閉，避免被上面的規則打開 */
+      html[data-style="panther"] .side-panther.left,
+      html[data-style="hangyodon"] .side-hangyodon.left{
+        display:none !important;
       }
 
-      .side-panther.right{
-        display:block;
+      /* 右邊角色置中當背景圖案 */
+      html[data-style="panther"] .side-panther.right,
+      html[data-style="hangyodon"] .side-hangyodon.right{
+        display:block !important;
+        position:fixed !important;
+        left:50% !important;
+        right:auto !important;
+        top:50% !important;
+        transform:translate(-50%, -50%) !important;
         width:260px;
         opacity:.7;
-        top:auto;
-        bottom:10px;
-        right:4%;
-        transform:translateY(0) scaleX(-1);
-      }
-
-      .side-hangyodon.right{
-        display:block;
-        width:260px;
-        opacity:.7;
-        top:auto;
-        bottom:10px;
-        right:4%;
-        transform:translateY(0) scaleX(1);
+        pointer-events:none;
+        z-index:1;
       }
     }
 
