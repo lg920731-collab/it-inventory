@@ -236,27 +236,47 @@
 
     /* Mobile tweaks: stack topbar content & center single background image */
     @media (max-width: 768px){
-      .topbar{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-      .top-meta{
-        justify-content:flex-start;
-      }
 
-      body{
-        background: var(--bg);
-      }
-      html[data-style="hangyodon"] body{
-        background: var(--bg) url('hangyodon2.png') center 260px/420px auto no-repeat;
-      }
-      html[data-style="panther"] body{
-        background: var(--bg) url('pinkpanther1.png') center 260px/420px auto no-repeat;
-      }
-      html[data-style="blue"] body{
-        background: var(--bg);
-      }
-    }
+  /* Topbar 垂直排列 / 不擠 */
+  .topbar{
+    flex-direction:column;
+    align-items:flex-start;
+    width:100%;
+    padding:16px 16px;
+  }
+  .top-meta{
+    width:100%;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  /* 手機背景：只顯示一張圖片、置中靠下、不遮擋文字 */
+  body{
+    background: var(--bg) !important;
+  }
+
+  html[data-style="hangyodon"] body{
+    background:
+      var(--bg)
+      url('hangyodon2.png')
+      center calc(100% - 120px) / 360px
+      no-repeat !important;
+  }
+
+  html[data-style="panther"] body{
+    background:
+      var(--bg)
+      url('pinkpanther1.png')
+      center calc(100% - 120px) / 360px
+      no-repeat !important;
+  }
+
+  html[data-style="blue"] body{
+    background: var(--bg) !important;
+  }
+}
+
   </style>
 </head>
 <body>
