@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
   <title>Maintenance Smart | Portal</title>
@@ -20,7 +20,7 @@
       --small-font:13px; --xsmall-font:11px;
     }
 
-    /* Dark mode */
+    /* Dark mode 變數覆寫 */
     html[data-theme="dark"]{
       --bg:#020617;
       --card-bg:#020617;
@@ -43,7 +43,7 @@
       transition:background .25s ease,color .25s ease;
     }
 
-    /* style 主題背景 */
+    /* panther / hangyodon 主題各自改背景色 */
     html[data-style="panther"] body{
       background:radial-gradient(circle at top,rgba(244,114,182,.28),transparent),var(--bg);
     }
@@ -59,14 +59,7 @@
       transition:background .25s ease,box-shadow .25s ease,border-color .25s ease;
     }
     .brand-wrap{display:flex;align-items:center;gap:10px}
-
-    /* 左上主題 icon（預設是藍色圓角方塊 SVG，之後用 JS 替換） */
-    .mascot{
-      height:32px;width:32px;border-radius:12px;
-      box-shadow:0 0 14px rgba(37,99,235,.5);
-      object-fit:cover;
-    }
-
+    .mascot{height:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
     .brand-main{font-size:19px;font-weight:650;letter-spacing:.12em;text-transform:uppercase;color:var(--text);display:flex;align-items:center;gap:6px}
     .brand-sub{font-size:13px;color:var(--text-soft)}
 
@@ -89,7 +82,7 @@
     }
     .pill-designer-strong{font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--text)}
 
-    /* theme 按鈕 */
+    /* theme / lang toggle */
     .btn-ghost{
       border-radius:999px;border:1px solid #e5e7eb;background:transparent;
       padding:5px 9px;font-size:13px;display:inline-flex;align-items:center;gap:6px;
@@ -155,6 +148,7 @@
     .enter-btn{margin-top:auto;align-self:flex-end;padding:5px 11px;border-radius:999px;border:none;font-size:var(--xsmall-font);background:var(--accent);color:#fff;box-shadow:0 6px 14px rgba(37,99,235,.35);cursor:pointer;transition:all .16s ease}
     .card:hover .enter-btn{background:var(--accent-hover)}
 
+    /* Focus-visible：鍵盤可用性提升 */
     .line-select:focus-visible,
     .btn-secondary:focus-visible,
     .enter-btn:focus-visible,
@@ -164,50 +158,38 @@
       box-shadow:0 0 0 3px rgba(37,99,235,.25);
     }
 
-    /* 左右 panther / hangyodon */
-  /* 左右 panther / hangyodon */
-.side-panther,
-.side-hangyodon{
-  position:fixed;
-  top:50%;
-  transform:translateY(-50%);
-  width:420px;
-  opacity:.9;
-  z-index:1;
-  pointer-events:auto;
-  user-select:none;
-  transition: transform .25s ease, opacity .25s ease;
-  display:none;
-}
+    /* 左右頑皮豹 – 預設不顯示，只有 panther 主題會出現 */
+    .side-panther{
+      position:fixed;top:50%;transform:translateY(-50%);
+      width:420px;opacity:.9;z-index:1;pointer-events:auto;user-select:none;
+      transition: transform .25s ease, opacity .25s ease;
+      display:none;
+    }
+    .side-panther.left{left:2.5%;transform:translateY(-50%) scaleX(1)}
+    .side-panther.right{right:2.5%;transform:translateY(-50%) scaleX(-1)}
 
-/* 桌機版：左右各一隻，往中間看 */
-.side-panther.left{left:2.5%;transform:translateY(-50%) scaleX(1);}
-.side-panther.right{right:2.5%;transform:translateY(-50%) scaleX(-1);}
+    html[data-style="panther"] .side-panther{
+      display:block;
+    }
 
-.side-hangyodon.left{left:2.5%;transform:translateY(-50%) scaleX(-1);}
-.side-hangyodon.right{right:2.5%;transform:translateY(-50%) scaleX(-1);}
+    /* 左右 Hangyodon – 預設不顯示，只有 hangyodon 主題會出現 */
+    .side-hangyodon{
+      position:fixed;top:50%;transform:translateY(-50%);
+      width:420px;opacity:.9;z-index:1;pointer-events:auto;user-select:none;
+      transition: transform .25s ease, opacity .25s ease;
+      display:none;
+    }
+    .side-hangyodon.left{left:2.5%;transform:translateY(-50%) scaleX(1)}
+    .side-hangyodon.right{right:2.5%;transform:translateY(-50%) scaleX(-1)}
 
-html[data-style="panther"] .side-panther{display:block;}
-html[data-style="hangyodon"] .side-hangyodon{display:block;}
+    html[data-style="hangyodon"] .side-hangyodon{
+      display:block;
+    }
 
-/* 手機 / 平板：只保留右邊一隻，縮小當背景裝飾 */
-@media (max-width: 900px){
-  .side-panther.left,
-  .side-hangyodon.left{
-    display:none;
-  }
-
-  .side-panther.right,
-  .side-hangyodon.right{
-    display:block;
-    width:260px;
-    opacity:.7;
-    top:auto;
-    bottom:10px;
-    transform:translateY(0) scaleX(-1);
-    pointer-events:none;
-  }
-}
+    @media (max-width:1000px){
+      .side-panther,
+      .side-hangyodon{display:none}
+    }
 
     .side-panther.left:hover,
     .side-hangyodon.left:hover{
@@ -221,9 +203,7 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
     }
 
     /* 共用選單與操作列 */
-    .line-select{
-      font-size:13px;padding:6px 10px;border-radius:999px;border:1px solid #d1d5db;background:#fff;color:#111827;cursor:pointer;transition:all .15s ease
-    }
+    .line-select{font-size:13px;padding:6px 10px;border-radius:999px;border:1px solid #d1d5db;background:#fff;color:#111827;cursor:pointer;transition:all .15s ease}
     .line-select:hover{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.14)}
     html[data-theme="dark"] .line-select{
       background:#020617;
@@ -257,32 +237,37 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
 </head>
 <body>
 
-  <!-- side characters -->
+  <!-- 左右頑皮豹 -->
   <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left" />
   <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right" />
 
+  <!-- 左右 Hangyodon -->
   <img src="hangyodon1.png" alt="Hangyodon Left" class="side-hangyodon left" />
   <img src="hangyodon2.png" alt="Hangyodon Right" class="side-hangyodon right" />
 
   <div class="page">
     <div class="topbar">
       <div class="brand-wrap">
-        <!-- src 會被 JS 替換成對應主題圖 -->
-        <img src="" alt="Theme Mascot" class="mascot" />
+        <!-- 這張 src 會被 JS 覆蓋成對應主題的 icon -->
+        <img src="pinkpanther.png" alt="Theme Mascot" class="mascot" />
         <div>
           <div class="brand-main">MAINTENANCE SMART</div>
-          <div class="brand-sub">Smarter maintenance, easier life.</div>
+          <div id="brandSub" class="brand-sub">Smarter maintenance, easier life.</div>
         </div>
       </div>
       <div class="top-meta">
         <div class="pill designer">
-          <span class="pill-label">Designed by</span>
-          <span class="pill-designer-strong">Benjamin Lin</span>
+          <span id="labelDesignedBy" class="pill-label">Designed by</span>
+          <span id="designerName" class="pill-designer-strong"></span>
         </div>
         <div class="pill">
-          <span class="pill-label">Modified Date</span>
+          <span id="labelModifiedDate" class="pill-label">Modified Date</span>
           <span class="pill-strong" id="modDate">Checking…</span>
         </div>
+        <button id="langToggle" class="btn-ghost" type="button" aria-label="Switch language">
+          <span class="btn-ghost-icon" id="langIcon">中</span>
+          <span id="langLabel">Language</span>
+        </button>
         <button id="themeToggle" class="btn-ghost" type="button" aria-label="Toggle theme">
           <span class="btn-ghost-icon" id="themeIcon">🌞</span>
           <span id="themeLabel">Theme</span>
@@ -292,8 +277,8 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
 
     <div class="section-head">
       <div>
-        <h2 class="section-title">Modules</h2>
-        <p class="section-sub">Choose a page below. Each is an independent system.</p>
+        <h2 id="sectionTitle" class="section-title">Modules</h2>
+        <p id="sectionSub" class="section-sub">Choose a page below. Each is an independent system.</p>
       </div>
       <div class="section-tools">
         <input
@@ -303,30 +288,30 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
           placeholder="Search modules… (e.g. PC, Schematic)"
           aria-label="Search modules"
         />
-        <div class="search-hint">Filter by module name or description.</div>
+        <div id="searchHint" class="search-hint">Filter by module name or description.</div>
       </div>
     </div>
 
     <div class="grid" id="moduleGrid">
       <!-- PC Manager -->
-      <a class="card" href="PC Manager.html" data-keywords="pc manager computer asset inventory bopp1 list csv">
-        <div class="card-label">BOPP1</div>
-        <h3 class="card-title">PC Manager</h3>
-        <p class="card-desc">View computer asset list from inventory.csv.</p>
-        <div class="card-meta">CSV-driven • Printable</div>
-        <button class="enter-btn" type="button">Enter ↗</button>
+      <a class="card" href="PC Manager.html" data-keywords="pc manager computer asset inventory bopp1 list csv 電腦 資產 管理">
+        <div id="labelPC" class="card-label">BOPP1</div>
+        <h3 id="titlePC" class="card-title">PC Manager</h3>
+        <p id="descPC" class="card-desc">View computer asset list from inventory.csv.</p>
+        <div id="metaPC" class="card-meta">CSV-driven • Printable</div>
+        <button id="btnPC" class="enter-btn" type="button">Enter ↗</button>
       </a>
 
       <!-- Line Schematic -->
-      <div class="card" data-keywords="line schematic production electrical pdf f12 f13 f16 f201">
-        <div class="card-label">Production</div>
-        <h3 class="card-title">Line Schematic</h3>
-        <p class="card-desc">Select a Line and its area to open the schematic.</p>
-        <div class="card-meta">Interactive • PDF-based</div>
+      <div class="card" data-keywords="line schematic production electrical pdf f12 f13 f16 f201 線體 配線 電路 圖">
+        <div id="labelSchematic" class="card-label">Production</div>
+        <h3 id="titleSchematic" class="card-title">Line Schematic</h3>
+        <p id="descSchematic" class="card-desc">Select a Line and its area to open the schematic.</p>
+        <div id="metaSchematic" class="card-meta">Interactive • PDF-based</div>
 
         <div class="action-row">
           <select id="schemLine" class="line-select">
-            <option value="">Select Line</option>
+            <option id="optSchemLineDefault" value="">Select Line</option>
             <option>Line-1</option>
             <option>Line-2</option>
             <option>Line-3</option>
@@ -334,7 +319,7 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
           </select>
 
           <select id="schemArea" class="line-select">
-            <option value="">Select Area</option>
+            <option id="optSchemAreaDefault" value="">Select Area</option>
             <option>F12</option>
             <option>F13</option>
             <option>F16</option>
@@ -346,15 +331,15 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
       </div>
 
       <!-- Program Backup -->
-      <div class="card" data-keywords="program backup plc scada docs automation main blending loading grinder tdo winder mdo">
-        <div class="card-label">Automation</div>
-        <h3 class="card-title">Program Backup</h3>
-        <p class="card-desc">Select a Line and a system to open its backup page.</p>
-        <div class="card-meta">PLC / SCADA • Docs</div>
+      <div class="card" data-keywords="program backup plc scada docs automation main blending loading grinder tdo winder mdo 程式 備份 自動化">
+        <div id="labelBackup" class="card-label">Automation</div>
+        <h3 id="titleBackup" class="card-title">Program Backup</h3>
+        <p id="descBackup" class="card-desc">Select a Line and a system to open its backup page.</p>
+        <div id="metaBackup" class="card-meta">PLC / SCADA • Docs</div>
 
         <div class="action-row">
           <select id="pbLine" class="line-select">
-            <option value="">Select Line</option>
+            <option id="optPbLineDefault" value="">Select Line</option>
             <option>Line-1</option>
             <option>Line-2</option>
             <option>Line-3</option>
@@ -362,7 +347,7 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
           </select>
 
           <select id="pbSys" class="line-select">
-            <option value="">Select System</option>
+            <option id="optPbSysDefault" value="">Select System</option>
             <option>SCADA</option>
             <option>F12</option>
             <option>F16</option>
@@ -382,15 +367,15 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
       </div>
 
       <!-- Calibration -->
-      <div class="card" data-keywords="calibration procedure maintenance hopper weight winder contact roll line speed sop">
-        <div class="card-label">Maintenance</div>
-        <h3 class="card-title">Calibration Procedure</h3>
-        <p class="card-desc">Open the step-by-step calibration SOP.</p>
-        <div class="card-meta">SOP • PDF/HTML</div>
+      <div class="card" data-keywords="calibration procedure maintenance hopper weight winder contact roll line speed sop 校正 步驟 維護">
+        <div id="labelCal" class="card-label">Maintenance</div>
+        <h3 id="titleCal" class="card-title">Calibration Procedure</h3>
+        <p id="descCal" class="card-desc">Open the step-by-step calibration SOP.</p>
+        <div id="metaCal" class="card-meta">SOP • PDF/HTML</div>
 
         <div class="action-row">
           <select id="calProc" class="line-select">
-            <option value="">Select Procedure</option>
+            <option id="optCalDefault" value="">Select Procedure</option>
             <option>Main Hopper Weight Calibration</option>
             <option>Winder Contact Roll Calibration</option>
             <option>Line Speed Calibration</option>
@@ -405,12 +390,161 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
   </div>
 
   <script>
-    // --- Init light/dark theme from localStorage + system ---
+    // --- Theme 初始化（跟隨系統 + localStorage） ---
     (function initTheme(){
       const stored = localStorage.getItem('ms-theme');
       const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       const theme = stored || (prefersDark ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', theme);
+    })();
+
+    // --- 語系資料 ---
+    const i18n = {
+      en: {
+        brandSub: "Smarter maintenance, easier life.",
+        designedBy: "Designed by",
+        nameDesigner: "Benjamin Lin",
+        modifiedDate: "Modified Date",
+        langLabel: "Language",
+        themeLabel: "Theme",
+        sectionTitle: "Modules",
+        sectionSub: "Choose a page below. Each is an independent system.",
+        searchPlaceholder: "Search modules… (e.g. PC, Schematic)",
+        searchHint: "Filter by module name or description.",
+        noResult: "No modules found. Try another keyword.",
+
+        labelPC: "BOPP1",
+        titlePC: "PC Manager",
+        descPC: "View computer asset list from inventory.csv.",
+        metaPC: "CSV-driven • Printable",
+        btnPC: "Enter ↗",
+
+        labelSchematic: "Production",
+        titleSchematic: "Line Schematic",
+        descSchematic: "Select a Line and its area to open the schematic.",
+        metaSchematic: "Interactive • PDF-based",
+        optSchemLineDefault: "Select Line",
+        optSchemAreaDefault: "Select Area",
+        btnSchemGo: "Go ↗",
+
+        labelBackup: "Automation",
+        titleBackup: "Program Backup",
+        descBackup: "Select a Line and a system to open its backup page.",
+        metaBackup: "PLC / SCADA • Docs",
+        optPbLineDefault: "Select Line",
+        optPbSysDefault: "Select System",
+        btnPbGo: "Go ↗",
+
+        labelCal: "Maintenance",
+        titleCal: "Calibration Procedure",
+        descCal: "Open the step-by-step calibration SOP.",
+        metaCal: "SOP • PDF/HTML",
+        optCalDefault: "Select Procedure",
+        btnCalGo: "Go ↗"
+      },
+      zh: {
+        brandSub: "讓維護更聰明，生活更輕鬆。",
+        designedBy: "設計",
+        nameDesigner: "林哲銘",
+        modifiedDate: "最後更新",
+        langLabel: "語言",
+        themeLabel: "主題",
+        sectionTitle: "模組總覽",
+        sectionSub: "請選擇下方頁面，每個都是獨立系統。",
+        searchPlaceholder: "搜尋模組⋯（例如 PC、Schematic）",
+        searchHint: "可以依模組名稱或說明文字進行篩選。",
+        noResult: "找不到符合的模組，請嘗試其他關鍵字。",
+
+        labelPC: "BOPP1",
+        titlePC: "電腦資產管理（PC Manager）",
+        descPC: "從 inventory.csv 檔案檢視電腦資產清單。",
+        metaPC: "CSV 驅動 • 可列印",
+        btnPC: "進入 ↗",
+
+        labelSchematic: "生產線",
+        titleSchematic: "線體配線圖（Line Schematic）",
+        descSchematic: "選擇線別與區域以開啟電氣配線 / 線體圖。",
+        metaSchematic: "可互動 • PDF 檔",
+        optSchemLineDefault: "選擇線別",
+        optSchemAreaDefault: "選擇區域",
+        btnSchemGo: "前往 ↗",
+
+        labelBackup: "自動化",
+        titleBackup: "程式備份（Program Backup）",
+        descBackup: "選擇線別與系統以開啟對應的備份頁面。",
+        metaBackup: "PLC / SCADA • 文件",
+        optPbLineDefault: "選擇線別",
+        optPbSysDefault: "選擇系統",
+        btnPbGo: "前往 ↗",
+
+        labelCal: "維護",
+        titleCal: "校正作業流程（Calibration Procedure）",
+        descCal: "開啟逐步的校正作業 SOP。",
+        metaCal: "SOP • PDF/HTML",
+        optCalDefault: "選擇校正項目",
+        btnCalGo: "前往 ↗"
+      }
+    };
+
+    function applyLang(lang){
+      const t = i18n[lang] || i18n.en;
+      document.documentElement.setAttribute('data-lang', lang);
+
+      document.getElementById('brandSub').textContent = t.brandSub;
+      document.getElementById('labelDesignedBy').textContent = t.designedBy;
+      document.getElementById('designerName').textContent = t.nameDesigner;
+      document.getElementById('labelModifiedDate').textContent = t.modifiedDate;
+      document.getElementById('langLabel').textContent = t.langLabel;
+      document.getElementById('themeLabel').textContent = t.themeLabel;
+
+      document.getElementById('sectionTitle').textContent = t.sectionTitle;
+      document.getElementById('sectionSub').textContent = t.sectionSub;
+
+      const searchInput = document.getElementById('moduleSearch');
+      searchInput.setAttribute('placeholder', t.searchPlaceholder);
+      document.getElementById('searchHint').textContent = t.searchHint;
+      document.getElementById('noResult').textContent = t.noResult;
+
+      document.getElementById('labelPC').textContent = t.labelPC;
+      document.getElementById('titlePC').textContent = t.titlePC;
+      document.getElementById('descPC').textContent = t.descPC;
+      document.getElementById('metaPC').textContent = t.metaPC;
+      document.getElementById('btnPC').textContent = t.btnPC;
+
+      document.getElementById('labelSchematic').textContent = t.labelSchematic;
+      document.getElementById('titleSchematic').textContent = t.titleSchematic;
+      document.getElementById('descSchematic').textContent = t.descSchematic;
+      document.getElementById('metaSchematic').textContent = t.metaSchematic;
+      document.getElementById('optSchemLineDefault').textContent = t.optSchemLineDefault;
+      document.getElementById('optSchemAreaDefault').textContent = t.optSchemAreaDefault;
+      document.getElementById('schemGo').textContent = t.btnSchemGo;
+
+      document.getElementById('labelBackup').textContent = t.labelBackup;
+      document.getElementById('titleBackup').textContent = t.titleBackup;
+      document.getElementById('descBackup').textContent = t.descBackup;
+      document.getElementById('metaBackup').textContent = t.metaBackup;
+      document.getElementById('optPbLineDefault').textContent = t.optPbLineDefault;
+      document.getElementById('optPbSysDefault').textContent = t.optPbSysDefault;
+      document.getElementById('pbGo').textContent = t.btnPbGo;
+
+      document.getElementById('labelCal').textContent = t.labelCal;
+      document.getElementById('titleCal').textContent = t.titleCal;
+      document.getElementById('descCal').textContent = t.descCal;
+      document.getElementById('metaCal').textContent = t.metaCal;
+      document.getElementById('optCalDefault').textContent = t.optCalDefault;
+      document.getElementById('calGo').textContent = t.btnCalGo;
+
+      const langIcon = document.getElementById('langIcon');
+      langIcon.textContent = lang === 'zh' ? '中' : 'EN';
+    }
+
+    (function initLang(){
+      const stored = localStorage.getItem('ms-lang');
+      const navLang = (navigator.language || '').toLowerCase();
+      const guess = navLang.startsWith('zh') ? 'zh' : 'en';
+      const lang = stored || guess;
+      applyLang(lang);
+      localStorage.setItem('ms-lang', lang);
     })();
 
     // GitHub last commit datetime
@@ -476,7 +610,7 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
       window.location.href=`Calibration-${slugify(calProc.value)}.html`;
     });
 
-    /* Theme Toggle (light/dark) */
+    /* Theme Toggle */
     (function(){
       const btn = document.getElementById('themeToggle');
       const icon = document.getElementById('themeIcon');
@@ -495,7 +629,19 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
 
       const initial = document.documentElement.getAttribute('data-theme') || 'light';
       applyIcon(initial);
+
       btn.addEventListener('click', toggleTheme);
+    })();
+
+    /* Language Toggle */
+    (function(){
+      const btn = document.getElementById('langToggle');
+      btn.addEventListener('click', ()=>{
+        const current = localStorage.getItem('ms-lang') || 'en';
+        const next = current === 'en' ? 'zh' : 'en';
+        localStorage.setItem('ms-lang', next);
+        applyLang(next);
+      });
     })();
 
     /* Module Search Filter */
@@ -504,20 +650,28 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
       const cards = Array.from(document.querySelectorAll('#moduleGrid .card'));
       const noResult = document.getElementById('noResult');
 
-      function normalize(str){return str.toLowerCase();}
+      function normalize(str){
+        return str.toLowerCase();
+      }
 
       function filterModules(){
         const query = normalize(input.value.trim());
         let visibleCount = 0;
 
         if (!query){
-          cards.forEach(card => { card.style.display = ''; });
+          cards.forEach(card => {
+            card.style.display = '';
+          });
           noResult.style.display = 'none';
           return;
         }
 
         cards.forEach(card => {
-          const text = (card.getAttribute('data-keywords') || card.textContent || '');
+          const text = (
+            card.getAttribute('data-keywords') ||
+            card.textContent ||
+            ''
+          );
           const match = normalize(text).includes(query);
           card.style.display = match ? '' : 'none';
           if (match) visibleCount++;
@@ -529,24 +683,18 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
       input.addEventListener('input', filterModules);
     })();
 
-    // --- Style Theme (blue / panther / hangyodon) – 點左上 icon 切換 ---
+    // --- Style Theme (blue / panther / hangyodon) – 用左上角圖片切換 ---
     (function(){
       const STYLE_KEY = 'ms-style';
       const root = document.documentElement;
       const mascot = document.querySelector('.mascot');
       const styles = ['blue', 'panther', 'hangyodon'];
 
-      // mac / iOS 風格圓角漸層藍色方塊
+      // 建立藍色方塊 SVG icon（不用額外檔案）
       const blueSvg =
         '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">' +
-          '<defs>' +
-            '<linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
-              '<stop offset="0%" stop-color="#bfdbfe"/>' +
-              '<stop offset="100%" stop-color="#2563eb"/>' +
-            '</linearGradient>' +
-          '</defs>' +
-          '<rect x="2" y="2" width="28" height="28" rx="10" fill="url(#g)"/>' +
-        '</svg>';
+        '<rect width="32" height="32" rx="8" fill="#2563eb"/>' +
+        '<rect x="8" y="8" width="16" height="16" rx="4" fill="#eff6ff"/></svg>';
       const blueIcon = 'data:image/svg+xml;utf8,' + encodeURIComponent(blueSvg);
 
       const themeConfig = {
@@ -587,10 +735,11 @@ html[data-style="hangyodon"] .side-hangyodon{display:block;}
 
       if (mascot){
         mascot.style.cursor = 'pointer';
-        mascot.title = 'Click to change style';
+        mascot.title = 'Click to change theme';
         mascot.addEventListener('click', cycleStyle);
       }
     })();
   </script>
 </body>
 </html>
+把左上 藍色小方塊換掉
