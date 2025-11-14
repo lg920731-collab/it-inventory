@@ -165,26 +165,49 @@
     }
 
     /* 左右 panther / hangyodon */
-    .side-panther,
-    .side-hangyodon{
-      position:fixed;top:50%;transform:translateY(-50%);
-      width:420px;opacity:.9;z-index:1;pointer-events:auto;user-select:none;
-      transition: transform .25s ease, opacity .25s ease;
-      display:none;
-    }
-    .side-panther.left{left:2.5%;transform:translateY(-50%) scaleX(1)}
-    .side-panther.right{right:2.5%;transform:translateY(-50%) scaleX(-1)}
+  /* 左右 panther / hangyodon */
+.side-panther,
+.side-hangyodon{
+  position:fixed;
+  top:50%;
+  transform:translateY(-50%);
+  width:420px;
+  opacity:.9;
+  z-index:1;
+  pointer-events:auto;
+  user-select:none;
+  transition: transform .25s ease, opacity .25s ease;
+  display:none;
+}
 
-    .side-hangyodon.left{left:2.5%;transform:translateY(-50%) scaleX(-1)}
-    .side-hangyodon.right{right:2.5%;transform:translateY(-50%) scaleX(-1)}
+/* 桌機版：左右各一隻，往中間看 */
+.side-panther.left{left:2.5%;transform:translateY(-50%) scaleX(1);}
+.side-panther.right{right:2.5%;transform:translateY(-50%) scaleX(-1);}
 
-    html[data-style="panther"] .side-panther{display:block;}
-    html[data-style="hangyodon"] .side-hangyodon{display:block;}
+.side-hangyodon.left{left:2.5%;transform:translateY(-50%) scaleX(-1);}
+.side-hangyodon.right{right:2.5%;transform:translateY(-50%) scaleX(-1);}
 
-    @media (max-width:1000px){
-      .side-panther,
-      .side-hangyodon{display:none}
-    }
+html[data-style="panther"] .side-panther{display:block;}
+html[data-style="hangyodon"] .side-hangyodon{display:block;}
+
+/* 手機 / 平板：只保留右邊一隻，縮小當背景裝飾 */
+@media (max-width: 900px){
+  .side-panther.left,
+  .side-hangyodon.left{
+    display:none;
+  }
+
+  .side-panther.right,
+  .side-hangyodon.right{
+    display:block;
+    width:260px;
+    opacity:.7;
+    top:auto;
+    bottom:10px;
+    transform:translateY(0) scaleX(-1);
+    pointer-events:none;
+  }
+}
 
     .side-panther.left:hover,
     .side-hangyodon.left:hover{
