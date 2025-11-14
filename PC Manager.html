@@ -18,6 +18,13 @@
       --small-font: 13px;
       --xsmall-font: 11px;
     }
+ <script>
+   // ===== Apply theme from localStorage =====
+    (function () {
+      const s = localStorage.getItem('ms-style') || 'blue';
+      document.documentElement.setAttribute('data-style', s);
+    })();
+  </script>
 
     * { box-sizing: border-box; }
 
