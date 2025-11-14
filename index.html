@@ -294,50 +294,66 @@
     html[data-style="panther"] .side-panther{display:block;}
     html[data-style="hangyodon"] .side-hangyodon{display:block;}
 
-    /* 手機 / 平板：隱藏兩側角色，改用一張背景圖置中 */
-    @media (max-width: 900px){
-      body{
-        /* 這裡換成你自己的圖片檔名 */
-        background:var(--bg) url('mobile-bg.png') no-repeat center center;
-        background-size:260px auto;
-      }
+    /* 手機 / 平板：保留右邊大圖並置中 */
+    /* 手機 / 平板：保留右邊大圖並置中 */
+@media (max-width: 900px){
 
-      .side-panther,
-      .side-hangyodon{
-        display:none;
-      }
+  body{
+    background:var(--bg);
+  }
 
-      .page{
-        padding-top:16px;
-      }
+  /* 左邊角色一定關閉（避免 data-style 覆蓋） */
+  html[data-style="panther"] .side-panther.left,
+  html[data-style="hangyodon"] .side-hangyodon.left{
+    display:none !important;
+  }
 
-      /* 手機版 topbar 改成上下排版 */
-      .topbar{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:10px;
-      }
+  /* 右邊角色置中顯示（避免桌機模式影響） */
+  html[data-style="panther"] .side-panther.right,
+  html[data-style="hangyodon"] .side-hangyodon.right{
+    display:block !important;
+    position:fixed !important;
+    left:50% !important;
+    right:auto !important;
+    top:50% !important;
+    transform:translate(-50%, -50%) !important;
+    width:260px;
+    opacity:0.9;
+    pointer-events:none;
+    z-index:1;
+  }
 
-      .brand-main{
-        font-size:17px;
-        letter-spacing:.10em;
-      }
-      .brand-sub{
-        font-size:12px;
-      }
+  .page{
+    padding-top:16px;
+  }
 
-      .top-meta{
-        width:100%;
-        justify-content:flex-start;
-        gap:6px;
-        flex-wrap:wrap;
-      }
+  .topbar{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
 
-      .top-meta .pill,
-      .top-meta .btn-ghost{
-        flex-shrink:0;
-      }
-    }
+  .brand-main{
+    font-size:17px;
+    letter-spacing:.10em;
+  }
+
+  .brand-sub{
+    font-size:12px;
+  }
+
+  .top-meta{
+    width:100%;
+    justify-content:flex-start;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+
+  .top-meta .pill,
+  .top-meta .btn-ghost{
+    flex-shrink:0;
+  }
+}
 
     .side-panther.left:hover,
     .side-hangyodon.left:hover{
