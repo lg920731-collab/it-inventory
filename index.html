@@ -370,3 +370,204 @@
             <option value="">Select Procedure</option>
             <option>Main Hopper Weight Calibration</option>
             <option>Winder Contact Roll Calibration</option>
+            <option>Line Speed Calibration</option>
+          </select>
+
+          <button id="calGo" class="btn-secondary" type="button" disabled>Go ↗</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="noResult" class="no-result">No modules found. Try another keyword.</div>
+  </div>
+
+  <script>
+    // --- Init light/dark theme from localStorage + system ---
+    (function initTheme(){
+      const stored = localStorage.getItem('ms-theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+
+    // GitHub last commit datetime
+    (async function(){
+      const el = document.getElementById('modDate');
+      const owner  = "lg920731-collab";
+      const repo   = "it-inventory";
+      const branch = "main";
+      const url = `https://api.github.com/repos/${owner}/${repo}/commits/${branch}`;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("GitHub API error");
+        const data = await res.json();
+        const dateStr = data?.commit?.author?.date;
+        if (!dateStr) throw new Error("No date");
+        const d = new Date(dateStr);
+        el.textContent = d.toLocaleString([], {
+          year:'numeric', month:'2-digit', day:'2-digit',
+          hour:'2-digit', minute:'2-digit'
+        });
+      } catch (err) {
+        console.error("GitHub commit time error:", err);
+        const d = new Date(document.lastModified);
+        el.textContent = !isNaN(d)
+          ? d.toLocaleString([], {
+              year:'numeric', month:'2-digit', day:'2-digit',
+              hour:'2-digit', minute:'2-digit'
+            })
+          : "N/A";
+      }
+    })();
+
+    function slugify(s){return s.trim().replace(/\s+/g,'-').replace(/[^A-Za-z0-9\-]/g,'')}
+
+    /* Line Schematic */
+    const schemLine=document.getElementById('schemLine');
+    const schemArea=document.getElementById('schemArea');
+    const schemGo=document.getElementById('schemGo');
+    function updateSchemBtn(){schemGo.disabled=!(schemLine.value&&schemArea.value)}
+    schemLine.addEventListener('change',updateSchemBtn);
+    schemArea.addEventListener('change',updateSchemBtn);
+    schemGo.addEventListener('click',()=>{
+      window.location.href=`${schemLine.value}-${schemArea.value}-Schematic.html`;
+    });
+
+    /* Program Backup */
+    const pbLine=document.getElementById('pbLine');
+    const pbSys=document.getElementById('pbSys');
+    const pbGo=document.getElementById('pbGo');
+    function updatePbBtn(){pbGo.disabled=!(pbLine.value&&pbSys.value)}
+    pbLine.addEventListener('change',updatePbBtn);
+    pbSys.addEventListener('change',updatePbBtn);
+    pbGo.addEventListener('click',()=>{
+      window.location.href=`Program-Backup-${pbLine.value}-${slugify(pbSys.value)}.html`;
+    });
+
+    /* Calibration Procedure */
+    const calProc=document.getElementById('calProc');
+    const calGo=document.getElementById('calGo');
+    calProc.addEventListener('change',()=>{calGo.disabled=!calProc.value});
+    calGo.addEventListener('click',()=>{
+      window.location.href=`Calibration-${slugify(calProc.value)}.html`;
+    });
+
+    /* Theme Toggle (light/dark) */
+    (function(){
+      const btn = document.getElementById('themeToggle');
+      const icon = document.getElementById('themeIcon');
+
+      function applyIcon(theme){
+        icon.textContent = theme === 'dark' ? '🌙' : '🌞';
+      }
+
+      function toggleTheme(){
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('ms-theme', next);
+        applyIcon(next);
+      }
+
+      const initial = document.documentElement.getAttribute('data-theme') || 'light';
+      applyIcon(initial);
+      btn.addEventListener('click', toggleTheme);
+    })();
+
+    /* Module Search Filter */
+    (function(){
+      const input = document.getElementById('moduleSearch');
+      const cards = Array.from(document.querySelectorAll('#moduleGrid .card'));
+      const noResult = document.getElementById('noResult');
+
+      function normalize(str){return str.toLowerCase();}
+
+      function filterModules(){
+        const query = normalize(input.value.trim());
+        let visibleCount = 0;
+
+        if (!query){
+          cards.forEach(card => { card.style.display = ''; });
+          noResult.style.display = 'none';
+          return;
+        }
+
+        cards.forEach(card => {
+          const text = (card.getAttribute('data-keywords') || card.textContent || '');
+          const match = normalize(text).includes(query);
+          card.style.display = match ? '' : 'none';
+          if (match) visibleCount++;
+        });
+
+        noResult.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      input.addEventListener('input', filterModules);
+    })();
+
+    // --- Style Theme (blue / panther / hangyodon) – 點左上 icon 切換 ---
+    (function(){
+      const STYLE_KEY = 'ms-style';
+      const root = document.documentElement;
+      const mascot = document.querySelector('.mascot');
+      const styles = ['blue', 'panther', 'hangyodon'];
+
+      // mac / iOS 風格圓角漸層藍色方塊
+      const blueSvg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">' +
+          '<defs>' +
+            '<linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+              '<stop offset="0%" stop-color="#bfdbfe"/>' +
+              '<stop offset="100%" stop-color="#2563eb"/>' +
+            '</linearGradient>' +
+          '</defs>' +
+          '<rect x="2" y="2" width="28" height="28" rx="10" fill="url(#g)"/>' +
+        '</svg>';
+      const blueIcon = 'data:image/svg+xml;utf8,' + encodeURIComponent(blueSvg);
+
+      const themeConfig = {
+        blue: {
+          mascotSrc: blueIcon,
+          mascotAlt: 'Blue theme'
+        },
+        panther: {
+          mascotSrc: 'pinkpanther.png',
+          mascotAlt: 'Pink Panther theme'
+        },
+        hangyodon: {
+          mascotSrc: 'hangyodon.png',
+          mascotAlt: 'Hangyodon theme'
+        }
+      };
+
+      function applyStyle(style){
+        const s = themeConfig[style] ? style : 'blue';
+        root.setAttribute('data-style', s);
+        const cfg = themeConfig[s];
+        if (mascot){
+          mascot.src = cfg.mascotSrc;
+          mascot.alt = cfg.mascotAlt;
+        }
+        localStorage.setItem(STYLE_KEY, s);
+      }
+
+      function cycleStyle(){
+        const current = root.getAttribute('data-style') || 'blue';
+        const idx = styles.indexOf(current);
+        const next = styles[(idx + 1) % styles.length];
+        applyStyle(next);
+      }
+
+      const saved = localStorage.getItem(STYLE_KEY) || 'blue';
+      applyStyle(saved);
+
+      if (mascot){
+        mascot.style.cursor = 'pointer';
+        mascot.title = 'Click to change style';
+        mascot.addEventListener('click', cycleStyle);
+      }
+    })();
+  </script>
+</body>
+</html>
