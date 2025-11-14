@@ -78,10 +78,13 @@
     .brand-wrap{display:flex;align-items:center;gap:10px}
 
     /* 左上主題 icon（之後用 JS 替換） */
-    .mascot{
-      height:32px;width:32px;border-radius:12px;
-      box-shadow:0 0 14px rgba(37,99,235,.5);
-      object-fit:cover;
+    .mascot {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: radial-gradient(circle at 30% 0, #bfdbfe, #2563eb);
+      box-shadow: 0 0 10px rgba(37,99,235,0.35);
+      flex-shrink: 0;
     }
 
     .brand-main{
@@ -728,30 +731,34 @@
       const blueIcon = 'data:image/svg+xml;utf8,' + encodeURIComponent(blueSvg);
 
       const themeConfig = {
-        blue: {
-          mascotSrc: blueIcon,
-          mascotAlt: 'Blue theme'
-        },
-        panther: {
-          mascotSrc: 'pinkpanther.png',
-          mascotAlt: 'Pink Panther theme'
-        },
-        hangyodon: {
-          mascotSrc: 'hangyodon.png',
-          mascotAlt: 'Hangyodon theme'
-        }
-      };
+  blue: {
+    mascotSrc: '',          // 不用圖片，吃 CSS 背景
+    mascotAlt: 'Blue theme'
+  },
+  panther: {
+    mascotSrc: 'pinkpanther.png',
+    mascotAlt: 'Pink Panther theme'
+  },
+  hangyodon: {
+    mascotSrc: 'hangyodon.png',
+    mascotAlt: 'Hangyodon theme'
+  }
+};
 
-      function applyStyle(style){
-        const s = themeConfig[style] ? style : 'blue';
-        root.setAttribute('data-style', s);
-        const cfg = themeConfig[s];
-        if (mascot){
-          mascot.src = cfg.mascotSrc;
-          mascot.alt = cfg.mascotAlt;
-        }
-        localStorage.setItem(STYLE_KEY, s);
-      }
+function applyStyle(style){
+  const s = themeConfig[style] ? style : 'blue';
+  root.setAttribute('data-style', s);
+  const cfg = themeConfig[s];
+  if (mascot){
+    if (s === 'blue') {
+      mascot.removeAttribute('src');   // 顯示 CSS 漸層方塊
+    } else {
+      mascot.src = cfg.mascotSrc;      // 其他主題顯示圖片
+    }
+    mascot.alt = cfg.mascotAlt;
+  }
+  localStorage.setItem(STYLE_KEY, s);
+}
 
       function cycleStyle(){
         const current = root.getAttribute('data-style') || 'blue';
