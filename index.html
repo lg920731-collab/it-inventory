@@ -298,20 +298,17 @@
     html[data-style="hangyodon"] .side-hangyodon{display:block;}
 
     /* 手機 / 平板：保留右邊大圖並置中 */
-    /* 手機 / 平板：保留右邊大圖並置中 */
 @media (max-width: 900px){
 
   body{
     background:var(--bg);
   }
 
-  /* 左邊角色一定關閉（避免 data-style 覆蓋） */
   html[data-style="panther"] .side-panther.left,
   html[data-style="hangyodon"] .side-hangyodon.left{
     display:none !important;
   }
 
-  /* 右邊角色置中顯示（避免桌機模式影響） */
   html[data-style="panther"] .side-panther.right,
   html[data-style="hangyodon"] .side-hangyodon.right{
     display:block !important;
@@ -430,9 +427,181 @@
       color:var(--text-soft);
       display:none;
     }
+
+    /* ===== 左上浮動主選單 + Line Schematic 子列表 ===== */
+    .nav-menu{
+      position:fixed;
+      top:18px;
+      left:18px;
+      z-index:40;
+    }
+    .nav-panel{
+      background:var(--card-bg);
+      border-radius:18px;
+      box-shadow:var(--shadow-soft-md);
+      border:1px solid var(--border-subtle);
+      padding:6px 0;
+      min-width:150px;
+    }
+    .nav-item-link{
+      width:100%;
+      padding:7px 14px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      border:none;
+      background:transparent;
+      text-align:left;
+      font-size:13px;
+      cursor:pointer;
+      color:var(--text-soft);
+      text-decoration:none;
+    }
+    .nav-item-link .nav-icon{
+      font-size:14px;
+      width:16px;
+      text-align:center;
+    }
+    .nav-item-link:hover{
+      background:var(--accent-soft);
+      color:var(--accent);
+    }
+    .nav-item-link.active{
+      background:var(--accent);
+      color:#fff;
+    }
+
+    .nav-item.has-children > .nav-item-link::after{
+      content:'›';
+      margin-left:auto;
+      font-size:12px;
+      opacity:.7;
+    }
+
+    .nav-sub{
+      display:none;
+      padding:4px 0 6px;
+      border-top:1px solid rgba(148,163,184,.4);
+      background:rgba(15,23,42,.01);
+    }
+    .nav-item.has-children.open > .nav-sub{
+      display:block;
+    }
+
+    .nav-line{
+      padding:4px 0;
+    }
+    .nav-line-main{
+      width:100%;
+      padding:4px 24px;
+      border:none;
+      background:transparent;
+      text-align:left;
+      font-size:12px;
+      cursor:pointer;
+      color:var(--text);
+    }
+    .nav-line-main::after{
+      content:'+';
+      float:right;
+      font-size:11px;
+      opacity:.7;
+    }
+    .nav-line.open .nav-line-main::after{
+      content:'–';
+    }
+
+    .nav-line-sub{
+      display:none;
+      margin-top:2px;
+      margin-left:22px;
+      padding-left:10px;
+      border-left:1px dashed #cbd5e1;
+    }
+    .nav-line.open .nav-line-sub{
+      display:block;
+    }
+    .nav-line-sub a{
+      display:block;
+      padding:3px 0;
+      font-size:12px;
+      text-decoration:none;
+      color:var(--accent);
+    }
+    .nav-line-sub a:hover{
+      text-decoration:underline;
+    }
   </style>
 </head>
 <body>
+
+  <!-- 左上浮動主選單 -->
+  <div class="nav-menu">
+    <div class="nav-panel">
+      <a href="index.html" class="nav-item-link active">
+        <span class="nav-icon">🏠</span><span>Home</span>
+      </a>
+      <a href="PC Manager.html" class="nav-item-link">
+        <span class="nav-icon">💻</span><span>PC Manager</span>
+      </a>
+
+      <!-- Line Schematic：兩層子列表 -->
+      <div class="nav-item has-children">
+        <button type="button" class="nav-item-link">
+          <span class="nav-icon">📊</span><span>Line Schematic</span>
+        </button>
+        <div class="nav-sub">
+          <!-- Line-1 -->
+          <div class="nav-line">
+            <button type="button" class="nav-line-main">Line-1</button>
+            <div class="nav-line-sub">
+              <a href="Line-1-F12-Schematic.html">F12</a>
+              <a href="Line-1-F13-Schematic.html">F13</a>
+              <a href="Line-1-F16-Schematic.html">F16</a>
+              <a href="Line-1-F201-Schematic.html">F201</a>
+            </div>
+          </div>
+          <!-- Line-2 -->
+          <div class="nav-line">
+            <button type="button" class="nav-line-main">Line-2</button>
+            <div class="nav-line-sub">
+              <a href="Line-2-F12-Schematic.html">F12</a>
+              <a href="Line-2-F13-Schematic.html">F13</a>
+              <a href="Line-2-F16-Schematic.html">F16</a>
+              <a href="Line-2-F201-Schematic.html">F201</a>
+            </div>
+          </div>
+          <!-- Line-3 -->
+          <div class="nav-line">
+            <button type="button" class="nav-line-main">Line-3</button>
+            <div class="nav-line-sub">
+              <a href="Line-3-F12-Schematic.html">F12</a>
+              <a href="Line-3-F13-Schematic.html">F13</a>
+              <a href="Line-3-F16-Schematic.html">F16</a>
+              <a href="Line-3-F201-Schematic.html">F201</a>
+            </div>
+          </div>
+          <!-- Line-4 -->
+          <div class="nav-line">
+            <button type="button" class="nav-line-main">Line-4</button>
+            <div class="nav-line-sub">
+              <a href="Line-4-F12-Schematic.html">F12</a>
+              <a href="Line-4-F13-Schematic.html">F13</a>
+              <a href="Line-4-F16-Schematic.html">F16</a>
+              <a href="Line-4-F201-Schematic.html">F201</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="Program Backup.html" class="nav-item-link">
+        <span class="nav-icon">📂</span><span>Program Backup</span>
+      </a>
+      <a href="Calibration.html" class="nav-item-link">
+        <span class="nav-icon">🛠</span><span>Calibration</span>
+      </a>
+    </div>
+  </div>
 
   <!-- side characters -->
   <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left" />
@@ -625,39 +794,33 @@
       return s.trim().replace(/\s+/g,'-').replace(/[^A-Za-z0-9\-]/g,'')
     }
 
-  /* Line Schematic – 依選擇自動導向 Line-X-Fxx-Schematic.html */
-(function () {
-  const schemLine = document.getElementById('schemLine');
-  const schemArea = document.getElementById('schemArea');
-  const schemGo   = document.getElementById('schemGo');
+    /* Line Schematic – 依選擇自動導向 Line-X-Fxx-Schematic.html */
+    (function () {
+      const schemLine = document.getElementById('schemLine');
+      const schemArea = document.getElementById('schemArea');
+      const schemGo   = document.getElementById('schemGo');
 
-  // 如果這個頁面沒有 Line Schematic 卡片（子頁面），就直接跳過，避免報錯
-  if (!schemLine || !schemArea || !schemGo) return;
+      if (!schemLine || !schemArea || !schemGo) return;
 
-  // 如果之後你把 16 個檔案放到子資料夾，可以改這裡，例如 "schematics/"
-  const SCHEM_BASE = "";  // 目前跟 index.html 同一個資料夾就留空字串
+      const SCHEM_BASE = "";
 
-  function updateSchemBtn() {
-    schemGo.disabled = !(schemLine.value && schemArea.value);
-  }
+      function updateSchemBtn() {
+        schemGo.disabled = !(schemLine.value && schemArea.value);
+      }
 
-  schemLine.addEventListener('change', updateSchemBtn);
-  schemArea.addEventListener('change', updateSchemBtn);
+      schemLine.addEventListener('change', updateSchemBtn);
+      schemArea.addEventListener('change', updateSchemBtn);
 
-  schemGo.addEventListener('click', () => {
-    const line = schemLine.value;  // 例如 "Line-3"
-    const area = schemArea.value;  // 例如 "F13"
-    if (!line || !area) return;
+      schemGo.addEventListener('click', () => {
+        const line = schemLine.value;
+        const area = schemArea.value;
+        if (!line || !area) return;
 
-    // 檔名規則：Line-3-F13-Schematic.html
-    const target = `${SCHEM_BASE}${line}-${area}-Schematic.html`;
-
-    console.log("Navigate to:", target);
-    window.location.href = target;
-  });
-})();
-
-
+        const target = `${SCHEM_BASE}${line}-${area}-Schematic.html`;
+        console.log("Navigate to:", target);
+        window.location.href = target;
+      });
+    })();
 
     /* Program Backup */
     const pbLine=document.getElementById('pbLine');
@@ -738,50 +901,35 @@
       const mascot = document.querySelector('.mascot');
       const styles = ['blue', 'panther', 'hangyodon'];
 
-      // mac / iOS 風格圓角漸層藍色方塊
-      const blueSvg =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">' +
-      '<defs>' +
-      // 跟 PC Manager 一樣用 radial gradient，亮點在左上
-      '<radialGradient id="g" cx="0.3" cy="0" r="1">' +
-      '<stop offset="0%" stop-color="#bfdbfe"/>' +
-      '<stop offset="100%" stop-color="#2563eb"/>' +
-      '</radialGradient>' +
-      '</defs>' +
-      // 28x28、圓角 9，長得就會跟那顆一樣
-      '<rect x="2" y="2" width="28" height="28" rx="9" fill="url(#g)"/>' +
-      '</svg>';
-      const blueIcon = 'data:image/svg+xml;utf8,' + encodeURIComponent(blueSvg);
-
       const themeConfig = {
-  blue: {
-    mascotSrc: '',          // 不用圖片，吃 CSS 背景
-    mascotAlt: 'Blue theme'
-  },
-  panther: {
-    mascotSrc: 'pinkpanther.png',
-    mascotAlt: 'Pink Panther theme'
-  },
-  hangyodon: {
-    mascotSrc: 'hangyodon.png',
-    mascotAlt: 'Hangyodon theme'
-  }
-};
+        blue: {
+          mascotSrc: '',
+          mascotAlt: 'Blue theme'
+        },
+        panther: {
+          mascotSrc: 'pinkpanther.png',
+          mascotAlt: 'Pink Panther theme'
+        },
+        hangyodon: {
+          mascotSrc: 'hangyodon.png',
+          mascotAlt: 'Hangyodon theme'
+        }
+      };
 
-function applyStyle(style){
-  const s = themeConfig[style] ? style : 'blue';
-  root.setAttribute('data-style', s);
-  const cfg = themeConfig[s];
-  if (mascot){
-    if (s === 'blue') {
-      mascot.removeAttribute('src');   // 顯示 CSS 漸層方塊
-    } else {
-      mascot.src = cfg.mascotSrc;      // 其他主題顯示圖片
-    }
-    mascot.alt = cfg.mascotAlt;
-  }
-  localStorage.setItem(STYLE_KEY, s);
-}
+      function applyStyle(style){
+        const s = themeConfig[style] ? style : 'blue';
+        root.setAttribute('data-style', s);
+        const cfg = themeConfig[s];
+        if (mascot){
+          if (s === 'blue') {
+            mascot.removeAttribute('src');
+          } else {
+            mascot.src = cfg.mascotSrc;
+          }
+          mascot.alt = cfg.mascotAlt;
+        }
+        localStorage.setItem(STYLE_KEY, s);
+      }
 
       function cycleStyle(){
         const current = root.getAttribute('data-style') || 'blue';
@@ -798,6 +946,27 @@ function applyStyle(style){
         mascot.title = 'Click to change style';
         mascot.addEventListener('click', cycleStyle);
       }
+    })();
+
+    // 左上 nav：展開 Line Schematic & 各 Line 子列表
+    (function(){
+      // 第一層：Line Schematic
+      document
+        .querySelectorAll('.nav-item.has-children > .nav-item-link')
+        .forEach(btn=>{
+          btn.addEventListener('click',()=>{
+            btn.parentElement.classList.toggle('open');
+          });
+        });
+
+      // 第二層：Line-1 ~ Line-4
+      document
+        .querySelectorAll('.nav-line-main')
+        .forEach(btn=>{
+          btn.addEventListener('click',()=>{
+            btn.parentElement.classList.toggle('open');
+          });
+        });
     })();
   </script>
 </body>
