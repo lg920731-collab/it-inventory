@@ -625,39 +625,30 @@
       return s.trim().replace(/\s+/g,'-').replace(/[^A-Za-z0-9\-]/g,'')
     }
 
-   /* Line Schematic – Line 1~4 + F12/F13/F16/F201 對應各自 HTML */
+   /* Line Schematic – 依選擇自動導向 Line-X-Fxx-Schematic.html */
 const schemLine = document.getElementById('schemLine');
 const schemArea = document.getElementById('schemArea');
 const schemGo   = document.getElementById('schemGo');
 
-// 這裡設定每一個「Line + Area」對應到哪一個 HTML 檔案
-// 檔名可以依你實際的檔案名稱改
-const schemMap = {
-  'Line-1': {
-    'F12': 'Line-1-F12-Schematic.html',
-    'F13': 'Line-1-F13-Schematic.html',
-    'F16': 'Line-1-F16-Schematic.html',
-    'F201': 'Line-1-F201-Schematic.html'
-  },
-  'Line-2': {
-    'F12': 'Line-2-F12-Schematic.html',
-    'F13': 'Line-2-F13-Schematic.html',
-    'F16': 'Line-2-F16-Schematic.html',
-    'F201': 'Line-2-F201-Schematic.html'
-  },
-  'Line-3': {
-    'F12': 'Line-3-F12-Schematic.html',
-    'F13': 'Line-3-F13-Schematic.html',
-    'F16': 'Line-3-F16-Schematic.html',
-    'F201': 'Line-3-F201-Schematic.html'
-  },
-  'Line-4': {
-    'F12': 'Line-4-F12-Schematic.html',
-    'F13': 'Line-4-F13-Schematic.html',
-    'F16': 'Line-4-F16-Schematic.html',
-    'F201': 'Line-4-F201-Schematic.html'
-  }
-};
+function updateSchemBtn() {
+  schemGo.disabled = !(schemLine.value && schemArea.value);
+}
+
+schemLine.addEventListener('change', updateSchemBtn);
+schemArea.addEventListener('change', updateSchemBtn);
+
+schemGo.addEventListener('click', () => {
+  const line = schemLine.value;  // 例如 "Line-3"
+  const area = schemArea.value;  // 例如 "F13"
+
+  if (!line || !area) return;
+
+  // 檔名規則：Line-3-F13-Schematic.html
+  const target = `${line}-${area}-Schematic.html`;
+
+  // 導頁
+  window.location.href = target;
+});
 
 function updateSchemBtn() {
   schemGo.disabled = !(schemLine.value && schemArea.value);
