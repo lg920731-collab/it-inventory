@@ -2,17 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Line 2 Schematic | Maintenance Smart</title>
+  <title>Line 2 – F13 Schematic | Maintenance Smart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- apply theme & style from portal -->
+  <!-- 套用主頁 style（blue / panther / hangyodon） -->
   <script>
     (function () {
-      const storedTheme = localStorage.getItem('ms-theme');
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const theme = storedTheme || (prefersDark ? 'dark' : 'light');
-      document.documentElement.setAttribute('data-theme', theme);
-
       const style = localStorage.getItem('ms-style') || 'blue';
       document.documentElement.setAttribute('data-style', style);
     })();
@@ -24,19 +19,10 @@
       --card-bg:#ffffff;
       --border-subtle:#e5e7eb;
       --accent: #2563eb;
+      --accent-soft:#eff6ff;
       --accent-hover: #1d4ed8;
       --text: #111827;
       --text-soft: #6b7280;
-    }
-
-    html[data-theme="dark"]{
-      --bg:#020617;
-      --card-bg:#020617;
-      --border-subtle:#1f2937;
-      --accent:#60a5fa;
-      --accent-hover:#3b82f6;
-      --text:#e5e7eb;
-      --text-soft:#9ca3af;
     }
 
     * { box-sizing: border-box; }
@@ -49,15 +35,15 @@
         var(--bg);
       color: var(--text);
       min-height: 100dvh;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 16px;
-      -webkit-text-size-adjust: 100%;
+      -webkit-text-size-adjust:100%;
       transition: background .25s ease, color .25s ease;
     }
 
-    /* style 背景 */
+    /* style 背景 – 跟 Portal 一樣邏輯 */
     html[data-style="panther"] body{
       background:
         radial-gradient(circle at top,rgba(244,114,182,.28),transparent),
@@ -69,177 +55,164 @@
         var(--bg);
     }
 
-    /* side characters：桌機兩邊，小螢幕只留右下角一隻 */
-    .side-panther,
-    .side-hangyodon{
-      position:fixed;
-      top:50%;
-      transform:translateY(-50%);
-      width:320px;
-      opacity:.9;
-      z-index:1;
-      pointer-events:none;
-      user-select:none;
-      transition: transform .25s ease, opacity .25s ease;
-      display:none;
+    /* 標題區 */
+    h1{
+      margin:0;
+      color:var(--accent);
+      font-size:22px;
+      font-weight:600;
+      text-align:center;
+    }
+    .subtitle{
+      margin:4px 0 12px;
+      text-align:center;
+      font-size:13px;
+      color:var(--text-soft);
     }
 
-    /* 桌機：左右各一隻，朝中間 */
-    .side-panther.left{left:1.5%;transform:translateY(-50%) scaleX(1);}
-    .side-panther.right{right:1.5%;transform:translateY(-50%) scaleX(1);}
+    /* 工具列 – Back / Open */
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin-bottom:10px;
+    }
+    .btn{
+      font-size:13px;
+      padding:7px 16px;
+      border-radius:999px;
+      border:1px solid rgba(37,99,235,0.35);
+      background:#ffffff;
+      color:var(--accent);
+      text-decoration:none;
+      box-shadow:0 4px 10px rgba(37,99,235,0.12);
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      transition:all .15s ease;
+    }
+    .btn:hover{
+      background:var(--accent);
+      color:#ffffff;
+      border-color:var(--accent-hover);
+      box-shadow:0 6px 14px rgba(37,99,235,0.25);
+    }
 
-    .side-hangyodon.left{left:1.5%;transform:translateY(-50%) scaleX(-1);}
-    .side-hangyodon.right{right:1.5%;transform:translateY(-50%) scaleX(1);}
+    /* PDF viewer 區塊 */
+    .viewer{
+      width:100%;
+      max-width:1100px;
+      height:calc(100dvh - 190px);
+      min-height:380px;
+      background:var(--card-bg);
+      border-radius:14px;
+      border:1px solid var(--border-subtle);
+      box-shadow:0 10px 24px rgba(15,23,42,0.08);
+      overflow:hidden;
+      -webkit-overflow-scrolling:touch;
+    }
+    .viewer object{
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
+    }
 
-    html[data-style="panther"] .side-panther{display:block;}
-    html[data-style="hangyodon"] .side-hangyodon{display:block;}
+    .fallback{
+      padding:20px;
+      text-align:center;
+      font-size:14px;
+      color:var(--text-soft);
+    }
 
-    /* 手機 / 小螢幕：只留右下角一隻、縮小當背景 */
-    @media (max-width: 900px){
-      .side-panther.left,
-      .side-hangyodon.left{
-        display:none;
+    @media (max-width:480px){
+      .viewer{
+        height:calc(100dvh - 210px);
       }
-
-      .side-panther.right{
-        display:block;
-        width:260px;
-        opacity:.7;
-        top:auto;
-        bottom:10px;
-        right:4%;
-        transform:translateY(0) scaleX(-1);
-      }
-
-      .side-hangyodon.right{
-        display:block;
-        width:260px;
-        opacity:.7;
-        top:auto;
-        bottom:10px;
-        right:4%;
-        transform:translateY(0) scaleX(1);
-      }
-    }
-
-    h1 {
-      color: var(--accent);
-      font-size: 22px;
-      font-weight: 600;
-      margin: 0 0 6px 0;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-    }
-    .subtitle {
-      font-size: 13px;
-      color: var(--text-soft);
-      margin: 0 0 10px 0;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-    }
-    .toolbar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 2;
-    }
-    .btn {
-      font-size: 13px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(37,99,235,0.35);
-      background: #fff;
-      color: var(--accent);
-      text-decoration: none;
-      box-shadow: 0 4px 10px rgba(37,99,235,0.12);
-      transition: all 0.15s ease;
-      cursor: pointer;
-    }
-    .btn:hover {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 6px 14px rgba(37,99,235,0.25);
-      border-color: var(--accent-hover);
-    }
-
-    .viewer {
-      width: 100%;
-      max-width: 1100px;
-      height: calc(100dvh - 170px);
-      min-height: 380px;
-      background: var(--card-bg);
-      border-radius: 14px;
-      box-shadow: 0 10px 24px rgba(15,23,42,0.08);
-      border: 1px solid var(--border-subtle);
-      overflow: hidden;
-      -webkit-overflow-scrolling: touch;
-      position: relative;
-      z-index: 2;
-    }
-    .viewer object {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display: block;
-    }
-    .fallback {
-      padding: 18px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-soft);
-    }
-
-    @media (max-width: 480px) {
-      .viewer { height: calc(100dvh - 180px); }
     }
   </style>
 </head>
 <body>
-  <!-- side characters -->
-  <img src="pinkpanther1.png" alt="Pink Panther Left" class="side-panther left" />
-  <img src="pinkpanther2.png" alt="Pink Panther Right" class="side-panther right" />
-  <img src="hangyodon1.png" alt="Hangyodon Left" class="side-hangyodon left" />
-  <img src="hangyodon2.png" alt="Hangyodon Right" class="side-hangyodon right" />
 
-  <h1>Line 2 Schematic</h1>
-  <div class="subtitle">Production Line 2 – Wiring and PLC Diagram</div>
-
-  <div class="toolbar">
-    <a class="btn" id="openNewTab" href="#" rel="noopener">Open PDF in New Tab ↗</a>
-    <a class="btn" href="index.html">← Back to Portal</a>
+  <h1>Line 2 – F13 Schematic</h1>
+  <div class="subtitle">
+    Production Line 2 – F13 Wiring and PLC Diagram
   </div>
 
+  <!-- 工具列：回 Line Schematic / 直接開 PDF -->
+  <div class="toolbar">
+    <!-- 這邊 href 改成你的 Line Schematic 主頁檔名 -->
+    <a class="btn" href="Line-Schematic.html">
+      ← Back to Line Schematic
+    </a>
+
+    <a class="btn" id="openNewTab" href="#" target="_blank" rel="noopener">
+      Open PDF in New Tab ↗
+    </a>
+  </div>
+
+  <!-- PDF viewer / 手機 fallback -->
   <div class="viewer" id="viewer">
-    <object id="pdfObject" data="Line-2-F13-Schematic.pdf#view=FitH" type="application/pdf">
+    <object id="pdfObject" data="" type="application/pdf">
       <div class="fallback">
-        Your browser cannot display embedded PDFs.<br>
-        <a class="btn" href="Line-2-F13-Schematic.pdf">Download / Open PDF</a>
+        Loading…
       </div>
     </object>
   </div>
 
   <script>
-    (function () {
-      const pdfUrl = "Line-2-F13-Schematic.pdf";
+    (function(){
+      // 這裡改成實際 PDF 檔名
+      const PDF_FILE = 'Line-2-F13-Schematic.pdf';
 
       const isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
-      const openNewTab = document.getElementById('openNewTab');
-      openNewTab.href = pdfUrl;
+      const viewer  = document.getElementById('viewer');
+      const openBtn = document.getElementById('openNewTab');
 
-      // 若你想行動裝置直接跳 PDF，可以改成：
-      // if (isMobile) window.location.replace(pdfUrl);
+      // 設定 Open in New Tab 連結
+      openBtn.href = PDF_FILE;
 
-      const obj = document.getElementById('pdfObject');
-      obj.addEventListener('error', () => {
-        document.getElementById('viewer').innerHTML =
-          '<div class="fallback">Unable to load PDF. <a class="btn" href="' + pdfUrl + '">Open PDF</a></div>';
-      });
+      if (isMobile){
+        // 手機：只顯示開啟按鈕（避免只看到 PDF 第一頁）
+        viewer.innerHTML = `
+          <div class="fallback">
+            On mobile, tap the button below to view the full PDF.<br><br>
+            <a class="btn" href="${PDF_FILE}" target="_blank" rel="noopener">
+              Open Line 2 – F13 PDF ↗
+            </a>
+          </div>
+        `;
+      } else {
+        // 桌機：直接內嵌 PDF
+        viewer.innerHTML = `
+          <object id="pdfObject" data="${PDF_FILE}#view=FitH" type="application/pdf">
+            <div class="fallback">
+              Your browser cannot display embedded PDFs.<br><br>
+              <a class="btn" href="${PDF_FILE}" target="_blank" rel="noopener">
+                Open Line 2 – F13 PDF ↗
+              </a>
+            </div>
+          </object>
+        `;
+
+        const obj = document.getElementById('pdfObject');
+        if (obj){
+          obj.addEventListener('error', () => {
+            viewer.innerHTML = `
+              <div class="fallback">
+                Unable to load PDF.<br><br>
+                <a class="btn" href="${PDF_FILE}" target="_blank" rel="noopener">
+                  Open Line 2 – F13 PDF ↗
+                </a>
+              </div>
+            `;
+          });
+        }
+      }
     })();
   </script>
+
 </body>
 </html>
