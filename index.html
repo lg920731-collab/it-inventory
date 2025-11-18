@@ -650,24 +650,6 @@ schemGo.addEventListener('click', () => {
   window.location.href = target;
 });
 
-function updateSchemBtn() {
-  schemGo.disabled = !(schemLine.value && schemArea.value);
-}
-
-schemLine.addEventListener('change', updateSchemBtn);
-schemArea.addEventListener('change', updateSchemBtn);
-
-schemGo.addEventListener('click', () => {
-  const line = schemLine.value;
-  const area = schemArea.value;
-  const target = schemMap[line]?.[area];
-
-  if (target) {
-    window.location.href = target;
-  } else {
-    alert('對應的 Schematic HTML 檔案尚未設定，請確認檔名或 schemMap 對照表。');
-  }
-});
 
     /* Program Backup */
     const pbLine=document.getElementById('pbLine');
